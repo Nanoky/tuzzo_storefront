@@ -1,8 +1,17 @@
-export default function Header() {
+import { CartButton } from "../commun/cart";
+
+export default function Header({ storeName }: { storeName: string }) {
     return (
-        <header className="navbar bg-base-300">
-            <div className="flex-1">
-                <a className="btn btn-ghost normal-case text-xl">Tuzzo Shop</a>
+        <header className="navbar py-3 px-4">
+            <div className="d-flex flex-row justify-content-between align-items-center w-100">
+                <div>
+                    <a className="btn">
+                        {storeName}
+                    </a>
+                </div>
+                <div>
+                    <CartButton />
+                </div>
             </div>
         </header>
     );

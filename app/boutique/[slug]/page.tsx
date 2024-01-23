@@ -1,21 +1,30 @@
+import ProductCard from "@/app/_shared/components/commun/product-card";
 import Layout from "@/app/_shared/components/layout";
 import { useShop } from "@/app/_shared/hooks/shop";
 
-export default function ShopPage({ params }: { params: { slug: string } }) {
-    const { getInfo, getProducts } = useShop();
+import "@/public/css/pages/store.css";
 
-    getInfo(params.slug).then((info) => {
-        console.log(info);
-    });
-    getProducts(params.slug).then((products) => {
-        console.log(products);
-    });
+export default async function ShopPage({
+    params,
+}: {
+    params: { slug: string };
+}) {
+    const { getStore, getProducts } = useShop();
+
+    const store = await getStore(params.slug);
+
+    const products = await getProducts(params.slug);
 
     return (
-        <Layout>
-            <div className="bg-black text-center">
+        <Layout storeName={store.name}>
+            <div className="bg-black text-white text-center welcome-container py-4">
                 <div>Bienvenue dans votre boutique</div>
-                <div>Boutique</div>
+                <div>{store.name}</div>
+            </div>
+            <div className="p-5 row row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-4">
+                {products.map((product) => (
+                    <ProductCard product={product} key={product.id} />
+                ))}
             </div>
         </Layout>
     );
