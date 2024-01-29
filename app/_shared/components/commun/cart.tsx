@@ -3,7 +3,7 @@
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCart } from "../../hooks/cart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Drawer from "rc-drawer";
 
 export function CartButton() {
