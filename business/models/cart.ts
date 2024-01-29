@@ -15,17 +15,27 @@ export class Cart {
         this._items = value;
     }
 
+    constructor(param?: {
+        items?: CartItem[];
+    }) {
+        this.items = param?.items ?? [];
+    }
+
     add(product: Product, quantity: number) {
-        const item = this.items.find((item) => item.product.id === product.id);
-        if (item) {
-            item.quantity += quantity;
-            item.totalPrice = item.product.price * quantity;
-        } else {
-            this.items.push({
-                product,
-                quantity,
-                totalPrice: product.price * quantity,
-            });
+        if (quantity > 0) {
+            const item = this.items.find(
+                (item) => item.product.id === product.id
+            );
+            if (item) {
+                item.quantity += quantity;
+                item.totalPrice = item.product.price * quantity;
+            } else {
+                this.items.push({
+                    product,
+                    quantity,
+                    totalPrice: product.price * quantity,
+                });
+            }
         }
     }
 

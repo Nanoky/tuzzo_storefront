@@ -6,10 +6,21 @@ export class CartBusiness implements ICartActions {
     private cart!: Cart;
     constructor(private repository: ICartRepository) {
         this.cart = new Cart();
-        repository.getCart().then((cart) => {
-            this.cart = cart;
+    }
+
+    init(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            try {
+                this.repository.getCart().then((cart) => {
+                    this.cart = cart;
+                    resolve();
+                });
+            } catch (error) {
+                reject(error);
+            }
         });
     }
+
     addToCart(product: Product, quantity: number): Promise<void> {
         return new Promise((resolve, reject) => {
             try {

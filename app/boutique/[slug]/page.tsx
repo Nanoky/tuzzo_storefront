@@ -21,7 +21,7 @@ export default async function ShopPage({
             </div>
             <div className="p-5 row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
                 {products.map((product) => (
-                    <div className="col" key={product.id}>
+                    <div className="col cursor-pointer" key={product.id}>
                         <ProductCard product={product} />
                     </div>
                 ))}

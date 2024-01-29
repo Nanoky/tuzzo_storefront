@@ -1,6 +1,7 @@
 import { Product } from "@/business/models/product";
 import { Store } from "@/business/models/store";
 import { faker } from "@faker-js/faker";
+import { SerializeProduct } from "../models/product";
 
 export function useShop() {
     const getStore = async (slug: string) => {
@@ -16,11 +17,11 @@ export function useShop() {
     };
 
     const getProducts = async (slug: string) => {
-        let products: Product[] = [];
+        let products: SerializeProduct[] = [];
 
         for (let i = 0; i < 10; i++) {
             products.push(
-                new Product({
+                new SerializeProduct({
                     id: faker.datatype.uuid(),
                     name: faker.commerce.productName(),
                     description: faker.commerce.productDescription(),

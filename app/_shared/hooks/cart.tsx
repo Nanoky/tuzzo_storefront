@@ -1,12 +1,22 @@
 import { CartItem } from "@/business/models/cart";
 import { Product } from "@/business/models/product";
 import { InstanceType, Instances } from "@/init";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useCart() {
     const [items, setItems] = useState<CartItem[]>();
     const [total, setTotal] = useState<number>(0);
     const [count, setCount] = useState<number>(0);
+
+    useEffect(() => {
+        getItems();
+        getCount();
+        getTotal();
+    }, []);
+
+    useEffect(() => {
+        console.log("count", count);
+    }, [count]);
 
     const addToCart = (
         product: Product,
@@ -22,6 +32,8 @@ export function useCart() {
                         setItems(items);
                         callback?.();
                     });
+                getCount();
+                getTotal();
             });
     };
 
