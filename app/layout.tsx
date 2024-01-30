@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Instances } from "@/init";
 import Init from "./_shared/components/commun/init";
+import StoreProvider from "./storeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +19,13 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={inter.className}>
-                <Init></Init>
-                <div className="vh-100">{children}</div>
-            </body>
-        </html>
+        <StoreProvider>
+            <html lang="en">
+                <body className={inter.className}>
+                    <Init></Init>
+                    <div className="vh-100">{children}</div>
+                </body>
+            </html>
+        </StoreProvider>
     );
 }

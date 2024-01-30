@@ -15,9 +15,7 @@ export class Cart {
         this._items = value;
     }
 
-    constructor(param?: {
-        items?: CartItem[];
-    }) {
+    constructor(param?: { items?: CartItem[] }) {
         this.items = param?.items ?? [];
     }
 
@@ -30,11 +28,14 @@ export class Cart {
                 item.quantity += quantity;
                 item.totalPrice = item.product.price * quantity;
             } else {
-                this.items.push({
-                    product,
-                    quantity,
-                    totalPrice: product.price * quantity,
-                });
+                this.items = [
+                    ...this.items,
+                    {
+                        product,
+                        quantity,
+                        totalPrice: product.price * quantity,
+                    },
+                ];
             }
         }
     }

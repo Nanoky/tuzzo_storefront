@@ -2,6 +2,7 @@ import { Cart, CartItem } from "../models/cart";
 import { Product } from "../models/product";
 
 export interface ICartActions {
+    init(): Promise<void>;
     addToCart(product: Product, quantity: number): Promise<void>;
     removeFromCart(product: Product): Promise<void>;
     clear(): Promise<void>;

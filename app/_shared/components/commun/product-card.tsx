@@ -58,10 +58,10 @@ export default function ProductCard({ product }: { product: Product }) {
                     <button
                         type="button"
                         title="Add to cart"
+                        onClick={handleAddToCart}
                         className="btn bg-white opacity-75 text-black rounded-4 border-0">
                         <FontAwesomeIcon
-                            icon={faShoppingCart}
-                            onClick={handleAddToCart}></FontAwesomeIcon>
+                            icon={faShoppingCart}></FontAwesomeIcon>
                     </button>
                 )}
             </div>

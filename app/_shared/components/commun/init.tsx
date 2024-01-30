@@ -1,19 +1,21 @@
 "use client";
 
-import { Instances } from "@/init";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks";
+import { initCart } from "../../lib/features/cart/cartSlice";
 
 export default function Init() {
-    const [isLoaded, setIsLoaded] = useState(false);
+    const initialized = useAppSelector((state) => state.cart.initialized);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        Instances.loadApp().then(() => setIsLoaded(true));
+        dispatch(initCart());
     }, []);
 
     return (
         <>
-            {!isLoaded && (
+            {!initialized && (
                 <div
                     className="position-absolute top-0 start-0 vw-100 vh-100 bg-white d-flex justify-content-center align-items-center"
                     style={{ zIndex: 9999 }}>

@@ -4,6 +4,10 @@ import { ICartActions } from "@/business/ports/cart";
 export class CartAdapter {
     constructor(private manager: ICartActions) {}
 
+    init() {
+        return this.manager.init();
+    }
+
     addToCart(product: Product, quantity: number) {
         return this.manager.addToCart(product, quantity);
     }

@@ -1,88 +1,33 @@
-import { CartItem } from "@/business/models/cart";
 import { Product } from "@/business/models/product";
-import { InstanceType, Instances } from "@/init";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { addItem, removeItem } from "@/app/_shared/lib/features/cart/cartSlice";
+import { RootState } from "../lib/store";
 
 export function useCart() {
-    const [items, setItems] = useState<CartItem[]>();
-    const [total, setTotal] = useState<number>(0);
-    const [count, setCount] = useState<number>(0);
+    const items = useAppSelector((state: RootState) => state.cart.items);
+    const count = useAppSelector((state: RootState) => state.cart.nbItems);
+    const total = useAppSelector((state: RootState) => state.cart.total);
 
-    useEffect(() => {
-        getItems();
-        getCount();
-        getTotal();
-    }, []);
+    const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        console.log("count", count);
-    }, [count]);
-
-    const addToCart = (
-        product: Product,
-        quantity: number,
-        callback?: () => void
-    ) => {
-        Instances.getInstance(InstanceType.cart)
-            ?.addToCart(product, quantity)
-            .then(() => {
-                Instances.getInstance(InstanceType.cart)
-                    ?.getItems()
-                    .then((items) => {
-                        setItems(items);
-                        callback?.();
-                    });
-                getCount();
-                getTotal();
-            });
-    };
-
-    const getCount = (callback?: () => void) => {
-        Instances.getInstance(InstanceType.cart)
-            ?.getCount()
-            .then((count) => {
-                setCount(count);
-                callback?.();
-            });
+    const addToCart = (product: Product, quantity: number) => {
+        dispatch(addItem({ product, quantity }));
     };
 
     const removeFromCart = (product: Product) => {
-        Instances.getInstance(InstanceType.cart)
-            ?.removeFromCart(product)
-            .then(() => {
-                Instances.getInstance(InstanceType.cart)
-                    ?.getItems()
-                    .then((items) => {
-                        setItems(items);
-                    });
-            });
-    };
-
-    const getItems = (callback?: () => void) => {
-        Instances.getInstance(InstanceType.cart)
-            ?.getItems()
-            .then((items) => {
-                setItems(items);
-                callback?.();
-            });
-    };
-
-    const getTotal = (callback?: () => void) => {
-        Instances.getInstance(InstanceType.cart)
-            ?.getTotal()
-            .then((total) => {
-                setTotal(total);
-                callback?.();
-            });
+        dispatch(
+            removeItem({
+                product,
+            })
+        );
     };
 
     return {
         items,
         count,
         total,
-        getCount,
         addToCart,
         removeFromCart,
-        getTotal,
     };
 }
