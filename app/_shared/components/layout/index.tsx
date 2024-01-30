@@ -1,15 +1,25 @@
 import Footer from "./footer";
 import Header from "./header";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import "@/public/css/layouts/layout.css";
+
+export default function Layout({
+    children,
+    storeName,
+}: {
+    children: React.ReactNode;
+    storeName: string;
+}) {
     return (
-        <div className="vh-100">
-            <div className="fixed-top">
-                <Header></Header>
+        <div className="bg-white">
+            <div className="fixed-top z-3">
+                <Header storeName={storeName}></Header>
             </div>
-            <div>{children}</div>
-            <div className="sticky-bottom">
-                <Footer></Footer>
+            <div className="d-flex flex-column main vh-100 overflow-auto">
+                <div className="flex-grow-1">{children}</div>
+                <div className="">
+                    <Footer storeName={storeName}></Footer>
+                </div>
             </div>
         </div>
     );

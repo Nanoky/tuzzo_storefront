@@ -1,0 +1,9 @@
+.product-card-image {
+    width: 100%;
+    height: 240px;
+}
+
+.cart-button {
+    top: 1rem;
+    right: 1rem;
+}

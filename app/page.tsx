@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
 import Image from "next/image";
 import logo from "@/public/images/logo_tuzzo_original@2x.png";
 import Link from "next/link";
