@@ -90,7 +90,7 @@ export function CartPanel({
     };
 
     return (
-        <div className="cart-panel p-3 d-flex flex-column gap-1">
+        <div className="cart-panel p-3 d-flex flex-column gap-1 text-black">
             <div className="d-flex justify-content-between flex-row">
                 <span className="fs-5 fw-normal">Résumé</span>
                 <button
