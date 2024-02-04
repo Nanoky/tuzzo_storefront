@@ -9,6 +9,7 @@ import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
 import { SerializeProduct } from "../../models/product";
 import Skeleton from "react-loading-skeleton";
+import { CustomImage } from "./custom-image";
 
 export default function ProductCard({ product }: { product: Product }) {
     const [item, setItem] = useState<Product>();
@@ -29,18 +30,13 @@ export default function ProductCard({ product }: { product: Product }) {
 
     return (
         <div className="card p-2 border border-1 rounded-4 shadow-sm position-relative">
-            <div className="position-relative product-card-image">
-                {item && (
-                    <Image
-                        src={item.images[0]}
-                        alt={item.name}
-                        className="rounded-3"
-                        loading="lazy"
-                        onLoad={handleImageLoad}
-                        fill></Image>
-                )}
-                {!isImageLoaded && <Skeleton height="100%" />}
-            </div>
+            {item && (
+                <CustomImage
+                    url={item.images[0]}
+                    name={item.name}
+                    width="100%"
+                    height="300px"></CustomImage>
+            )}
             <div className="card-body d-flex flex-row justify-content-between p-0 pt-3">
                 <div>
                     {item ? item.name : <Skeleton count={1} width={"200px"} />}

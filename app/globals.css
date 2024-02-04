@@ -112,3 +112,8 @@ a {
 .cursor-pointer {
     cursor: pointer;
 }
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}

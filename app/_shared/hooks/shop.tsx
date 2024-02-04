@@ -1,10 +1,9 @@
-import { Product } from "@/business/models/product";
 import { Store } from "@/business/models/store";
 import { faker } from "@faker-js/faker";
 import { SerializeProduct } from "../models/product";
 
 export function useShop() {
-    const getStore = async (slug: string) => {
+    const getStoreBySlug = async (slug: string) => {
         return new Store({
             name: faker.company.name(),
             id: faker.datatype.uuid(),
@@ -16,7 +15,31 @@ export function useShop() {
         });
     };
 
-    const getProducts = async (slug: string) => {
+    const getStoreById = async (id: string) => {
+        return new Store({
+            name: faker.company.name(),
+            id: faker.datatype.uuid(),
+            address: faker.address.streetAddress(),
+            city: faker.address.city(),
+            description: faker.company.catchPhrase(),
+            logo: "",
+            phone: faker.phone.number(),
+        });
+    };
+
+    const getStoreByProductId = async (productId: string) => {
+        return new Store({
+            name: faker.company.name(),
+            id: faker.datatype.uuid(),
+            address: faker.address.streetAddress(),
+            city: faker.address.city(),
+            description: faker.company.catchPhrase(),
+            logo: "",
+            phone: faker.phone.number(),
+        });
+    };
+
+    const getProducts = async (storeId: string) => {
         let products: SerializeProduct[] = [];
 
         for (let i = 0; i < 10; i++) {
@@ -37,7 +60,9 @@ export function useShop() {
     };
 
     return {
-        getStore,
+        getStoreById,
+        getStoreBySlug,
+        getStoreByProductId,
         getProducts,
     };
 }
