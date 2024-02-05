@@ -23,7 +23,7 @@ export default async function RootLayout({
             <html lang="en">
                 <body className={inter.className}>
                     <Init></Init>
-                    <div className="vh-100">{children}</div>
+                    <div className="vh-100 vw-100">{children}</div>
                 </body>
             </html>
         </StoreProvider>

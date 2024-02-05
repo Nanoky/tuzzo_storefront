@@ -1,21 +1,30 @@
-import { Product } from "@/business/models/product";
-import { faker } from "@faker-js/faker";
+import { Instances } from "@/init";
+import { SerializeProduct } from "../models/product";
 
 export function useProducts() {
-    const getProduct = async (slug: string) => {
-        return new Product({
-            id: faker.datatype.uuid(),
-            name: faker.commerce.productName(),
-            description: faker.commerce.productDescription(),
-            price: faker.number.int({ min: 10, max: 100 }),
-            currency: faker.finance.currencyCode(),
-            images: [faker.image.url()],
-            nbSold: faker.number.int({ min: 0, max: 100 }),
-            quantity: faker.number.int({ min: 0, max: 100 }),
-        });
+    const getProductById = async (storeId: string, id: string) => {
+        return Instances.getProductInstance()
+            .getById({
+                id: id,
+                storeId: storeId,
+            })
+            .then((product) => {
+                return new SerializeProduct({
+                    currency: product.currency,
+                    description: product.description,
+                    id: product.id,
+                    images: product.images,
+                    name: product.name,
+                    price: product.price,
+                    quantity: product.quantity,
+                    nbSold: product.nbSold,
+                    categories: product.categories,
+                    slug: product.slug,
+                });
+            });
     };
 
     return {
-        getProduct,
+        getProductById,
     };
 }

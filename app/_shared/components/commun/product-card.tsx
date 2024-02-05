@@ -1,7 +1,6 @@
 "use client";
 
 import { Product } from "@/business/models/product";
-import Image from "next/image";
 import "@/public/css/components/product-card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +12,6 @@ import { CustomImage } from "./custom-image";
 
 export default function ProductCard({ product }: { product: Product }) {
     const [item, setItem] = useState<Product>();
-    const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
     const { addToCart } = useCart();
 
     useEffect(() => {
@@ -22,10 +20,6 @@ export default function ProductCard({ product }: { product: Product }) {
 
     const handleAddToCart = () => {
         addToCart(product, 1);
-    };
-
-    const handleImageLoad = () => {
-        setIsImageLoaded(true);
     };
 
     return (

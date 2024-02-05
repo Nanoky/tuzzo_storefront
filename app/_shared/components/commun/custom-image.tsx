@@ -14,6 +14,7 @@ export function CustomImage({
     wAuto,
     containerClass,
     fitContain,
+    isRelative,
 }: {
     url: string;
     name: string;
@@ -23,6 +24,7 @@ export function CustomImage({
     wAuto?: boolean;
     containerClass?: string;
     fitContain?: boolean;
+    isRelative?: boolean;
 }) {
     const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
     const handleImageLoad = () => {
@@ -38,7 +40,7 @@ export function CustomImage({
                     : "custom-image-full"
             } ${containerClass ?? ""} ${
                 fitContain ? "custom-image-fit-contain" : ""
-            }`}
+            } ${isRelative ? "custom-image-relative" : ""}`}
             style={{ width, height }}>
             <Image
                 src={url}

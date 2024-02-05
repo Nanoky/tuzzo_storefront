@@ -3,7 +3,7 @@ import logo from "@/public/images/logo_tuzzo_original@2x.png";
 import Link from "next/link";
 
 export default function Home() {
-    const defautShopSlug = "wales";
+    const defautShopSlug = "6P8v2H4sx7uIJDpPV8zm";
     return (
         <main className="bg-white h-100">
             <div className="d-flex flex-column justify-content-center align-items-center h-100 gap-5 ">

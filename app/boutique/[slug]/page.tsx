@@ -8,9 +8,9 @@ export default async function ShopPage({
 }: {
     params: { slug: string };
 }) {
-    const { getStoreBySlug, getProducts } = useShop();
+    const { getStoreById, getProducts } = useShop();
 
-    const store = await getStoreBySlug(params.slug);
+    const store = await getStoreById(params.slug);
 
     const products = await getProducts(store.id);
 
@@ -20,10 +20,10 @@ export default async function ShopPage({
                 <div>Bienvenue dans votre boutique</div>
                 <div>{store.name}</div>
             </div>
-            <div className="p-5 row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
+            <div className="p-5 row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
                 {products.map((product) => (
                     <div className="col cursor-pointer" key={product.id}>
-                        <Link href={`/produit/${product.id}`}>
+                        <Link href={`/produit/${store.id}+${product.id}`}>
                             <ProductCard product={product} />
                         </Link>
                     </div>

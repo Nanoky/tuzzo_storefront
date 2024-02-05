@@ -1,6 +1,6 @@
-import { Cart, CartItem } from "@/business/models/cart";
+import { CartItem } from "@/business/models/cart";
 import { Product } from "@/business/models/product";
-import { InstanceType, Instances } from "@/init";
+import { Instances } from "@/init";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 type CartOperationResponse = {
@@ -10,7 +10,7 @@ type CartOperationResponse = {
 };
 
 function getCart() {
-    return Instances.getInstance(InstanceType.cart);
+    return Instances.getCartInstance();
 }
 
 type CartOperationError = {
@@ -88,8 +88,7 @@ const slice = createSlice({
         total: 0,
         items: new Array<CartItem>(),
     },
-    reducers: {
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(initCart.fulfilled, (state, action) => {
             state.items = action.payload.items;
@@ -111,7 +110,7 @@ const slice = createSlice({
             state.items = action.payload.items;
             state.nbItems = action.payload.count;
             state.total = action.payload.total;
-        })
+        });
     },
 });
 

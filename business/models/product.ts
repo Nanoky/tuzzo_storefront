@@ -58,6 +58,14 @@ export class Product extends Entity {
         this._categories = value;
     }
 
+    private _slug!: string;
+    public get slug(): string {
+        return this._slug;
+    }
+    private set slug(value: string) {
+        this._slug = value;
+    }
+
     constructor(param: {
         id: string;
         name: string;
@@ -68,6 +76,7 @@ export class Product extends Entity {
         nbSold: number;
         currency: string;
         categories?: string[];
+        slug: string;
     }) {
         super({
             id: param.id,
@@ -80,5 +89,6 @@ export class Product extends Entity {
         this.nbSold = param.nbSold;
         this.currency = param.currency;
         this.categories = param.categories ?? [];
+        this.slug = param.slug;
     }
 }

@@ -15,7 +15,8 @@ export class ProductRepository implements IProductRepository {
     search(params: SearchProductParams): Promise<Product[]> {
         if (params.slug) {
             return this.service.search({
-                collection: "products",
+                collection: "stores",
+                pathSegments: [params.storeId, "products"],
                 filters: [
                     { fieldPath: "slug", opStr: "==", value: params.slug },
                 ],
@@ -26,7 +27,8 @@ export class ProductRepository implements IProductRepository {
         if (params.id) {
             return this.service
                 .get({
-                    collection: "products",
+                    collection: "stores",
+                    pathSegments: [params.storeId, "products"],
                     id: params.id,
                     converter: this.converter,
                 })
@@ -40,7 +42,8 @@ export class ProductRepository implements IProductRepository {
         }
 
         return this.service.getAll({
-            collection: "products",
+            collection: "stores",
+            pathSegments: [params.storeId, "products"],
             converter: this.converter,
         });
     }

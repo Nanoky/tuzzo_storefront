@@ -27,6 +27,7 @@ export class SerializeProduct extends Product implements Serializable {
             quantity: json.quantity,
             nbSold: json.nbSold,
             categories: json.categories,
+            slug: json.slug,
         });
     }
 }

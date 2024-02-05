@@ -16,3 +16,7 @@
 .custom-image-fit-contain img {
     object-fit: contain !important;
 }
+
+.custom-image-relative img {
+    position: relative !important;
+}

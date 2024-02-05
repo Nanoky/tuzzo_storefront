@@ -35,6 +35,7 @@ export class ProductAdapter
                 quantity: modelObject.quantity,
                 sale_price: modelObject.price,
                 total_unit_sold: modelObject.nbSold,
+                slug: modelObject.slug,
             };
         } else {
             throw new Error("Method not implemented.");
@@ -55,6 +56,7 @@ export class ProductAdapter
             quantity: data.quantity,
             categories: data.product_categories,
             nbSold: data.total_unit_sold,
+            slug: data.slug,
         });
     }
 }

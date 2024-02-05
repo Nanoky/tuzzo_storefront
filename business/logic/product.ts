@@ -3,10 +3,11 @@ import { IProductActions, IProductRepository } from "../ports/product";
 
 export class ProductBusiness implements IProductActions {
     constructor(private repository: IProductRepository) {}
-    getBySlug(slug: string): Promise<Product> {
+    getBySlug(param: { slug: string; storeId: string }): Promise<Product> {
         return this.repository
             .search({
-                slug,
+                storeId: param.storeId,
+                slug: param.slug,
             })
             .then((data) => {
                 if (data.length > 0) {
@@ -16,10 +17,11 @@ export class ProductBusiness implements IProductActions {
                 throw new Error("Produit inexistant");
             });
     }
-    getById(id: string): Promise<Product> {
+    getById(params: { id: string; storeId: string }): Promise<Product> {
         return this.repository
             .search({
-                id,
+                storeId: params.storeId,
+                id: params.id,
             })
             .then((data) => {
                 if (data.length > 0) {

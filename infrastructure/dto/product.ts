@@ -11,4 +11,5 @@ export interface ProductDTO {
     quantity?: number;
     sale_price?: number;
     total_unit_sold?: number;
+    slug: string;
 }
