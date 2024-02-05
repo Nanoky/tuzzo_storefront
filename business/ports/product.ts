@@ -1,12 +1,14 @@
 import { Product } from "../models/product";
 
 export interface IProductActions {
-    getProduct(slug: string): Promise<Product>;
+    getBySlug(slug: string): Promise<Product>;
+    getById(id: string): Promise<Product>;
 }
 
 export type SearchProductParams = {
-    id: string;
+    id?: string;
+    slug?: string;
 };
 export interface IProductRepository {
-    searchProduct(params: SearchProductParams): Promise<Product>;
+    search(params: SearchProductParams): Promise<Product[]>;
 }

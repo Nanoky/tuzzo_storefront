@@ -2,18 +2,20 @@ import { Product } from "../models/product";
 import { Store } from "../models/store";
 
 export interface IStoreActions {
-    getStore(slug: string): Promise<Store>;
-    getStoreProducts(slug: string): Promise<Product[]>;
+    getBySlug(slug: string): Promise<Store>;
+    getById(id: string): Promise<Store>;
+    getProducts(slug: string): Promise<Product[]>;
 }
 
 export type SearchStoreParams = {
-    id: string;
+    id?: string;
+    slug?: string;
 };
 
 export type SearchStoreProductsParams = {
-    id: string;
+    storeId: string;
 };
 export interface IStoreRepository {
-    searchStore(params: SearchStoreParams): Promise<Store>;
-    getStoreProducts(params: SearchStoreProductsParams): Promise<Product[]>;
+    search(params: SearchStoreParams): Promise<Store[]>;
+    getProducts(params: SearchStoreProductsParams): Promise<Product[]>;
 }
