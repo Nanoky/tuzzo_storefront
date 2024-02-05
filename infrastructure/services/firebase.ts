@@ -10,6 +10,7 @@ import {
     getDoc,
     getDocs,
     getFirestore,
+    limit,
     query,
     where,
 } from "firebase/firestore";
@@ -64,6 +65,7 @@ export class FireStoreService {
             value: string;
         }[];
         converter: FirestoreDataConverter<TData, any>;
+        limit?: number;
     }) {
         const collectionRef = collection(
             this.db,
@@ -75,7 +77,8 @@ export class FireStoreService {
             collectionRef,
             ...param.filters.map((filter) =>
                 where(filter.fieldPath, filter.opStr, filter.value)
-            )
+            ),
+            ...(param.limit ? [limit(param.limit)] : [])
         ).withConverter<TData>(param.converter);
 
         const querySnapshot = await getDocs(q);
@@ -93,14 +96,20 @@ export class FireStoreService {
         collection: string;
         pathSegments?: string[];
         converter: FirestoreDataConverter<TData, any>;
+        limit?: number;
     }) {
         const collectionRef = collection(
             this.db,
             param.collection,
             ...(param.pathSegments ?? [])
+        );
+
+        const q = query(
+            collectionRef,
+            ...(param.limit ? [limit(param.limit)] : [])
         ).withConverter(param.converter);
 
-        const querySnapshot = await getDocs(collectionRef);
+        const querySnapshot = await getDocs(q);
 
         let data: TData[] = [];
 

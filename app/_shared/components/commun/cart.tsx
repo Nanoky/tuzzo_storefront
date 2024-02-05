@@ -1,7 +1,6 @@
 "use client";
 
 import {
-    faCancel,
     faShoppingCart,
     faTrash,
     faXmark,
@@ -16,10 +15,12 @@ import { CartItem } from "@/business/models/cart";
 
 import "@/public/css/components/cart.css";
 import "@/public/css/components/drawer.css";
+import { useRouter } from "next/navigation";
 
-export function CartButton() {
+export function CartButton({slug}: {slug: string}) {
     const { count, total, items, removeFromCart } = useCart();
     const [open, setOpen] = useState(false);
+    const router = useRouter();
 
     const handleClick = () => {
         setOpen(true);
@@ -33,6 +34,10 @@ export function CartButton() {
     const handleRemove = (product: Product) => {
         removeFromCart(product);
     };
+
+    const handleCheckout = () => {
+        router.push(`/caisse/${slug}`);
+    }
 
     return (
         <>
@@ -63,6 +68,7 @@ export function CartButton() {
                 <CartPanel
                     items={items}
                     total={total}
+                    onCheckout={handleCheckout}
                     onRemove={handleRemove}
                     onClose={onClose}></CartPanel>
             </Drawer>
@@ -75,11 +81,13 @@ export function CartPanel({
     total,
     onRemove,
     onClose,
+    onCheckout
 }: {
     items: CartItem[];
     total: number;
     onRemove: (product: Product) => void;
     onClose: () => void;
+    onCheckout: () => void
 }) {
     const handleRemove = (product: Product) => {
         onRemove(product);
@@ -88,6 +96,10 @@ export function CartPanel({
     const handleClose = () => {
         onClose();
     };
+
+    const handleCheckout = () => {
+        onCheckout();
+    }
 
     return (
         <div className="cart-panel p-3 d-flex flex-column gap-1 text-black">
@@ -136,14 +148,14 @@ export function CartPanel({
             <hr />
             <div className="d-flex flex-row justify-content-between">
                 <span className="fs-5">Total</span>
-                <span className="fw-bold fs-4">{total}</span>
+                <span className="fw-bold fs-4">{total} F</span>
             </div>
             {items.length > 0 && (
                 <div className="row justify-content-center align-items-center py-4">
                     <div className="col-8 d-flex flex-column gap-2">
                         <button
                             type="button"
-                            className="btn btn-primary rounded-pill w-100 p-2">
+                            className="btn btn-primary rounded-pill w-100 p-2" onClick={handleCheckout}>
                             Passer à la caisse
                         </button>
                         <button

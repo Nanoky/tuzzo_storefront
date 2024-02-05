@@ -33,7 +33,7 @@ export class ProductAdapter
                 product_categories: modelObject.categories,
                 product_images: modelObject.images,
                 quantity: modelObject.quantity,
-                sale_price: modelObject.price,
+                price: modelObject.price,
                 total_unit_sold: modelObject.nbSold,
                 slug: modelObject.slug,
             };
@@ -50,7 +50,7 @@ export class ProductAdapter
             id: snapshot.id,
             name: data.name,
             description: data.description,
-            price: data.sale_price,
+            price: data.price,
             currency: data.currency,
             images: data.product_images,
             quantity: data.quantity,

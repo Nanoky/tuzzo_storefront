@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .cursor-pointer {
     cursor: pointer;
 }
@@ -5,4 +9,18 @@
 a {
     color: inherit !important;
     text-decoration: none !important;
+}
+
+@media screen and (min-width: 1025px) {
+    .px-page {
+        padding-left: 7rem;
+        padding-right: 7rem;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .px-page {
+        padding-left: 1.3rem;
+        padding-right: 1.3rem;
+    }
 }

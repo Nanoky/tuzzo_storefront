@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import Init from "./_shared/components/commun/init";
 import StoreProvider from "./storeProvider";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,10 @@ export default async function RootLayout({
         <StoreProvider>
             <html lang="en">
                 <body className={inter.className}>
-                    <Init></Init>
-                    <div className="vh-100 vw-100">{children}</div>
+                    <Providers>
+                        <Init></Init>
+                        <div className="vh-100 vw-100">{children}</div>
+                    </Providers>
                 </body>
             </html>
         </StoreProvider>

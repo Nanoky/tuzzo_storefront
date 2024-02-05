@@ -55,6 +55,7 @@ export class StoreRepository implements IStoreRepository {
                 collection: "stores",
                 pathSegments: [params.storeId, "products"],
                 converter: this.productConverter,
+                limit: 10
             })
             .then((data) => {
                 if (data) {
