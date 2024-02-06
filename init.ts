@@ -1,13 +1,20 @@
 import { CartAdapter } from "./app/_shared/adapters/cart";
 import { ProductAdapter } from "./app/_shared/adapters/product";
 import { StoreAdapter } from "./app/_shared/adapters/store";
+import { VisitAdapter } from "./app/_shared/adapters/visit";
 import { CartBusiness } from "./business/logic/cart";
 import { ProductBusiness } from "./business/logic/product";
 import { StoreBusiness } from "./business/logic/store";
+import { VisitBusiness } from "./business/logic/visit";
 import { CartRepository } from "./infrastructure/repository/cart";
 import { ProductRepository } from "./infrastructure/repository/product";
 import { StoreRepository } from "./infrastructure/repository/store";
+import {
+    VisitRepository,
+    VisitStorage,
+} from "./infrastructure/repository/visit";
 import { FireStoreService, Firebase } from "./infrastructure/services/firebase";
+import { SessionStorage } from "./infrastructure/services/storage";
 
 export enum InstanceType {
     cart,
@@ -23,7 +30,10 @@ export class Instances {
 
     private store!: StoreAdapter;
     private product!: ProductAdapter;
+    private visit!: VisitAdapter;
     private constructor() {
+        const sessionStorage = new SessionStorage();
+
         const cartRepository = new CartRepository();
         const business = new CartBusiness(cartRepository);
         this.cart = new CartAdapter(business);
@@ -37,6 +47,11 @@ export class Instances {
         const productRepository = new ProductRepository(this.apiService);
         const businessProduct = new ProductBusiness(productRepository);
         this.product = new ProductAdapter(businessProduct);
+
+        const visitRepository = new VisitRepository(this.apiService);
+        const visitStorage = new VisitStorage(sessionStorage);
+        const businessVisit = new VisitBusiness(visitStorage, visitRepository);
+        this.visit = new VisitAdapter(businessVisit);
     }
 
     static getCartInstance() {
@@ -61,5 +76,13 @@ export class Instances {
         }
 
         return Instances.instance.product;
+    }
+
+    static getVisitInstance() {
+        if (!Instances.instance) {
+            Instances.instance = new Instances();
+        }
+
+        return Instances.instance.visit;
     }
 }

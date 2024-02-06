@@ -18,7 +18,7 @@ export default async function CheckoutPage({
     const store = await getStoreBySlug(params.slug);
 
     return (
-        <Layout storeName={store.name} storeSlug={store.slug}>
+        <Layout storeName={store.name} storeSlug={store.slug} storeId={store.id}>
             <div className="d-flex flex-column gap-3 px-page w-100 py-4">
                 <div className="d-flex justify-content-start flex-row align-items-center gap-2">
                     <Breadcrumbs

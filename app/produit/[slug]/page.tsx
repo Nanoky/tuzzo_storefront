@@ -59,7 +59,7 @@ export default async function ProductPage({
     const product = await getProductById(store.id, keys[1]);
 
     return (
-        <Layout storeName={store.name} hasFooter={false} storeSlug={store.slug}>
+        <Layout storeName={store.name} hasFooter={false} storeSlug={store.slug} storeId={store.id}>
             <div className="d-flex flex-column gap-3 px-product w-100 py-4">
                 <div className="d-flex justify-content-center flex-row align-items-center gap-2">
                     <Breadcrumbs

@@ -38,7 +38,7 @@ export default async function ShopPage({
     const products = await getProducts(store.id);
 
     return (
-        <Layout storeName={store.name} storeSlug={store.slug}>
+        <Layout storeName={store.name} storeSlug={store.slug} storeId={store.id}>
             <div className="bg-black text-white text-center py-4">
                 <div>Bienvenue dans votre boutique</div>
                 <div>{store.name}</div>

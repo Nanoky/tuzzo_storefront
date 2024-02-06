@@ -5,6 +5,7 @@ import {
     Firestore,
     FirestoreDataConverter,
     WhereFilterOp,
+    addDoc,
     collection,
     doc,
     getDoc,
@@ -12,6 +13,7 @@ import {
     getFirestore,
     limit,
     query,
+    setDoc,
     where,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -139,5 +141,19 @@ export class FireStoreService {
         } else {
             return null;
         }
+    }
+
+    async create<TData>(param: {
+        collection: string;
+        pathSegments?: string[];
+        data: TData;
+        converter: FirestoreDataConverter<TData, any>;
+    }) {
+        const collectionRef = collection(
+            this.db,
+            param.collection,
+            ...(param.pathSegments ?? [])
+        ).withConverter(param.converter);
+        await addDoc(collectionRef, param.data);
     }
 }
