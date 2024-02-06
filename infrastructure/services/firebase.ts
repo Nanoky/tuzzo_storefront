@@ -62,7 +62,7 @@ export class FireStoreService {
         filters: {
             fieldPath: string | FieldPath;
             opStr: WhereFilterOp;
-            value: string;
+            value: unknown;
         }[];
         converter: FirestoreDataConverter<TData, any>;
         limit?: number;

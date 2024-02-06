@@ -51,9 +51,12 @@ export class StoreRepository implements IStoreRepository {
     }
     getProducts(params: SearchStoreProductsParams): Promise<Product[]> {
         return this.service
-            .getAll({
+            .search({
                 collection: "stores",
                 pathSegments: [params.storeId, "products"],
+                filters: [
+                    { fieldPath: "isdeleted", opStr: "==", value: false },
+                ],
                 converter: this.productConverter,
                 limit: 9
             })
