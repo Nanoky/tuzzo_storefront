@@ -26,7 +26,7 @@ export default function DeliveryOption() {
                             <Checkbox
                                 radius="none"
                                 checked={isExpress}
-                                onChange={handleChangeExpress}>
+                                onChange={handleChangeExpress} color="primary">
                                 <div className="d-flex flex-column gap-1">
                                     <span className="text-normal">
                                         Livraison express

@@ -17,13 +17,13 @@ export default function CheckoutSummary() {
     };
     return (
         <Card>
-            <CardHeader>
+            <CardHeader className="pb-2">
                 <div className="d-flex flex-column">
                     <span className="text-normal text-semibold">Resumé de la commande</span>
                     <span className="text-sm">Voici le total de votre commande</span>
                 </div>
             </CardHeader>
-            <Divider></Divider>
+            <Divider className="my-2"></Divider>
             <CardBody>
                 <div className="d-flex flex-column gap-2">
                     <div className="d-flex justify-content-between">
@@ -48,7 +48,7 @@ export default function CheckoutSummary() {
                     </div>
                 </div>
             </CardBody>
-            <Divider></Divider>
+            <Divider className="my-2"></Divider>
             <CardFooter>
                 <div className="d-flex justify-content-end">
                     <button

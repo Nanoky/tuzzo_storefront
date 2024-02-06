@@ -136,23 +136,25 @@ export function CartPanel({
                             {items.map((item) => (
                                 <div
                                     key={item.product.id}
-                                    className="d-flex flex-row gap-2">
-                                    <CustomImage
-                                        url={item.product.images[0]}
-                                        name={item.product.name}
-                                        width="40px"
-                                        isRelative
-                                        height="50px"></CustomImage>
-                                    <div className="d-flex flex-column flex-grow-1">
-                                        <span className="text-normal">
-                                            {item.product.name}
-                                        </span>
-                                        <span className="text-xs font-light">
-                                            Quantité: {item.quantity}
-                                        </span>
+                                    className="d-flex flex-row justify-between gap-2 w-full">
+                                    <div className="d-flex flex-row gap-2">
+                                        <CustomImage
+                                            url={item.product.images[0]}
+                                            name={item.product.name}
+                                            width="40px"
+                                            isRelative
+                                            height="50px"></CustomImage>
+                                        <div className="d-flex flex-column">
+                                            <span className="text-normal">
+                                                {item.product.name}
+                                            </span>
+                                            <span className="text-xs font-light">
+                                                Quantité: {item.quantity}
+                                            </span>
+                                        </div>
                                     </div>
                                     <div className="flex flex-column items-end justify-between">
-                                        <span className="font-medium">
+                                        <span className="font-medium text-nowrap">
                                             {item.product.price}{" "}
                                             {getCurrencyLabel(
                                                 item.product.currency
@@ -191,7 +193,7 @@ export function CartPanel({
                                     Passer à la caisse
                                 </Button>
                                 <Button
-                                    color="secondary"
+                                    color="default"
                                     radius="full"
                                     className="w-full text-sm"
                                     onClick={handleClose}>

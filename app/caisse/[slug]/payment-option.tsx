@@ -30,7 +30,7 @@ export default function PaymentOption() {
                 <div>
                     <SectionCard>
                         <div className="d-flex flex-row justify-content-between">
-                            <Checkbox checked={isExpress} onChange={handleChangeExpress} radius="none">
+                            <Checkbox checked={isExpress} onChange={handleChangeExpress} radius="none" color="primary">
                                 <div className="d-flex flex-column gap-1">
                                     <span className="text-normal">
                                         Paiement par carte

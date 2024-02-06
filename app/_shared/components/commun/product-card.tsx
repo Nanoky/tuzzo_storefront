@@ -94,10 +94,10 @@ export default function ProductCard({
                                     if (!isInCart) handleAddToCart(e);
                                     else handleGoToProduct();
                                 }}
-                                className={`btn opacity-75 rounded-4 border-0 ${
+                                className={`btn rounded-4 border-0 ${
                                     isInCart
                                         ? "text-white bg-primary"
-                                        : "text-black bg-white"
+                                        : "text-black bg-white opacity-75"
                                 }`}>
                                 {isInCart ? (
                                     <FontAwesomeIcon

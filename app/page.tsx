@@ -14,7 +14,7 @@ export default function Home() {
                     href={`/boutique/${defautShopSlug}`}
                     color="primary"
                     radius="full"
-                    className="uppercase text-white no-underline">
+                    className="uppercase text-black font-bold no-underline">
                     Voir la boutique test
                 </Button>
             </div>

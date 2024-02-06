@@ -6,10 +6,14 @@ const config = {
     content: [
         // ...
         "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
-        "./app/**/*.{js,ts,jsx,tsx,mdx}"
+        "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
         extend: {},
+        colors: {
+            primary: "#99ff99",
+            secondary: "#0544A8",
+        },
     },
     darkMode: "class",
     plugins: [nextui()],

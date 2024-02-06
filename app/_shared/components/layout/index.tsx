@@ -1,7 +1,7 @@
 import Footer from "./footer";
 import Header from "./header";
 
-import "@/public/css/layouts/layout.css";
+import "./layout.css";
 
 export default function Layout({
     children,
@@ -16,7 +16,7 @@ export default function Layout({
 }) {
     return (
         <div className="bg-white">
-            <div className="fixed-top z-3">
+            <div className="fixed-top z-50">
                 <Header storeName={storeName} storeSlug={storeSlug}></Header>
             </div>
             <div className="d-flex flex-column main vh-100 vw-100 overflow-auto">

@@ -7,7 +7,7 @@ export default function SectionCard({
 }) {
     return (
         <Card shadow="none" className="border">
-            <CardBody>{children}</CardBody>
+            <CardBody className="p-2">{children}</CardBody>
         </Card>
     );
 }
