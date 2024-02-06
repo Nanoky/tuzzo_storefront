@@ -22,7 +22,7 @@ export class StoreRepository implements IStoreRepository {
             return this.service.search({
                 collection: "stores",
                 filters: [
-                    { fieldPath: "slug", opStr: "==", value: params.slug },
+                    { fieldPath: "website", opStr: "==", value: params.slug },
                 ],
                 converter: this.converter,
             });
@@ -55,7 +55,7 @@ export class StoreRepository implements IStoreRepository {
                 collection: "stores",
                 pathSegments: [params.storeId, "products"],
                 converter: this.productConverter,
-                limit: 10
+                limit: 9
             })
             .then((data) => {
                 if (data) {

@@ -1,13 +1,21 @@
+import { redirect } from "next/navigation";
 import { SerializeProduct } from "../models/product";
 import { Instances } from "@/init";
+import { searchStoreById, searchStoreBySlug } from "../services/store";
 
 export function useShop() {
     const getStoreBySlug = async (slug: string) => {
-        return Instances.getStoreInstance().getBySlug(slug);
+        return searchStoreBySlug({ slug })
+            /* .catch((err) => {
+                redirect("/404");
+            }); */
     };
 
     const getStoreById = async (id: string) => {
-        return Instances.getStoreInstance().getById(id);
+        return searchStoreById({ id })
+            /* .catch((err) => {
+                redirect("/404");
+            }); */
     };
 
     const getProducts = async (storeId: string) => {

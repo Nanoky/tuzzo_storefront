@@ -1,28 +1,31 @@
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@nextui-org/react";
 
 export default function Footer({ storeName }: { storeName: string }) {
     const year = new Date().getFullYear();
     return (
         <footer className="footer py-3 bg-black text-white">
-            <div className="d-flex flex-column justify-content-center align-items-center gap-3">
-                <div className="text-primary fs-2 d-flex flex-row justify-content-center align-items-center gap-3">
-                    <button
+            <div className="flex flex-column justify-center items-center gap-3">
+                <div className="text-primary text-lg flex flex-row justify-center items-center gap-3">
+                    <Button
                         type="button"
-                        title="Call"
-                        className="btn bg-white rounded-circle">
+                        radius="full"
+                        className="text-primary bg-white"
+                        isIconOnly>
                         <FontAwesomeIcon icon={faPhone}></FontAwesomeIcon>
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         type="button"
-                        title="Whatsapp"
-                        className="btn bg-white rounded-circle">
+                        className="text-primary bg-white"
+                        radius="full"
+                        isIconOnly>
                         <FontAwesomeIcon icon={faWhatsapp}></FontAwesomeIcon>
-                    </button>
+                    </Button>
                 </div>
                 <div>
-                    <span>
+                    <span className="text-xs">
                         ©{year} {storeName}. Boutique crée avec Tuzzo 🚀
                     </span>
                 </div>

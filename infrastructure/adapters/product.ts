@@ -10,6 +10,9 @@ import {
 } from "firebase/firestore";
 import { ProductDTO } from "../dto/product";
 
+const DEFAULT_PRODUCT_IMAGE =
+    "https://firebasestorage.googleapis.com/v0/b/ayoka-a2a41.appspot.com/o/no-product-image-available.png?alt=media&token=7edf44a6-472a-4352-8462-780ecc7e6347";
+
 export class ProductAdapter
     implements FirestoreDataConverter<Product, ProductDTO>
 {
@@ -52,7 +55,10 @@ export class ProductAdapter
             description: data.description,
             price: data.price,
             currency: data.currency,
-            images: data.product_images,
+            images:
+                data.product_images?.length > 0
+                    ? data.product_images
+                    : [DEFAULT_PRODUCT_IMAGE],
             quantity: data.quantity,
             categories: data.product_categories,
             nbSold: data.total_unit_sold,

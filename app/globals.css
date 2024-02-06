@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.cursor-pointer {
-    cursor: pointer;
-}
-
-a {
-    color: inherit !important;
-    text-decoration: none !important;
-}
-
 @media screen and (min-width: 1025px) {
     .px-page {
         padding-left: 7rem;

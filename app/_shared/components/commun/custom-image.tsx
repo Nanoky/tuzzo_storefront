@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import "@/public/css/components/custom-image.css";
+import "./custom-image.css";
 
 export function CustomImage({
     url,

@@ -25,16 +25,19 @@ export default function AddCart({ product }: { product: Product }) {
         setCount(count + 1);
     };
     return (
-        <div className="w-100 bg-dark bg-opacity-50 p-3 rounded-4 add-cart-container">
+        <div className="w-100 bg-gray-400/25 p-3 rounded-4 add-cart-container">
             <div className="d-flex flex-row justify-content-between align-items-center">
                 <div className="bg-white rounded-pill d-flex flex-row justify-content-between align-items-center gap-3 px-3 py-2">
-                    <span className={`text-danger ${count <= 1 && "invisible"}`}>
+                    <span
+                        className={`text-danger cursor-pointer ${
+                            count <= 1 && "invisible"
+                        }`}>
                         <FontAwesomeIcon
                             icon={faMinus}
                             onClick={handleMinus}></FontAwesomeIcon>
                     </span>
                     <span>{count}</span>
-                    <span className="text-success">
+                    <span className="text-success cursor-pointer">
                         <FontAwesomeIcon
                             icon={faPlus}
                             onClick={handlePlus}></FontAwesomeIcon>

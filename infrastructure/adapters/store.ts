@@ -46,7 +46,7 @@ export class StoreAdapter implements FirestoreDataConverter<Store, StoreDTO> {
             description: data.store_description,
             logo: data.store_logo,
             phone: data.store_phone_number,
-            slug: data.slug,
+            slug: data.website,
         });
     }
 }
