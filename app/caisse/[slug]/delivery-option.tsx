@@ -2,9 +2,17 @@
 import { Checkbox } from "@nextui-org/react";
 import SectionCard from "./section-card";
 import SectionAccordion from "./section-accordion";
+import { useState } from "react";
 
 export default function DeliveryOption() {
-    
+    const [isExpress, setIsExpress] = useState(true);
+
+    const handleChangeExpress = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setIsExpress(event.target.checked);
+    };
+
     return (
         <SectionCard>
             <SectionAccordion
@@ -14,18 +22,23 @@ export default function DeliveryOption() {
                 subtitleExpanded="Comment voulez-vous être livré ?">
                 <div>
                     <SectionCard>
-                        <div className="d-flex flex-row justify-content-between">
-                            <Checkbox defaultChecked>
+                        <div className="flex flex-row justify-between items-center">
+                            <Checkbox
+                                radius="none"
+                                checked={isExpress}
+                                onChange={handleChangeExpress}>
                                 <div className="d-flex flex-column gap-1">
                                     <span className="text-normal">
                                         Livraison express
                                     </span>
-                                    <span className="text-sm">
+                                    <span className="text-xs">
                                         Livraison rapide selon votre adresse
                                     </span>
                                 </div>
                             </Checkbox>
-                            <span className="text-lg">Gratuit</span>
+                            <span className="text-lg font-semibold">
+                                Gratuit
+                            </span>
                         </div>
                     </SectionCard>
                 </div>

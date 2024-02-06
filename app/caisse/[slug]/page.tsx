@@ -13,17 +13,17 @@ export default async function CheckoutPage({
 }: {
     params: { slug: string };
 }) {
-    const { getStoreById } = useShop();
+    const { getStoreBySlug } = useShop();
 
-    const store = await getStoreById(params.slug);
+    const store = await getStoreBySlug(params.slug);
 
     return (
-        <Layout storeName={store.name} storeSlug={store.id}>
+        <Layout storeName={store.name} storeSlug={store.slug}>
             <div className="d-flex flex-column gap-3 px-page w-100 py-4">
                 <div className="d-flex justify-content-start flex-row align-items-center gap-2">
                     <Breadcrumbs
                         title="Caisse"
-                        home_url={`/boutique/${store.id}`}></Breadcrumbs>
+                        home_url={`/boutique/${store.slug}`}></Breadcrumbs>
                 </div>
                 <div className="row">
                     <div className="col-8">
@@ -31,7 +31,7 @@ export default async function CheckoutPage({
                             <CardBody>
                                 <div className="d-flex flex-column gap-2">
                                     <div className="d-flex flex-column gap-2">
-                                        <span className="text-lg">
+                                        <span className="text-lg font-bold">
                                             On y est presque !
                                         </span>
                                         <span className="text-sm">

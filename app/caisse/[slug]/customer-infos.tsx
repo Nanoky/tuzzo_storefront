@@ -33,9 +33,8 @@ export default function CustomerInfos() {
             <SectionAccordion
                 key="infos-client"
                 title="Informations client"
-                hasSubtitle={false}>
+                subtitleExpanded="Entrez vos informations de livraison">
                 <div className="d-flex flex-column gap-3">
-                    <span>Entrez vos informations de livraison</span>
                     <div className="d-flex flex-column gap-1">
                         <div className="row g-0">
                             <div className="col-2">
