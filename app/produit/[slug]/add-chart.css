@@ -1,0 +1,4 @@
+.add-cart-container {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}

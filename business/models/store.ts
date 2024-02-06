@@ -44,6 +44,14 @@ export class Store extends Entity {
         this._phone = value;
     }
 
+    private _slug!: string;
+    public get slug(): string {
+        return this._slug;
+    }
+    private set slug(value: string) {
+        this._slug = value;
+    }
+
     constructor(param: {
         id: string;
         name: string;
@@ -52,6 +60,7 @@ export class Store extends Entity {
         description?: string;
         logo?: string;
         phone?: string;
+        slug: string;
     }) {
         super({
             id: param.id,
@@ -62,5 +71,6 @@ export class Store extends Entity {
         this.description = param.description;
         this.logo = param.logo;
         this.phone = param.phone;
+        this.slug = param.slug;
     }
 }

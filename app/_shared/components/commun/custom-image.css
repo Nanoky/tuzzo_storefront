@@ -1,0 +1,22 @@
+.custom-image-auto-width img {
+    width: auto !important;
+    height: 100% !important;
+}
+
+.custom-image-auto-height img {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.custom-image-full img {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.custom-image-fit-contain img {
+    object-fit: contain !important;
+}
+
+.custom-image-relative img {
+    position: relative !important;
+}

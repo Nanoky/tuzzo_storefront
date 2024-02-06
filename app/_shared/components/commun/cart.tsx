@@ -1,7 +1,7 @@
 "use client";
 
 import {
-    faCancel,
+    faCircleInfo,
     faShoppingCart,
     faTrash,
     faXmark,
@@ -14,12 +14,17 @@ import Image from "next/image";
 import { Product } from "@/business/models/product";
 import { CartItem } from "@/business/models/cart";
 
-import "@/public/css/components/cart.css";
-import "@/public/css/components/drawer.css";
+import "./cart.css";
+import "./drawer.css";
+import { useRouter } from "next/navigation";
+import { Button, Card, CardBody } from "@nextui-org/react";
+import { getCurrencyLabel } from "../../shared/currency";
+import { CustomImage } from "./custom-image";
 
-export function CartButton() {
+export function CartButton({ slug }: { slug: string }) {
     const { count, total, items, removeFromCart } = useCart();
     const [open, setOpen] = useState(false);
+    const router = useRouter();
 
     const handleClick = () => {
         setOpen(true);
@@ -32,6 +37,10 @@ export function CartButton() {
 
     const handleRemove = (product: Product) => {
         removeFromCart(product);
+    };
+
+    const handleCheckout = () => {
+        router.push(`/caisse/${slug}`);
     };
 
     return (
@@ -50,6 +59,7 @@ export function CartButton() {
                     </span>
                 )}
             </button>
+
             <Drawer
                 open={open}
                 onClose={onClose}
@@ -57,12 +67,13 @@ export function CartButton() {
                 width={"320px"}
                 height={"fit-content"}
                 classNames={{
-                    content: "rounded-4",
+                    content: "bg-transparent",
                 }}
                 maskClosable>
                 <CartPanel
                     items={items}
                     total={total}
+                    onCheckout={handleCheckout}
                     onRemove={handleRemove}
                     onClose={onClose}></CartPanel>
             </Drawer>
@@ -75,11 +86,13 @@ export function CartPanel({
     total,
     onRemove,
     onClose,
+    onCheckout,
 }: {
     items: CartItem[];
     total: number;
     onRemove: (product: Product) => void;
     onClose: () => void;
+    onCheckout: () => void;
 }) {
     const handleRemove = (product: Product) => {
         onRemove(product);
@@ -89,72 +102,108 @@ export function CartPanel({
         onClose();
     };
 
+    const handleCheckout = () => {
+        onCheckout();
+    };
+
     return (
-        <div className="cart-panel p-3 d-flex flex-column gap-1 text-black">
-            <div className="d-flex justify-content-between flex-row">
-                <span className="fs-5 fw-normal">Résumé</span>
-                <button
-                    type="button"
-                    className="btn border rounded-3"
-                    title="fermer"
-                    onClick={handleClose}>
-                    <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
-                </button>
-            </div>
-            <div className="d-flex flex-column gap-2">
-                {items.map((item) => (
-                    <div
-                        key={item.product.id}
-                        className="d-flex flex-row gap-2">
-                        <Image
-                            src={item.product.images[0]}
-                            alt={item.product.name}
-                            width={60}
-                            height={60}
-                            className="rounded-3 cart-item-image"
-                            loading="lazy"></Image>
-                        <div className="d-flex flex-column flex-grow-1">
-                            <span>{item.product.name}</span>
-                            <span>Quantité: {item.quantity}</span>
-                        </div>
-                        <div className="d-flex flex-column align-items-end justify-content-between">
-                            <span>
-                                {item.product.price} {item.product.currency}
+        <Card>
+            <CardBody>
+                <div className="flex flex-column gap-1 text-black">
+                    <div className="flex justify-between flex-row">
+                        <span className="font-bold text-lg">Résumé</span>
+                        <button
+                            type="button"
+                            className="btn border rounded-3"
+                            title="fermer"
+                            onClick={handleClose}>
+                            <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+                        </button>
+                    </div>
+                    {items.length === 0 ? (
+                        <div className="text-center flex flex-column">
+                            <div></div>
+                            <span className="text-lg text-semibold">
+                                Panier vide
                             </span>
-                            <div>
-                                <FontAwesomeIcon
-                                    icon={faTrash}
-                                    className="text-danger cursor-pointer"
-                                    onClick={() =>
-                                        handleRemove(item.product)
-                                    }></FontAwesomeIcon>
+                            <span className="text-sm">
+                                Continuer votre shopping pour remplir votre
+                                panier
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="flex flex-column justify-center items-center gap-2">
+                            {items.map((item) => (
+                                <div
+                                    key={item.product.id}
+                                    className="d-flex flex-row justify-between gap-2 w-full">
+                                    <div className="d-flex flex-row gap-2">
+                                        <CustomImage
+                                            url={item.product.images[0]}
+                                            name={item.product.name}
+                                            width="40px"
+                                            isRelative
+                                            height="50px"></CustomImage>
+                                        <div className="d-flex flex-column">
+                                            <span className="text-normal">
+                                                {item.product.name}
+                                            </span>
+                                            <span className="text-xs font-light">
+                                                Quantité: {item.quantity}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-column items-end justify-between">
+                                        <span className="font-medium text-nowrap">
+                                            {item.product.price}{" "}
+                                            {getCurrencyLabel(
+                                                item.product.currency
+                                            )}
+                                        </span>
+                                        <div>
+                                            <FontAwesomeIcon
+                                                icon={faTrash}
+                                                className="text-danger cursor-pointer"
+                                                onClick={() =>
+                                                    handleRemove(item.product)
+                                                }></FontAwesomeIcon>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <hr />
+                    <div className="d-flex flex-row justify-content-between">
+                        <span className="text-lg">
+                            Total{" "}
+                            <FontAwesomeIcon
+                                icon={faCircleInfo}></FontAwesomeIcon>
+                        </span>
+                        <span className="font-bold text-xl">{total} F</span>
+                    </div>
+                    {items.length > 0 && (
+                        <div className="row justify-content-center align-items-center py-2">
+                            <div className="col-8 d-flex flex-column gap-2">
+                                <Button
+                                    color="primary"
+                                    onClick={handleCheckout}
+                                    radius="full"
+                                    className="w-full text-sm">
+                                    Passer à la caisse
+                                </Button>
+                                <Button
+                                    color="default"
+                                    radius="full"
+                                    className="w-full text-sm"
+                                    onClick={handleClose}>
+                                    Continuer mon shopping
+                                </Button>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
-            <hr />
-            <div className="d-flex flex-row justify-content-between">
-                <span className="fs-5">Total</span>
-                <span className="fw-bold fs-4">{total}</span>
-            </div>
-            {items.length > 0 && (
-                <div className="row justify-content-center align-items-center py-4">
-                    <div className="col-8 d-flex flex-column gap-2">
-                        <button
-                            type="button"
-                            className="btn btn-primary rounded-pill w-100 p-2">
-                            Passer à la caisse
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleClose}
-                            className="btn btn-secondary rounded-pill w-100 p-2">
-                            Continuer mon shopping
-                        </button>
-                    </div>
+                    )}
                 </div>
-            )}
-        </div>
+            </CardBody>
+        </Card>
     );
 }

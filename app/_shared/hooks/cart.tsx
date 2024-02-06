@@ -1,7 +1,7 @@
 import { Product } from "@/business/models/product";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import { addItem, removeItem } from "@/app/_shared/lib/features/cart/cartSlice";
+import { addItem, clearCart, removeItem } from "@/app/_shared/lib/features/cart/cartSlice";
 import { RootState } from "../lib/store";
 
 export function useCart() {
@@ -23,11 +23,16 @@ export function useCart() {
         );
     };
 
+    const emptyCart = () => {
+        dispatch(clearCart());
+    }
+
     return {
         items,
         count,
         total,
         addToCart,
         removeFromCart,
+        emptyCart
     };
 }

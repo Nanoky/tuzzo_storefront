@@ -1,43 +1,47 @@
-import { Product } from "@/business/models/product";
-import { Store } from "@/business/models/store";
-import { faker } from "@faker-js/faker";
+import { redirect } from "next/navigation";
 import { SerializeProduct } from "../models/product";
+import { Instances } from "@/init";
+import { searchStoreById, searchStoreBySlug } from "../services/store";
 
 export function useShop() {
-    const getStore = async (slug: string) => {
-        return new Store({
-            name: faker.company.name(),
-            id: faker.datatype.uuid(),
-            address: faker.address.streetAddress(),
-            city: faker.address.city(),
-            description: faker.company.catchPhrase(),
-            logo: "",
-            phone: faker.phone.number(),
+    const getStoreBySlug = async (slug: string) => {
+        return searchStoreBySlug({ slug }).catch((err) => {
+            //redirect("/404");
+            console.error(err);
         });
     };
 
-    const getProducts = async (slug: string) => {
-        let products: SerializeProduct[] = [];
+    const getStoreById = async (id: string) => {
+        return searchStoreById({ id }).catch((err) => {
+            //redirect("/404");
+            console.error(err);
+        });
+    };
 
-        for (let i = 0; i < 10; i++) {
-            products.push(
-                new SerializeProduct({
-                    id: faker.datatype.uuid(),
-                    name: faker.commerce.productName(),
-                    description: faker.commerce.productDescription(),
-                    price: faker.number.int({ min: 10, max: 100 }),
-                    currency: faker.finance.currencyCode(),
-                    images: [faker.image.url()],
-                    nbSold: faker.number.int({ min: 0, max: 100 }),
-                    quantity: faker.number.int({ min: 0, max: 100 }),
-                })
-            );
-        }
-        return products;
+    const getProducts = async (storeId: string) => {
+        return Instances.getStoreInstance()
+            .getProducts(storeId)
+            .then((products) => {
+                return products.map((product) => {
+                    return new SerializeProduct({
+                        id: product.id,
+                        name: product.name,
+                        description: product.description,
+                        price: product.price,
+                        currency: product.currency,
+                        images: product.images,
+                        quantity: product.quantity,
+                        nbSold: product.nbSold,
+                        categories: product.categories,
+                        slug: product.slug,
+                    });
+                });
+            });
     };
 
     return {
-        getStore,
+        getStoreById,
+        getStoreBySlug,
         getProducts,
     };
 }

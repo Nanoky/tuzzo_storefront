@@ -1,70 +1,116 @@
 "use client";
 
 import { Product } from "@/business/models/product";
-import Image from "next/image";
-import "@/public/css/components/product-card.css";
+import "./product-card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faShoppingCart,
+    faSquareCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
 import { SerializeProduct } from "../../models/product";
 import Skeleton from "react-loading-skeleton";
+import { CustomImage } from "./custom-image";
+import { Card, CardBody } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import { getCurrencyLabel } from "../../shared/currency";
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+    product,
+    storeSlug,
+}: {
+    product: Product;
+    storeSlug: string;
+}) {
     const [item, setItem] = useState<Product>();
-    const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
-    const { addToCart } = useCart();
+    const { addToCart, items } = useCart();
+
+    const [isInCart, setIsInCart] = useState(false);
+
+    const router = useRouter();
 
     useEffect(() => {
         setItem(SerializeProduct.fromJSON(product));
     }, []);
 
-    const handleAddToCart = () => {
+    useEffect(() => {
+        const found = items.find((item) => item.product.id === product.id);
+        if (found) {
+            setIsInCart(true);
+        } else {
+            setIsInCart(false);
+        }
+    }, [items]);
+
+    const handleAddToCart = (e: any) => {
         addToCart(product, 1);
+        e?.preventDefault();
     };
 
-    const handleImageLoad = () => {
-        setIsImageLoaded(true);
+    const handleGoToProduct = () => {
+        router.push(`/produit/${storeSlug}+${product.slug}`);
     };
 
     return (
-        <div className="card p-2 border border-1 rounded-4 shadow-sm position-relative">
-            <div className="position-relative product-card-image">
-                {item && (
-                    <Image
-                        src={item.images[0]}
-                        alt={item.name}
-                        className="rounded-3"
-                        loading="lazy"
-                        onLoad={handleImageLoad}
-                        fill></Image>
-                )}
-                {!isImageLoaded && <Skeleton height="100%" />}
-            </div>
-            <div className="card-body d-flex flex-row justify-content-between p-0 pt-3">
-                <div>
-                    {item ? item.name : <Skeleton count={1} width={"200px"} />}
-                </div>
-                <div className="fw-bold">
-                    {item ? (
-                        `${item.price} ${item.currency}`
-                    ) : (
-                        <Skeleton width="60px" count={1} />
+        <>
+            <Card className="cursor-pointer">
+                <CardBody>
+                    {item && (
+                        <CustomImage
+                            url={item.images[0]}
+                            name={item.name}
+                            width="100%"
+                            height="300px"
+                            onClick={handleGoToProduct}></CustomImage>
                     )}
-                </div>
-            </div>
-            <div className="position-absolute cart-button">
-                {item && (
-                    <button
-                        type="button"
-                        title="Add to cart"
-                        onClick={handleAddToCart}
-                        className="btn bg-white opacity-75 text-black rounded-4 border-0">
-                        <FontAwesomeIcon
-                            icon={faShoppingCart}></FontAwesomeIcon>
-                    </button>
-                )}
-            </div>
-        </div>
+                    <div
+                        className="card-body d-flex flex-row justify-content-between p-0 pt-3"
+                        onClick={handleGoToProduct}>
+                        <div className="line-clamp-1">
+                            {item ? (
+                                item.name
+                            ) : (
+                                <Skeleton count={1} width={"200px"} />
+                            )}
+                        </div>
+                        <div className="fw-bold">
+                            {item ? (
+                                `${item.price} ${getCurrencyLabel(
+                                    item.currency
+                                )}`
+                            ) : (
+                                <Skeleton width="60px" count={1} />
+                            )}
+                        </div>
+                    </div>
+                    <div className="position-absolute cart-button">
+                        {item && (
+                            <button
+                                type="button"
+                                title="Add to cart"
+                                onClick={(e) => {
+                                    if (!isInCart) handleAddToCart(e);
+                                    else handleGoToProduct();
+                                }}
+                                className={`btn rounded-4 border-0 ${
+                                    isInCart
+                                        ? "text-white bg-primary"
+                                        : "text-black bg-white opacity-75"
+                                }`}>
+                                {isInCart ? (
+                                    <FontAwesomeIcon
+                                        icon={faCheck}></FontAwesomeIcon>
+                                ) : (
+                                    <FontAwesomeIcon
+                                        icon={faShoppingCart}></FontAwesomeIcon>
+                                )}
+                            </button>
+                        )}
+                    </div>
+                </CardBody>
+            </Card>
+        </>
     );
 }

@@ -1,7 +1,8 @@
-import { Cart, CartItem } from "@/business/models/cart";
+import { CartItem } from "@/business/models/cart";
 import { Product } from "@/business/models/product";
-import { InstanceType, Instances } from "@/init";
+import { Instances } from "@/init";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { enqueueSnackbar } from "notistack";
 
 type CartOperationResponse = {
     count: number;
@@ -10,7 +11,7 @@ type CartOperationResponse = {
 };
 
 function getCart() {
-    return Instances.getInstance(InstanceType.cart);
+    return Instances.getCartInstance();
 }
 
 type CartOperationError = {
@@ -80,6 +81,22 @@ export const removeItem = createAsyncThunk<
     };
 });
 
+export const clearCart = createAsyncThunk<
+    CartOperationResponse,
+    void,
+    { rejectValue: CartOperationError }
+>("cart/clearCart", async () => {
+    await getCart()?.clear();
+    const items = await getCart()?.getItems();
+    const count = await getCart()?.getCount();
+    const total = await getCart()?.getTotal();
+    return {
+        count: count ?? 0,
+        total: total ?? 0,
+        items: items ?? [],
+    };
+});
+
 const slice = createSlice({
     name: "cart",
     initialState: {
@@ -88,8 +105,7 @@ const slice = createSlice({
         total: 0,
         items: new Array<CartItem>(),
     },
-    reducers: {
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(initCart.fulfilled, (state, action) => {
             state.items = action.payload.items;
@@ -106,12 +122,21 @@ const slice = createSlice({
             state.items = action.payload.items;
             state.nbItems = action.payload.count;
             state.total = action.payload.total;
+
+            enqueueSnackbar("Le produit a bien été ajouté au panier", {
+                variant: "success",
+            });
         });
         builder.addCase(removeItem.fulfilled, (state, action) => {
             state.items = action.payload.items;
             state.nbItems = action.payload.count;
             state.total = action.payload.total;
-        })
+        });
+        builder.addCase(clearCart.fulfilled, (state, action) => {
+            state.items = action.payload.items;
+            state.nbItems = action.payload.count;
+            state.total = action.payload.total;
+        });
     },
 });
 
