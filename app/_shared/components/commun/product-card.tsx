@@ -17,11 +17,19 @@ import { Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+    product,
+    storeSlug,
+}: {
+    product: Product;
+    storeSlug: string;
+}) {
     const [item, setItem] = useState<Product>();
     const { addToCart, items } = useCart();
 
     const [isInCart, setIsInCart] = useState(false);
+
+    const router = useRouter();
 
     useEffect(() => {
         setItem(SerializeProduct.fromJSON(product));
@@ -36,8 +44,13 @@ export default function ProductCard({ product }: { product: Product }) {
         }
     }, [items]);
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (e: any) => {
         addToCart(product, 1);
+        e?.preventDefault();
+    };
+
+    const handleGoToProduct = () => {
+        router.push(`/produit/${storeSlug}+${product.id}`);
     };
 
     return (
@@ -49,9 +62,12 @@ export default function ProductCard({ product }: { product: Product }) {
                             url={item.images[0]}
                             name={item.name}
                             width="100%"
-                            height="300px"></CustomImage>
+                            height="300px"
+                            onClick={handleGoToProduct}></CustomImage>
                     )}
-                    <div className="card-body d-flex flex-row justify-content-between p-0 pt-3">
+                    <div
+                        className="card-body d-flex flex-row justify-content-between p-0 pt-3"
+                        onClick={handleGoToProduct}>
                         <div className="line-clamp-1">
                             {item ? (
                                 item.name
@@ -74,9 +90,10 @@ export default function ProductCard({ product }: { product: Product }) {
                             <button
                                 type="button"
                                 title="Add to cart"
-                                onClick={
-                                    !isInCart ? handleAddToCart : undefined
-                                }
+                                onClick={(e) => {
+                                    if (!isInCart) handleAddToCart(e);
+                                    else handleGoToProduct();
+                                }}
                                 className={`btn opacity-75 rounded-4 border-0 ${
                                     isInCart
                                         ? "text-white bg-primary"

@@ -15,6 +15,7 @@ export function CustomImage({
     containerClass,
     fitContain,
     isRelative,
+    onClick
 }: {
     url: string;
     name: string;
@@ -25,6 +26,7 @@ export function CustomImage({
     containerClass?: string;
     fitContain?: boolean;
     isRelative?: boolean;
+    onClick?: () => void;
 }) {
     const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
     const handleImageLoad = () => {
@@ -41,7 +43,7 @@ export function CustomImage({
             } ${containerClass ?? ""} ${
                 fitContain ? "custom-image-fit-contain" : ""
             } ${isRelative ? "custom-image-relative" : ""}`}
-            style={{ width, height }}>
+            style={{ width, height }} onClick={onClick}>
             <Image
                 src={url}
                 alt={name}

@@ -120,44 +120,57 @@ export function CartPanel({
                             <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
                         </button>
                     </div>
-                    <div className="flex flex-column gap-2">
-                        {items.map((item) => (
-                            <div
-                                key={item.product.id}
-                                className="d-flex flex-row gap-2">
-                                <CustomImage
-                                    url={item.product.images[0]}
-                                    name={item.product.name}
-                                    width="40px"
-                                    isRelative
-                                    height="50px"></CustomImage>
-                                <div className="d-flex flex-column flex-grow-1">
-                                    <span className="text-normal">
-                                        {item.product.name}
-                                    </span>
-                                    <span className="text-xs font-light">
-                                        Quantité: {item.quantity}
-                                    </span>
-                                </div>
-                                <div className="flex flex-column items-end justify-between">
-                                    <span className="font-medium">
-                                        {item.product.price}{" "}
-                                        {getCurrencyLabel(
-                                            item.product.currency
-                                        )}
-                                    </span>
-                                    <div>
-                                        <FontAwesomeIcon
-                                            icon={faTrash}
-                                            className="text-danger cursor-pointer"
-                                            onClick={() =>
-                                                handleRemove(item.product)
-                                            }></FontAwesomeIcon>
+                    {items.length === 0 ? (
+                        <div className="text-center flex flex-column">
+                            <div></div>
+                            <span className="text-lg text-semibold">
+                                Panier vide
+                            </span>
+                            <span className="text-sm">
+                                Continuer votre shopping pour remplir votre
+                                panier
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="flex flex-column justify-center items-center gap-2">
+                            {items.map((item) => (
+                                <div
+                                    key={item.product.id}
+                                    className="d-flex flex-row gap-2">
+                                    <CustomImage
+                                        url={item.product.images[0]}
+                                        name={item.product.name}
+                                        width="40px"
+                                        isRelative
+                                        height="50px"></CustomImage>
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <span className="text-normal">
+                                            {item.product.name}
+                                        </span>
+                                        <span className="text-xs font-light">
+                                            Quantité: {item.quantity}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-column items-end justify-between">
+                                        <span className="font-medium">
+                                            {item.product.price}{" "}
+                                            {getCurrencyLabel(
+                                                item.product.currency
+                                            )}
+                                        </span>
+                                        <div>
+                                            <FontAwesomeIcon
+                                                icon={faTrash}
+                                                className="text-danger cursor-pointer"
+                                                onClick={() =>
+                                                    handleRemove(item.product)
+                                                }></FontAwesomeIcon>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                     <hr />
                     <div className="d-flex flex-row justify-content-between">
                         <span className="text-lg">
@@ -180,7 +193,8 @@ export function CartPanel({
                                 <Button
                                     color="secondary"
                                     radius="full"
-                                    className="w-full text-sm" onClick={handleClose}>
+                                    className="w-full text-sm"
+                                    onClick={handleClose}>
                                     Continuer mon shopping
                                 </Button>
                             </div>

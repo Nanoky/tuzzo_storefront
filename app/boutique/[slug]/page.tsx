@@ -3,7 +3,6 @@ import Layout from "@/app/_shared/components/layout";
 import { useShop } from "@/app/_shared/hooks/shop";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { Metadata } from "next";
-import Link from "next/link";
 
 type Props = {
     params: { slug: string };
@@ -47,11 +46,7 @@ export default async function ShopPage({
             <div className="p-5 row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
                 {products.map((product) => (
                     <div className="col" key={product.id}>
-                        <Link
-                            href={`/produit/${store.id}+${product.id}`}
-                            className="text-decoration-none">
-                            <ProductCard product={product} />
-                        </Link>
+                        <ProductCard product={product} storeSlug={store.id} />
                     </div>
                 ))}
             </div>
