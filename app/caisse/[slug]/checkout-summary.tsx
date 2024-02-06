@@ -4,23 +4,25 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider, Input } from "@nextui-org/react";
-import { useState } from "react";
+import { Control, Controller } from "react-hook-form";
+import { FormValues } from "./order-form";
 
-export default function CheckoutSummary() {
-    const [comment, setComment] = useState("");
+export default function CheckoutSummary({
+    control,
+}: {
+    control: Control<FormValues>;
+}) {
     const { total } = useCart();
-
-    const handleCommentChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setComment(event.target.value);
-    };
     return (
         <Card>
             <CardHeader className="pb-2">
                 <div className="d-flex flex-column">
-                    <span className="text-normal text-semibold">Resumé de la commande</span>
-                    <span className="text-sm">Voici le total de votre commande</span>
+                    <span className="text-normal text-semibold">
+                        Resumé de la commande
+                    </span>
+                    <span className="text-sm">
+                        Voici le total de votre commande
+                    </span>
                 </div>
             </CardHeader>
             <Divider className="my-2"></Divider>
@@ -39,12 +41,17 @@ export default function CheckoutSummary() {
                         <span className="text-xl text-bold">{total}F</span>
                     </div>
                     <div>
-                        <Input
-                            type="text"
-                            variant="underlined"
-                            label="D'autres commentaires sur votre commande"
-                            value={comment}
-                            onChange={handleCommentChange}></Input>
+                        <Controller
+                            control={control}
+                            name="comment"
+                            render={({ field }) => (
+                                <Input
+                                    type="text"
+                                    variant="underlined"
+                                    label="D'autres commentaires sur votre commande"
+                                    {...field}></Input>
+                            )}
+                        />
                     </div>
                 </div>
             </CardBody>
@@ -52,7 +59,7 @@ export default function CheckoutSummary() {
             <CardFooter>
                 <div className="d-flex justify-content-end">
                     <button
-                        type="button"
+                        type="submit"
                         className="btn btn-primary rounded-pill">
                         Commander
                     </button>

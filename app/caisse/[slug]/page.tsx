@@ -27,7 +27,9 @@ export default async function CheckoutPage({
                         title="Caisse"
                         home_url={`/boutique/${store.slug}`}></Breadcrumbs>
                 </div>
-                <OrderForm></OrderForm>
+                <OrderForm
+                    storeSlug={store.slug}
+                    storeId={store.id}></OrderForm>
             </div>
         </Layout>
     );

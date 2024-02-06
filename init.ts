@@ -1,12 +1,14 @@
-import { CartAdapter } from "./app/_shared/adapters/cart";
-import { ProductAdapter } from "./app/_shared/adapters/product";
-import { StoreAdapter } from "./app/_shared/adapters/store";
-import { VisitAdapter } from "./app/_shared/adapters/visit";
 import { CartBusiness } from "./business/logic/cart";
+import { OrderBusiness } from "./business/logic/order";
 import { ProductBusiness } from "./business/logic/product";
 import { StoreBusiness } from "./business/logic/store";
 import { VisitBusiness } from "./business/logic/visit";
 import { CartRepository } from "./infrastructure/repository/cart";
+import {
+    OrderCustomerRepository,
+    OrderItemRepository,
+    OrderRepository,
+} from "./infrastructure/repository/order";
 import { ProductRepository } from "./infrastructure/repository/product";
 import { StoreRepository } from "./infrastructure/repository/store";
 import {
@@ -24,34 +26,40 @@ export enum InstanceType {
 
 export class Instances {
     static instance: Instances;
-    private cart!: CartAdapter | undefined;
+    private cart!: CartBusiness | undefined;
 
     private apiService!: FireStoreService;
 
-    private store!: StoreAdapter;
-    private product!: ProductAdapter;
-    private visit!: VisitAdapter;
+    private store!: StoreBusiness;
+    private product!: ProductBusiness;
+    private visit!: VisitBusiness;
+    private order!: OrderBusiness;
     private constructor() {
         const sessionStorage = new SessionStorage();
 
         const cartRepository = new CartRepository();
-        const business = new CartBusiness(cartRepository);
-        this.cart = new CartAdapter(business);
+        this.cart = new CartBusiness(cartRepository);
 
         const app = new Firebase();
         this.apiService = new FireStoreService(app);
         const storeRepository = new StoreRepository(this.apiService);
-        const businessStore = new StoreBusiness(storeRepository);
-        this.store = new StoreAdapter(businessStore);
+        this.store = new StoreBusiness(storeRepository);
 
         const productRepository = new ProductRepository(this.apiService);
-        const businessProduct = new ProductBusiness(productRepository);
-        this.product = new ProductAdapter(businessProduct);
+        this.product = new ProductBusiness(productRepository);
 
         const visitRepository = new VisitRepository(this.apiService);
         const visitStorage = new VisitStorage(sessionStorage);
-        const businessVisit = new VisitBusiness(visitStorage, visitRepository);
-        this.visit = new VisitAdapter(businessVisit);
+        this.visit = new VisitBusiness(visitStorage, visitRepository);
+
+        const orderCustomerRepo = new OrderCustomerRepository(this.apiService);
+        const orderItemRepo = new OrderItemRepository(this.apiService);
+        const orderRepo = new OrderRepository(this.apiService);
+        this.order = new OrderBusiness(
+            orderRepo,
+            orderCustomerRepo,
+            orderItemRepo
+        );
     }
 
     static getCartInstance() {
@@ -84,5 +92,13 @@ export class Instances {
         }
 
         return Instances.instance.visit;
+    }
+
+    static getOrderInstance() {
+        if (!Instances.instance) {
+            Instances.instance = new Instances();
+        }
+
+        return Instances.instance.order;
     }
 }

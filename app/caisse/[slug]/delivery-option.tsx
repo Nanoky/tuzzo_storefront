@@ -3,8 +3,15 @@ import { Checkbox } from "@nextui-org/react";
 import SectionCard from "./section-card";
 import SectionAccordion from "./section-accordion";
 import { useState } from "react";
+import { Control, Controller } from "react-hook-form";
+import { FormValues } from "./order-form";
+import { DeliveryOptions } from "@/app/_shared/shared/enums";
 
-export default function DeliveryOption() {
+export default function DeliveryOption({
+    control,
+}: {
+    control: Control<FormValues>;
+}) {
     const [isExpress, setIsExpress] = useState(true);
 
     const handleChangeExpress = (
@@ -23,19 +30,33 @@ export default function DeliveryOption() {
                 <div>
                     <SectionCard>
                         <div className="flex flex-row justify-between items-center">
-                            <Checkbox
-                                radius="none"
-                                checked={isExpress}
-                                onChange={handleChangeExpress} color="primary">
-                                <div className="d-flex flex-column gap-1">
-                                    <span className="text-normal">
-                                        Livraison express
-                                    </span>
-                                    <span className="text-xs">
-                                        Livraison rapide selon votre adresse
-                                    </span>
-                                </div>
-                            </Checkbox>
+                            <Controller
+                                control={control}
+                                name="optionDelivery"
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                    <Checkbox
+                                        radius="none"
+                                        color="primary"
+                                        {...field}
+                                        checked={
+                                            field.value ===
+                                            DeliveryOptions.EXPRESS
+                                        }
+                                        value={DeliveryOptions.EXPRESS}
+                                        onChange={field.onChange}>
+                                        <div className="d-flex flex-column gap-1">
+                                            <span className="text-normal">
+                                                Livraison express
+                                            </span>
+                                            <span className="text-xs">
+                                                Livraison rapide selon votre
+                                                adresse
+                                            </span>
+                                        </div>
+                                    </Checkbox>
+                                )}
+                            />
                             <span className="text-lg font-semibold">
                                 Gratuit
                             </span>

@@ -81,6 +81,22 @@ export const removeItem = createAsyncThunk<
     };
 });
 
+export const clearCart = createAsyncThunk<
+    CartOperationResponse,
+    void,
+    { rejectValue: CartOperationError }
+>("cart/clearCart", async () => {
+    await getCart()?.clear();
+    const items = await getCart()?.getItems();
+    const count = await getCart()?.getCount();
+    const total = await getCart()?.getTotal();
+    return {
+        count: count ?? 0,
+        total: total ?? 0,
+        items: items ?? [],
+    };
+});
+
 const slice = createSlice({
     name: "cart",
     initialState: {
@@ -112,6 +128,11 @@ const slice = createSlice({
             });
         });
         builder.addCase(removeItem.fulfilled, (state, action) => {
+            state.items = action.payload.items;
+            state.nbItems = action.payload.count;
+            state.total = action.payload.total;
+        });
+        builder.addCase(clearCart.fulfilled, (state, action) => {
             state.items = action.payload.items;
             state.nbItems = action.payload.count;
             state.total = action.payload.total;
