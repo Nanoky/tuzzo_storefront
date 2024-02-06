@@ -50,7 +50,7 @@ export default function ProductCard({
     };
 
     const handleGoToProduct = () => {
-        router.push(`/produit/${storeSlug}+${product.id}`);
+        router.push(`/produit/${storeSlug}+${product.slug}`);
     };
 
     return (

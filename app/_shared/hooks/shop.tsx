@@ -5,17 +5,17 @@ import { searchStoreById, searchStoreBySlug } from "../services/store";
 
 export function useShop() {
     const getStoreBySlug = async (slug: string) => {
-        return searchStoreBySlug({ slug })
-            /* .catch((err) => {
-                redirect("/404");
-            }); */
+        return searchStoreBySlug({ slug }).catch((err) => {
+            //redirect("/404");
+            console.error(err);
+        });
     };
 
     const getStoreById = async (id: string) => {
-        return searchStoreById({ id })
-            /* .catch((err) => {
-                redirect("/404");
-            }); */
+        return searchStoreById({ id }).catch((err) => {
+            //redirect("/404");
+            console.error(err);
+        });
     };
 
     const getProducts = async (storeId: string) => {

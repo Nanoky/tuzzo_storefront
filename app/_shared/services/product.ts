@@ -22,3 +22,25 @@ export function searchProductById(param: { id: string; storeId: string }) {
             });
         });
 }
+
+export function searchProductBySlug(param: { slug: string; storeId: string }) {
+    return Instances.getProductInstance()
+        .getBySlug({
+            slug: param.slug,
+            storeId: param.storeId,
+        })
+        .then((product) => {
+            return new SerializeProduct({
+                currency: product.currency,
+                description: product.description,
+                id: product.id,
+                images: product.images,
+                name: product.name,
+                price: product.price,
+                quantity: product.quantity,
+                nbSold: product.nbSold,
+                categories: product.categories,
+                slug: product.slug,
+            });
+        });
+}

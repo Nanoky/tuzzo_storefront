@@ -13,6 +13,7 @@ export class SerializeProduct extends Product implements Serializable {
             quantity: this.quantity,
             nbSold: this.nbSold,
             categories: this.categories,
+            slug: this.slug,
         };
     }
 

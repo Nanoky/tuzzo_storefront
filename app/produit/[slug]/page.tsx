@@ -6,8 +6,8 @@ import "./product.css";
 import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
 import AddCart from "./addCart";
 import { Metadata } from "next";
-import { searchProductById } from "@/app/_shared/services/product";
-import { searchStoreById } from "@/app/_shared/services/store";
+import { searchProductBySlug } from "@/app/_shared/services/product";
+import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { Card, CardBody } from "@nextui-org/react";
 
 type Props = {
@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? params.slug.split("+")
         : decodeURIComponent(params.slug).split("+");
 
-    const store = await searchStoreById({
-        id: keys[0],
+    const store = await searchStoreBySlug({
+        slug: keys[0],
     });
-    const product = await searchProductById({
-        id: keys[1],
+    const product = await searchProductBySlug({
+        slug: keys[1],
         storeId: store.id,
     });
 
@@ -48,18 +48,30 @@ export default async function ProductPage({
 }: {
     params: { slug: string };
 }) {
-    const { getProductById } = useProducts();
-    const { getStoreById } = useShop();
+    const { getProductBySlug } = useProducts();
+    const { getStoreBySlug } = useShop();
 
     const keys = params.slug.includes("+")
         ? params.slug.split("+")
         : decodeURIComponent(params.slug).split("+");
 
-    const store = await getStoreById(keys[0]);
-    const product = await getProductById(store.id, keys[1]);
+    const store = await getStoreBySlug(keys[0]);
+
+    if (!store) {
+        return null;
+    }
+    const product = await getProductBySlug(store.id, keys[1]);
+
+    if (!product) {
+        return null;
+    }
 
     return (
-        <Layout storeName={store.name} hasFooter={false} storeSlug={store.slug} storeId={store.id}>
+        <Layout
+            storeName={store.name}
+            hasFooter={false}
+            storeSlug={store.slug}
+            storeId={store.id}>
             <div className="d-flex flex-column gap-3 px-product w-100 py-4">
                 <div className="d-flex justify-content-center flex-row align-items-center gap-2">
                     <Breadcrumbs

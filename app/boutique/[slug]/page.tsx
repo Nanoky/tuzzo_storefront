@@ -35,10 +35,17 @@ export default async function ShopPage({
 
     const store = await getStoreBySlug(params.slug);
 
+    if (!store) {
+        return null;
+    }
+
     const products = await getProducts(store.id);
 
     return (
-        <Layout storeName={store.name} storeSlug={store.slug} storeId={store.id}>
+        <Layout
+            storeName={store.name}
+            storeSlug={store.slug}
+            storeId={store.id}>
             <div className="bg-black text-white text-center py-4">
                 <div>Bienvenue dans votre boutique</div>
                 <div>{store.name}</div>
@@ -46,7 +53,7 @@ export default async function ShopPage({
             <div className="p-5 row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
                 {products.map((product) => (
                     <div className="col" key={product.id}>
-                        <ProductCard product={product} storeSlug={store.id} />
+                        <ProductCard product={product} storeSlug={store.slug} />
                     </div>
                 ))}
             </div>

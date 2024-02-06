@@ -25,7 +25,7 @@ export default function AddCart({ product }: { product: Product }) {
         setCount(count + 1);
     };
     return (
-        <div className="w-100 bg-gray-400/25 p-3 rounded-4 add-cart-container">
+        <div className="w-100 bg-[#94a3b8]/25 p-3 rounded-4 add-cart-container">
             <div className="d-flex flex-row justify-content-between align-items-center">
                 <div className="bg-white rounded-pill d-flex flex-row justify-content-between align-items-center gap-3 px-3 py-2">
                     <span
