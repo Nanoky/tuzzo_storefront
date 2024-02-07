@@ -14,6 +14,7 @@ import {
     limit,
     query,
     setDoc,
+    updateDoc,
     where,
     writeBatch,
 } from "firebase/firestore";
@@ -150,7 +151,6 @@ export class FireStoreService {
         data: TData;
         converter: FirestoreDataConverter<TData, any>;
     }) {
-        console.log("create", param);
         const collectionRef = collection(
             this.db,
             param.collection,
@@ -160,7 +160,30 @@ export class FireStoreService {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            console.log("create", docSnap.data());
+            return docSnap.data();
+        } else {
+            return null;
+        }
+    }
+
+    async update<TData>(param: {
+        collection: string;
+        pathSegments?: string[];
+        id: string;
+        data: TData;
+        converter: FirestoreDataConverter<TData, any>;
+    }) {
+        const collectionRef = collection(
+            this.db,
+            param.collection,
+            ...(param.pathSegments ?? [])
+        ).withConverter(param.converter);
+        const docRef = doc(collectionRef, param.id);
+
+        await updateDoc(docRef, param.converter.toFirestore(param.data));
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
             return docSnap.data();
         } else {
             return null;
@@ -173,7 +196,6 @@ export class FireStoreService {
         data: TData[];
         converter: FirestoreDataConverter<TData, any>;
     }) {
-        console.log("create", param);
         const batch = writeBatch(this.db);
         const collectionRef = collection(
             this.db,
@@ -183,7 +205,6 @@ export class FireStoreService {
 
         param.data.forEach((data) => {
             const docRef = doc(collectionRef);
-            console.log("create", docRef);
             batch.set(docRef, data);
         });
 

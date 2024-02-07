@@ -6,67 +6,101 @@ import "./product.css";
 import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
 import AddCart from "./addCart";
 import { Metadata } from "next";
-import { searchProductBySlug } from "@/app/_shared/services/product";
-import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { Card, CardBody } from "@nextui-org/react";
 import { createStoreRoute } from "@/app/_shared/services/router";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { searchStoreBySlug } from "@/app/_shared/services/store";
+import { searchProductBySlug } from "@/app/_shared/services/product";
+
+type Params = {
+    storeSlug: string;
+    productSlug: string;
+};
 
 type Props = {
     params: { slug: string };
 };
 
+function getSlugs(param: { slug: string }): Params {
+    const headerList = headers();
+    const hostname = headerList.get("host");
+
+    let storeSlug = "";
+    let slug = "";
+
+    // Fetch data from external API
+
+    if (hostname?.includes("tuzzo")) {
+        storeSlug = hostname?.split(".")[0] ?? "";
+        slug = param.slug;
+    } else {
+        const keys = param.slug.includes("+")
+            ? param.slug.split("+")
+            : decodeURIComponent(param.slug).split("+");
+        storeSlug = keys[0];
+        slug = keys[1];
+    }
+
+    // Pass data to the page via props
+    return {
+        storeSlug,
+        productSlug: slug,
+    };
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const keys = params.slug.includes("+")
-        ? params.slug.split("+")
-        : decodeURIComponent(params.slug).split("+");
+    const { storeSlug, productSlug } = getSlugs(params);
 
     const store = await searchStoreBySlug({
-        slug: keys[0],
+        slug: storeSlug,
     });
+    if (!store) {
+        redirect("/404");
+    }
+
     const product = await searchProductBySlug({
-        slug: keys[1],
+        slug: productSlug,
         storeId: store.id,
     });
 
+    if (!product) {
+        redirect("/404");
+    }
+
+    const title = `${product.name} - ${product.price} ${product.currency}`;
+
     return {
-        title: product.name,
+        title: title,
         description: product.description,
         openGraph: {
-            title: product.name,
+            title: title,
             description: product.description,
             images: [product.images[0]],
         },
         twitter: {
-            title: product.name,
+            title: title,
             description: product.description,
             images: [product.images[0]],
         },
     };
 }
 
-export default async function ProductPage({
-    params,
-}: {
-    params: { slug: string };
-}) {
-    const { getProductBySlug } = useProducts();
+export default async function ProductPage({ params }: Props) {
+    const { storeSlug, productSlug } = await getSlugs(params);
     const { getStoreBySlug } = useShop();
+    const { getProductBySlug } = useProducts();
 
-    const keys = params.slug.includes("+")
-        ? params.slug.split("+")
-        : decodeURIComponent(params.slug).split("+");
-
-    const store = await getStoreBySlug(keys[0]);
-
+    const store = await getStoreBySlug(storeSlug);
     if (!store) {
-        return null;
+        redirect("/404");
     }
-    const product = await getProductBySlug(store.id, keys[1]);
+
+    const product = await getProductBySlug(store.id, productSlug);
 
     if (!product) {
-        return null;
+        redirect("/404");
     }
-
     return (
         <Layout store={store} hasFooter={false}>
             <div className="d-flex flex-column gap-3 px-product w-100 py-4">

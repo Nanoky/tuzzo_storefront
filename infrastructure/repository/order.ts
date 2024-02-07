@@ -77,7 +77,15 @@ export class OrderItemRepository implements IOrderItemRepository {
     constructor(private service: FireStoreService) {
         this.converter = new OrderItemConverter();
     }
-    save(param: { item: OrderItem[]; storeId: string }): Promise<void> {
+    save(param: { item: OrderItem; storeId: string; }): Promise<OrderItem |null> {
+        return this.service.create({
+            collection: `${CollectionNames.STORES}`,
+            pathSegments: [param.storeId, `${CollectionNames.ORDER_ITEMS}`],
+            data: param.item,
+            converter: this.converter,
+        });
+    }
+    saveMany(param: { item: OrderItem[]; storeId: string }): Promise<void> {
         return this.service.createMany({
             collection: `${CollectionNames.STORES}`,
             pathSegments: [param.storeId, `${CollectionNames.ORDER_ITEMS}`],

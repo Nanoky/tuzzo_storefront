@@ -90,6 +90,7 @@ export default function OrderForm({
             })
             .catch((error) => {
                 enqueueSnackbar(error.message, { variant: "error" });
+                setIsLoading(false);
             });
     };
     return (

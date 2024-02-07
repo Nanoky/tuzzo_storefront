@@ -22,9 +22,16 @@ export interface IOrderCustomerRepository {
         customer: OrderCustomer;
         storeId: string;
     }): Promise<OrderCustomer | null>;
-    get(param: { phone: string, storeId: string }): Promise<OrderCustomer | null>;
+    get(param: {
+        phone: string;
+        storeId: string;
+    }): Promise<OrderCustomer | null>;
 }
 
 export interface IOrderItemRepository {
-    save(param: { item: OrderItem[]; storeId: string }): Promise<void>;
+    saveMany(param: { item: OrderItem[]; storeId: string }): Promise<void>;
+    save(param: {
+        item: OrderItem;
+        storeId: string;
+    }): Promise<OrderItem | null>;
 }

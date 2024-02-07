@@ -58,7 +58,8 @@ export class Instances {
         this.order = new OrderBusiness(
             orderRepo,
             orderCustomerRepo,
-            orderItemRepo
+            orderItemRepo,
+            productRepository
         );
     }
 

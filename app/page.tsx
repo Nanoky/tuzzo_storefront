@@ -3,9 +3,21 @@ import logo from "@/public/images/logo_tuzzo_original@2x.png";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
 import { createStoreRoute } from "./_shared/services/router";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+function handleRedirect() {
+    const headerList = headers();
+    const hostname = headerList.get("host");
+
+    if (hostname?.includes("tuzzo")) {
+        redirect(createStoreRoute());
+    }
+}
 
 export default function Home() {
     const defautShopSlug = "annavi"; //"6P8v2H4sx7uIJDpPV8zm";
+    handleRedirect();
     return (
         <main className="bg-white h-100">
             <div className="d-flex flex-column justify-content-center align-items-center h-100 gap-5 ">

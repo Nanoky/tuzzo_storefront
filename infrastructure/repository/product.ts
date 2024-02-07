@@ -13,6 +13,18 @@ export class ProductRepository implements IProductRepository {
     constructor(private service: FireStoreService) {
         this.converter = new ProductAdapter();
     }
+    update(param: {
+        product: Product;
+        storeId: string;
+    }): Promise<Product | null> {
+        return this.service.update({
+            collection: `${CollectionNames.STORES}`,
+            pathSegments: [param.storeId, `${CollectionNames.PRODUCTS}`],
+            id: param.product.id,
+            data: param.product,
+            converter: this.converter,
+        });
+    }
     search(params: SearchProductParams): Promise<Product[]> {
         if (params.slug) {
             return this.service.search({

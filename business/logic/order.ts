@@ -6,78 +6,106 @@ import {
     IOrderRepository,
     SaveOrderParams,
 } from "../ports/order";
+import { IProductRepository } from "../ports/product";
 
 export class OrderBusiness implements IOrderActions {
     constructor(
         private orderRepo: IOrderRepository,
         private orderCustomerRepo: IOrderCustomerRepository,
-        private orderItemRepo: IOrderItemRepository
+        private orderItemRepo: IOrderItemRepository,
+        private productRepo: IProductRepository
     ) {}
-    saveOrder(param: SaveOrderParams): Promise<Order> {
-        return new Promise((resolve, reject) => {
-            let order = new Order({
+    async saveOrder(param: SaveOrderParams) {
+        try {
+            let order: Order | null = new Order({
                 customer: param.customer,
                 items: param.items,
                 date: param.date,
                 comment: param.comment,
                 finalPrice: param.finalPrice,
             });
-            const saveOrder = (customerId: string) => {
-                order.setCustomerId(customerId);
+            const saveOrder = async (customerId: string) => {
+                if (order) {
+                    order.setCustomerId(customerId);
 
-                this.orderRepo
-                    .save({
+                    // save order
+                    order = await this.orderRepo.save({
                         order,
                         storeId: param.storeId,
-                    })
-                    .then((order) => {
-                        if (order) {
-                            this.orderItemRepo
-                                .save({
-                                    item: param.items.map((item) => {
-                                        return {
-                                            product: item.product,
-                                            quantity: item.quantity,
-                                            orderId: order.id,
-                                        };
-                                    }),
-                                    storeId: param.storeId,
-                                })
-                                .then(() => {
-                                    resolve(order);
-                                });
-                        } else {
-                            reject(
-                                "Echec lors de l'enregistrement de la commande"
-                            );
-                        }
                     });
-            };
-            this.orderCustomerRepo
-                .get({
-                    phone: `${param.customer.phoneIndicator}${param.customer.phone}`,
-                    storeId: param.storeId,
-                })
-                .then((customer) => {
-                    if (customer) {
-                        saveOrder(customer.id ?? "");
-                    } else {
-                        this.orderCustomerRepo
-                            .save({
-                                customer: param.customer,
+                    if (order) {
+                        for (let index = 0; index < param.items.length; index++) {
+                            const item = param.items[index];
+                            const savedItem = await this.orderItemRepo.save({
+                                item: {
+                                    product: item.product,
+                                    quantity: item.quantity,
+                                    orderId: order?.id,
+                                },
                                 storeId: param.storeId,
-                            })
-                            .then((customer) => {
-                                if (customer) {
-                                    saveOrder(customer.id ?? "");
+                            });
+
+                            if (savedItem) {
+                                const products = await this.productRepo.search({
+                                    id: item.product.id,
+                                    storeId: param.storeId,
+                                });
+                                let product = products[0];
+                                if (product) {
+                                    product.sell(item.quantity);
+
+                                    await this.productRepo.update({
+                                        product: product,
+                                        storeId: param.storeId,
+                                    });
                                 } else {
-                                    reject(
-                                        "Echec lors de l'enregistrement de la commande"
+                                    throw new Error(
+                                        "Echec lors de l'enregistrement de l'article"
                                     );
                                 }
-                            });
+                            } else {
+                                throw new Error(
+                                    "Echec lors de l'enregistrement de l'article"
+                                );
+                            }
+                        }
+                        
+                        return order;
+                    } else {
+                        throw new Error(
+                            "Echec lors de l'enregistrement de la commande"
+                        );
                     }
+                } else {
+                    throw new Error(
+                        "Echec lors de l'enregistrement de la commande"
+                    );
+                }
+            };
+
+            // check if customer exist
+            const customer = await this.orderCustomerRepo.get({
+                phone: `${param.customer.phoneIndicator}${param.customer.phone}`,
+                storeId: param.storeId,
+            });
+
+            if (customer) {
+                return saveOrder(customer.id ?? "");
+            } else {
+                // if customer not exist create it
+                const customer = await this.orderCustomerRepo.save({
+                    customer: param.customer,
+                    storeId: param.storeId,
                 });
-        });
+
+                if (customer) {
+                    return saveOrder(customer.id ?? "");
+                } else {
+                    throw new Error("Echec lors de l'enregistrement du client");
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
     }
 }
