@@ -5,6 +5,8 @@ import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { APP_LOGO } from "@/app/_shared/shared/constants";
 import { Metadata } from "next";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { createNotFoundRoute } from "../_shared/services/router";
 
 type Params = {
     storeSlug: string;
@@ -28,23 +30,27 @@ function getSlugs(): Params {
 
 export async function generateMetadata(): Promise<Metadata> {
     const { storeSlug } = getSlugs();
-    const store = await searchStoreBySlug({
-        slug: storeSlug,
-    });
-    return {
-        title: store.name,
-        description: store.description,
-        openGraph: {
+    try {
+        const store = await searchStoreBySlug({
+            slug: storeSlug,
+        });
+        return {
             title: store.name,
             description: store.description,
-            images: [store.logo ?? APP_LOGO],
-        },
-        twitter: {
-            title: store.name,
-            description: store.description,
-            images: [store.logo ?? APP_LOGO],
-        },
-    };
+            openGraph: {
+                title: store.name,
+                description: store.description,
+                images: [store.logo ?? APP_LOGO],
+            },
+            twitter: {
+                title: store.name,
+                description: store.description,
+                images: [store.logo ?? APP_LOGO],
+            },
+        };
+    } catch (error) {
+        redirect(createNotFoundRoute());
+    }
 }
 
 export default async function ShopPage() {
@@ -54,7 +60,7 @@ export default async function ShopPage() {
     const store = await getStoreBySlug(storeSlug);
 
     if (!store) {
-        return null;
+        redirect(createNotFoundRoute());
     }
 
     const products = await getProducts(store.id);

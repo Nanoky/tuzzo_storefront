@@ -1,32 +1,38 @@
 import ProductCard from "@/app/_shared/components/commun/product-card";
 import Layout from "@/app/_shared/components/layout";
 import { useShop } from "@/app/_shared/hooks/shop";
+import { createNotFoundRoute } from "@/app/_shared/services/router";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { APP_LOGO } from "@/app/_shared/shared/constants";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 type Props = {
     params: { slug: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const store = await searchStoreBySlug({
-        slug: params.slug,
-    });
-    return {
-        title: store.name,
-        description: store.description,
-        openGraph: {
+    try {
+        const store = await searchStoreBySlug({
+            slug: params.slug,
+        });
+        return {
             title: store.name,
             description: store.description,
-            images: [store.logo ?? APP_LOGO],
-        },
-        twitter: {
-            title: store.name,
-            description: store.description,
-            images: [store.logo ?? APP_LOGO],
-        },
-    };
+            openGraph: {
+                title: store.name,
+                description: store.description,
+                images: [store.logo ?? APP_LOGO],
+            },
+            twitter: {
+                title: store.name,
+                description: store.description,
+                images: [store.logo ?? APP_LOGO],
+            },
+        };
+    } catch (error) {
+        redirect(createNotFoundRoute());
+    }
 }
 
 export default async function ShopPage({
@@ -39,14 +45,13 @@ export default async function ShopPage({
     const store = await getStoreBySlug(params.slug);
 
     if (!store) {
-        return null;
+        redirect(createNotFoundRoute());
     }
 
     const products = await getProducts(store.id);
 
     return (
-        <Layout
-            store={store}>
+        <Layout store={store}>
             <div className="bg-black text-white text-center py-4">
                 <div>Bienvenue dans votre boutique</div>
                 <div>{store.name}</div>

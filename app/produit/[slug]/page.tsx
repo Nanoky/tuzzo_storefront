@@ -7,7 +7,7 @@ import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
 import AddCart from "./addCart";
 import { Metadata } from "next";
 import { Card, CardBody } from "@nextui-org/react";
-import { createStoreRoute } from "@/app/_shared/services/router";
+import { createNotFoundRoute, createStoreRoute } from "@/app/_shared/services/router";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
@@ -52,38 +52,42 @@ function getSlugs(param: { slug: string }): Params {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { storeSlug, productSlug } = getSlugs(params);
 
-    const store = await searchStoreBySlug({
-        slug: storeSlug,
-    });
-    if (!store) {
-        redirect("/404");
-    }
+    try {
+        const store = await searchStoreBySlug({
+            slug: storeSlug,
+        });
+        if (!store) {
+            redirect(createNotFoundRoute());
+        }
 
-    const product = await searchProductBySlug({
-        slug: productSlug,
-        storeId: store.id,
-    });
+        const product = await searchProductBySlug({
+            slug: productSlug,
+            storeId: store.id,
+        });
 
-    if (!product) {
-        redirect("/404");
-    }
+        if (!product) {
+            redirect(createNotFoundRoute());
+        }
 
-    const title = `${product.name} - ${product.price} ${product.currency}`;
+        const title = `${product.name} - ${product.price} ${product.currency}`;
 
-    return {
-        title: title,
-        description: product.description,
-        openGraph: {
+        return {
             title: title,
             description: product.description,
-            images: [product.images[0]],
-        },
-        twitter: {
-            title: title,
-            description: product.description,
-            images: [product.images[0]],
-        },
-    };
+            openGraph: {
+                title: title,
+                description: product.description,
+                images: [product.images[0]],
+            },
+            twitter: {
+                title: title,
+                description: product.description,
+                images: [product.images[0]],
+            },
+        };
+    } catch (error) {
+        redirect(createNotFoundRoute());
+    }
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -93,13 +97,13 @@ export default async function ProductPage({ params }: Props) {
 
     const store = await getStoreBySlug(storeSlug);
     if (!store) {
-        redirect("/404");
+        redirect(createNotFoundRoute());
     }
 
     const product = await getProductBySlug(store.id, productSlug);
 
     if (!product) {
-        redirect("/404");
+        redirect(createNotFoundRoute());
     }
     return (
         <Layout store={store} hasFooter={false}>

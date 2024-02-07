@@ -18,7 +18,7 @@ export function useShop() {
                     })
             )
             .catch((err) => {
-                //redirect("/404");
+                //redirect(createNotFoundRoute());
                 console.error(err);
             });
     };
@@ -36,7 +36,7 @@ export function useShop() {
                     })
             )
             .catch((err) => {
-                //redirect("/404");
+                //redirect(createNotFoundRoute());
                 console.error(err);
             });
     };
