@@ -20,9 +20,7 @@ export default async function SuccessPage({
 
     return (
         <Layout
-            storeName={store.name}
-            storeSlug={store.slug}
-            storeId={store.id}>
+            store={store}>
             <div className="flex flex-column justify-center items-center pt-4">
                 <div className="flex flex-column justify-center items-center gap-3">
                     <span className="text-9xl text-primary">
