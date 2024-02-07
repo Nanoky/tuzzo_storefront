@@ -67,7 +67,7 @@ export default async function ProductPage({
     }
 
     return (
-        <Layout store={store}>
+        <Layout store={store} hasFooter={false}>
             <div className="d-flex flex-column gap-3 px-product w-100 py-4">
                 <div className="d-flex justify-content-center flex-row align-items-center gap-2">
                     <Breadcrumbs
