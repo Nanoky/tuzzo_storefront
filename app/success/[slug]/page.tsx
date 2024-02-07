@@ -1,5 +1,6 @@
 import Layout from "@/app/_shared/components/layout";
 import { useShop } from "@/app/_shared/hooks/shop";
+import { createStoreRoute } from "@/app/_shared/services/router";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
@@ -19,8 +20,7 @@ export default async function SuccessPage({
     }
 
     return (
-        <Layout
-            store={store}>
+        <Layout store={store}>
             <div className="flex flex-column justify-center items-center pt-4">
                 <div className="flex flex-column justify-center items-center gap-3">
                     <span className="text-9xl text-primary">
@@ -33,7 +33,11 @@ export default async function SuccessPage({
                         <span>Votre commande a bien été envoyée</span>
                         <span>Merci de nous avoir fait confiance!</span>
                     </div>
-                    <Button as={Link} href={`/boutique/${store.slug}`} className="no-underline" color="primary">
+                    <Button
+                        as={Link}
+                        href={createStoreRoute(store.slug)}
+                        className="no-underline"
+                        color="primary">
                         Revenir à la boutique
                     </Button>
                 </div>

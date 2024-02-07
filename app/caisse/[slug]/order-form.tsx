@@ -12,6 +12,7 @@ import { saveOrder } from "@/app/_shared/services/order";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { createSuccessRoute } from "@/app/_shared/services/router";
 
 type Options<TKey> = Map<TKey, boolean>;
 export type FormValues = {
@@ -85,7 +86,7 @@ export default function OrderForm({
                 reset(defaultFormValues);
                 emptyCart();
                 setIsLoading(false);
-                router.push(`/success/${storeSlug}`);
+                router.push(createSuccessRoute(storeSlug));
             })
             .catch((error) => {
                 enqueueSnackbar(error.message, { variant: "error" });

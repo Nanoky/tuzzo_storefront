@@ -2,6 +2,7 @@ import Image from "next/image";
 import logo from "@/public/images/logo_tuzzo_original@2x.png";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
+import { createStoreRoute } from "./_shared/services/router";
 
 export default function Home() {
     const defautShopSlug = "annavi"; //"6P8v2H4sx7uIJDpPV8zm";
@@ -11,7 +12,7 @@ export default function Home() {
                 <Image src={logo} alt="logo" width={200} />
                 <Button
                     as={Link}
-                    href={`/boutique/${defautShopSlug}`}
+                    href={createStoreRoute(defautShopSlug)}
                     color="primary"
                     radius="full"
                     style={{ backgroundColor: "#99ff99 !important" }}

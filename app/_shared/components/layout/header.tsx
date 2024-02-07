@@ -2,6 +2,7 @@ import { Link } from "@nextui-org/react";
 import { CartButton } from "../commun/cart";
 import { SerializeStore } from "../../models/store";
 import Image from "next/image";
+import { createStoreRoute } from "../../services/router";
 
 export default function Header({ store }: { store: SerializeStore }) {
     return (
@@ -18,7 +19,7 @@ export default function Header({ store }: { store: SerializeStore }) {
                     <Link
                         className="text-lg cursor-pointer font-medium"
                         color="foreground"
-                        href={`/boutique/${store.slug}`}>
+                        href={createStoreRoute(store.slug)}>
                         {store.name}
                     </Link>
                 </div>
