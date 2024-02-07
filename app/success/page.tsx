@@ -1,6 +1,6 @@
 import Layout from "@/app/_shared/components/layout";
 import { useShop } from "@/app/_shared/hooks/shop";
-import { createStoreRoute } from "@/app/_shared/services/router";
+import { createNotFoundRoute, createStoreRoute } from "@/app/_shared/services/router";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
@@ -35,7 +35,7 @@ export default async function SuccessPage() {
     const store = await getStoreBySlug(storeSlug);
 
     if (!store) {
-        redirect("/404");
+        redirect(createNotFoundRoute());
     }
 
     return (

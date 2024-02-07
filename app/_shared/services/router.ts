@@ -33,3 +33,7 @@ export function createSuccessRoute(storeSlug?: string) {
     }
     return `/success/${storeSlug}`;
 }
+
+export function createNotFoundRoute() {
+    return "/404";
+}

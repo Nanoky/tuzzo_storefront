@@ -1,7 +1,7 @@
 import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
 import Layout from "@/app/_shared/components/layout";
 import { useShop } from "@/app/_shared/hooks/shop";
-import { createStoreRoute } from "@/app/_shared/services/router";
+import { createNotFoundRoute, createStoreRoute } from "@/app/_shared/services/router";
 import OrderForm from "./[slug]/order-form";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
@@ -32,7 +32,7 @@ export default async function CheckoutPage() {
 
     const store = await getStoreBySlug(storeSlug);
     if (!store) {
-        redirect("/404");
+        redirect(createNotFoundRoute());
     }
     return (
         <Layout store={store}>
