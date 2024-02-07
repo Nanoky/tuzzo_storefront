@@ -32,7 +32,6 @@ export class ProductAdapter
                 currency: modelObject.currency,
                 description: modelObject.description,
                 name: modelObject.name,
-                on_sale: true,
                 product_categories: modelObject.categories,
                 product_images: modelObject.images,
                 quantity: modelObject.quantity,

@@ -91,4 +91,9 @@ export class Product extends Entity {
         this.categories = param.categories ?? [];
         this.slug = param.slug;
     }
+
+    sell(quantity: number) {
+        this.nbSold += quantity;
+        this.quantity -= quantity;
+    }
 }
