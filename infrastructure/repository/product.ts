@@ -6,6 +6,7 @@ import {
 import { FireStoreService } from "../services/firebase";
 import { FirestoreDataConverter } from "firebase/firestore";
 import { ProductAdapter } from "../adapters/product";
+import { CollectionNames } from "../enums/collection";
 
 export class ProductRepository implements IProductRepository {
     private converter: FirestoreDataConverter<Product, any>;
@@ -15,8 +16,8 @@ export class ProductRepository implements IProductRepository {
     search(params: SearchProductParams): Promise<Product[]> {
         if (params.slug) {
             return this.service.search({
-                collection: "stores",
-                pathSegments: [params.storeId, "products"],
+                collection: `${CollectionNames.STORES}`,
+                pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
                 filters: [
                     { fieldPath: "slug", opStr: "==", value: params.slug },
                 ],
@@ -27,8 +28,11 @@ export class ProductRepository implements IProductRepository {
         if (params.id) {
             return this.service
                 .get({
-                    collection: "stores",
-                    pathSegments: [params.storeId, "products"],
+                    collection: `${CollectionNames.STORES}`,
+                    pathSegments: [
+                        params.storeId,
+                        `${CollectionNames.PRODUCTS}`,
+                    ],
                     id: params.id,
                     converter: this.converter,
                 })
@@ -42,8 +46,8 @@ export class ProductRepository implements IProductRepository {
         }
 
         return this.service.getAll({
-            collection: "stores",
-            pathSegments: [params.storeId, "products"],
+            collection: `${CollectionNames.STORES}`,
+            pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
             converter: this.converter,
         });
     }

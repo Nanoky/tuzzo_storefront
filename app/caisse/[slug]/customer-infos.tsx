@@ -6,25 +6,37 @@ import SectionAccordion from "./section-accordion";
 import {
     Control,
     Controller,
+    FieldErrors,
     FormState,
     UseFormGetFieldState,
+    UseFormTrigger,
 } from "react-hook-form";
 import { FormValues } from "./order-form";
 
 export default function CustomerInfos({
     control,
-    getState,
+    errors,
+    trigger,
 }: {
     control: Control<FormValues>;
-    getState: UseFormGetFieldState<FormValues>;
+    errors: FieldErrors<FormValues>;
+    trigger: UseFormTrigger<FormValues>;
 }) {
     const [isValid, setIsValid] = useState(false);
     const handleCheckValidity = () => {
+
+        trigger("indicator");
+        trigger("name");
+        trigger("phone");
+        trigger("address");
+
+        console.log(errors);
+
         if (
-            !getState("name").invalid &&
-            !getState("phone").invalid &&
-            !getState("indicator").invalid &&
-            !getState("address").invalid
+            !errors.indicator &&
+            !errors.name &&
+            !errors.phone &&
+            !errors.address
         ) {
             setIsValid(true);
         } else {
@@ -34,7 +46,7 @@ export default function CustomerInfos({
     return (
         <SectionCard>
             <SectionAccordion
-                key="infos-client"
+                id="infos-client"
                 title="Informations client"
                 subtitleExpanded="Entrez vos informations de livraison">
                 <div className="d-flex flex-column gap-3">
@@ -45,11 +57,16 @@ export default function CustomerInfos({
                                     control={control}
                                     name="indicator"
                                     rules={{ required: true }}
-                                    render={({ field }) => (
+                                    render={({ field, fieldState }) => (
                                         <Input
                                             type="text"
                                             variant="underlined"
                                             {...field}
+                                            isInvalid={fieldState.invalid}
+                                            errorMessage={
+                                                fieldState.invalid &&
+                                                "Champ requis"
+                                            }
                                         />
                                     )}
                                 />
@@ -59,12 +76,17 @@ export default function CustomerInfos({
                                     control={control}
                                     name="phone"
                                     rules={{ required: true }}
-                                    render={({ field }) => (
+                                    render={({ field, fieldState }) => (
                                         <Input
                                             type="text"
                                             variant="underlined"
                                             placeholder="Numéro de téléphone"
                                             {...field}
+                                            isInvalid={fieldState.invalid}
+                                            errorMessage={
+                                                fieldState.invalid &&
+                                                "Entrez votre numéro de téléphone"
+                                            }
                                         />
                                     )}
                                 />
@@ -74,12 +96,17 @@ export default function CustomerInfos({
                             control={control}
                             name="name"
                             rules={{ required: true }}
-                            render={({ field }) => (
+                            render={({ field, fieldState }) => (
                                 <Input
                                     type="text"
                                     variant="underlined"
                                     placeholder="Entrez votre nom"
                                     {...field}
+                                    isInvalid={fieldState.invalid}
+                                    errorMessage={
+                                        fieldState.invalid &&
+                                        "Entrez votre nom s'il vous plait"
+                                    }
                                 />
                             )}
                         />
@@ -87,18 +114,27 @@ export default function CustomerInfos({
                             control={control}
                             name="address"
                             rules={{ required: true }}
-                            render={({ field }) => (
+                            render={({ field, fieldState }) => (
                                 <Input
                                     type="text"
                                     variant="underlined"
                                     placeholder="Entrez votre adresse de livraison"
                                     {...field}
+                                    isInvalid={fieldState.invalid}
+                                    errorMessage={
+                                        fieldState.invalid &&
+                                        "Entrez votre adresse s'il vous plait"
+                                    }
                                 />
                             )}
                         />
                     </div>
                     <div className="d-flex justify-content-end">
-                        <Button type="button" color="primary" radius="full" onClick={handleCheckValidity}>
+                        <Button
+                            type="button"
+                            color="primary"
+                            radius="full"
+                            onClick={handleCheckValidity}>
                             {"Enregistrer l'adresse"}
                         </Button>
                     </div>

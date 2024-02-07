@@ -2,6 +2,7 @@ import ProductCard from "@/app/_shared/components/commun/product-card";
 import Layout from "@/app/_shared/components/layout";
 import { useShop } from "@/app/_shared/hooks/shop";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
+import { APP_LOGO } from "@/app/_shared/shared/constants";
 import { Metadata } from "next";
 
 type Props = {
@@ -18,10 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
             title: store.name,
             description: store.description,
+            images: [store.logo ?? APP_LOGO],
         },
         twitter: {
             title: store.name,
             description: store.description,
+            images: [store.logo ?? APP_LOGO],
         },
     };
 }
@@ -43,9 +46,7 @@ export default async function ShopPage({
 
     return (
         <Layout
-            storeName={store.name}
-            storeSlug={store.slug}
-            storeId={store.id}>
+            store={store}>
             <div className="bg-black text-white text-center py-4">
                 <div>Bienvenue dans votre boutique</div>
                 <div>{store.name}</div>

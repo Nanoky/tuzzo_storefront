@@ -2,20 +2,43 @@ import { redirect } from "next/navigation";
 import { SerializeProduct } from "../models/product";
 import { Instances } from "@/init";
 import { searchStoreById, searchStoreBySlug } from "../services/store";
+import { SerializeStore } from "../models/store";
 
 export function useShop() {
     const getStoreBySlug = async (slug: string) => {
-        return searchStoreBySlug({ slug }).catch((err) => {
-            //redirect("/404");
-            console.error(err);
-        });
+        return searchStoreBySlug({ slug })
+            .then(
+                (store) =>
+                    new SerializeStore({
+                        id: store.id,
+                        name: store.name,
+                        slug: store.slug,
+                        description: store.description,
+                        logo: store.logo,
+                    })
+            )
+            .catch((err) => {
+                //redirect("/404");
+                console.error(err);
+            });
     };
 
     const getStoreById = async (id: string) => {
-        return searchStoreById({ id }).catch((err) => {
-            //redirect("/404");
-            console.error(err);
-        });
+        return searchStoreById({ id })
+            .then(
+                (store) =>
+                    new SerializeStore({
+                        id: store.id,
+                        name: store.name,
+                        slug: store.slug,
+                        description: store.description,
+                        logo: store.logo,
+                    })
+            )
+            .catch((err) => {
+                //redirect("/404");
+                console.error(err);
+            });
     };
 
     const getProducts = async (storeId: string) => {

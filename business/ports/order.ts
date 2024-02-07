@@ -22,6 +22,7 @@ export interface IOrderCustomerRepository {
         customer: OrderCustomer;
         storeId: string;
     }): Promise<OrderCustomer | null>;
+    get(param: { phone: string, storeId: string }): Promise<OrderCustomer | null>;
 }
 
 export interface IOrderItemRepository {

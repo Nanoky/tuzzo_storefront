@@ -11,15 +11,32 @@ import { useCart } from "@/app/_shared/hooks/cart";
 import { saveOrder } from "@/app/_shared/services/order";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { createSuccessRoute } from "@/app/_shared/services/router";
 
+type Options<TKey> = Map<TKey, boolean>;
 export type FormValues = {
     name: string;
     phone: string;
     indicator: string;
     address: string;
-    optionDelivery: DeliveryOptions;
-    optionPayment: PaymentOptions;
+    optionDeliveryExpress: boolean; //Options<DeliveryOptions>;
+    optionPaymentCash: boolean; //Options<PaymentOptions>;
     comment: string;
+};
+
+const defaultFormValues: FormValues = {
+    name: "",
+    phone: "",
+    indicator: "+225",
+    address: "",
+    optionDeliveryExpress: true /* new Map<DeliveryOptions, boolean>([
+        [DeliveryOptions.EXPRESS, true],
+    ]), */,
+    optionPaymentCash: true /* new Map<PaymentOptions, boolean>([
+        [PaymentOptions.CASH, true],
+    ]), */,
+    comment: "",
 };
 
 export default function OrderForm({
@@ -29,24 +46,23 @@ export default function OrderForm({
     storeSlug: string;
     storeId: string;
 }) {
-    const { handleSubmit, control, reset, getFieldState } = useForm<FormValues>(
-        {
-            defaultValues: {
-                name: "",
-                phone: "",
-                indicator: "",
-                address: "",
-                optionDelivery: DeliveryOptions.EXPRESS,
-                optionPayment: PaymentOptions.CREDIT_CARD,
-                comment: "",
-            },
-        }
-    );
+    const {
+        handleSubmit,
+        control,
+        reset,
+        getFieldState,
+        formState: { errors },
+        trigger,
+    } = useForm<FormValues>({
+        defaultValues: defaultFormValues,
+    });
 
     const { total, items, emptyCart } = useCart();
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit: SubmitHandler<FormValues> = (data) => {
+        setIsLoading(true);
         console.log(data);
         saveOrder({
             comment: data.comment,
@@ -67,17 +83,10 @@ export default function OrderForm({
             storeId,
         })
             .then(() => {
-                reset({
-                    name: "",
-                    phone: "",
-                    indicator: "",
-                    address: "",
-                    optionDelivery: DeliveryOptions.EXPRESS,
-                    optionPayment: PaymentOptions.CREDIT_CARD,
-                    comment: "",
-                });
+                reset(defaultFormValues);
                 emptyCart();
-                router.push(`/success/${storeSlug}`);
+                setIsLoading(false);
+                router.push(createSuccessRoute(storeSlug));
             })
             .catch((error) => {
                 enqueueSnackbar(error.message, { variant: "error" });
@@ -101,7 +110,8 @@ export default function OrderForm({
                                 </div>
                                 <CustomerInfos
                                     control={control}
-                                    getState={getFieldState}></CustomerInfos>
+                                    trigger={trigger}
+                                    errors={errors}></CustomerInfos>
                                 <DeliveryOption
                                     control={control}></DeliveryOption>
                                 <PaymentOption
@@ -111,7 +121,9 @@ export default function OrderForm({
                     </Card>
                 </div>
                 <div className="col-4">
-                    <CheckoutSummary control={control}></CheckoutSummary>
+                    <CheckoutSummary
+                        control={control}
+                        isButtonLoading={isLoading}></CheckoutSummary>
                 </div>
             </div>
         </form>

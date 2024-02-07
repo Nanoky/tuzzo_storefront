@@ -12,17 +12,10 @@ export default function PaymentOption({
 }: {
     control: Control<FormValues>;
 }) {
-    const [isExpress, setIsExpress] = useState(true);
-
-    const handleChangeExpress = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setIsExpress(event.target.checked);
-    };
     return (
         <SectionCard>
             <SectionAccordion
-                key="paiement"
+                id="paiement"
                 title="Option de paiement"
                 subtitleCollapsed="Choisissez votre option de paiement"
                 subtitleExpanded="Comment voulez-vous payer ?">
@@ -31,21 +24,17 @@ export default function PaymentOption({
                         <div className="d-flex flex-row justify-content-between">
                             <Controller
                                 control={control}
-                                name="optionPayment"
-                                rules={{ required: true }}
+                                name="optionPaymentCash"
                                 render={({ field }) => (
                                     <Checkbox
                                         radius="none"
                                         color="primary"
-                                        {...field}
-                                        checked={
-                                            field.value === PaymentOptions.CASH
-                                        }
-                                        value={PaymentOptions.CASH}
-                                        onChange={field.onChange}>
+                                        isSelected={
+                                            field.value
+                                        } onChange={field.onChange}>
                                         <div className="d-flex flex-column gap-1">
                                             <span className="text-normal">
-                                                Paiement par carte
+                                                Paiement à la livraison
                                             </span>
                                             <span className="text-xs">
                                                 Payez en espèce lors de votre

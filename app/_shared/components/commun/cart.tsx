@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { getCurrencyLabel } from "../../shared/currency";
 import { CustomImage } from "./custom-image";
+import { createCheckoutRoute } from "../../services/router";
 
 export function CartButton({ slug }: { slug: string }) {
     const { count, total, items, removeFromCart } = useCart();
@@ -40,7 +41,7 @@ export function CartButton({ slug }: { slug: string }) {
     };
 
     const handleCheckout = () => {
-        router.push(`/caisse/${slug}`);
+        router.push(createCheckoutRoute(slug));
     };
 
     return (

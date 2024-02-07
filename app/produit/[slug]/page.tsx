@@ -9,6 +9,7 @@ import { Metadata } from "next";
 import { searchProductBySlug } from "@/app/_shared/services/product";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { Card, CardBody } from "@nextui-org/react";
+import { createStoreRoute } from "@/app/_shared/services/router";
 
 type Props = {
     params: { slug: string };
@@ -67,16 +68,12 @@ export default async function ProductPage({
     }
 
     return (
-        <Layout
-            storeName={store.name}
-            hasFooter={false}
-            storeSlug={store.slug}
-            storeId={store.id}>
+        <Layout store={store} hasFooter={false}>
             <div className="d-flex flex-column gap-3 px-product w-100 py-4">
                 <div className="d-flex justify-content-center flex-row align-items-center gap-2">
                     <Breadcrumbs
                         title="Détails produit"
-                        home_url={`/boutique/${store.slug}`}></Breadcrumbs>
+                        home_url={createStoreRoute(store.slug)}></Breadcrumbs>
                 </div>
                 <Card>
                     <CardBody>

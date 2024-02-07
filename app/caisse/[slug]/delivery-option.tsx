@@ -3,7 +3,7 @@ import { Checkbox } from "@nextui-org/react";
 import SectionCard from "./section-card";
 import SectionAccordion from "./section-accordion";
 import { useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, useController } from "react-hook-form";
 import { FormValues } from "./order-form";
 import { DeliveryOptions } from "@/app/_shared/shared/enums";
 
@@ -12,18 +12,11 @@ export default function DeliveryOption({
 }: {
     control: Control<FormValues>;
 }) {
-    const [isExpress, setIsExpress] = useState(true);
-
-    const handleChangeExpress = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setIsExpress(event.target.checked);
-    };
 
     return (
         <SectionCard>
             <SectionAccordion
-                key={"livraison"}
+                id={"livraison"}
                 title="Option de livraison"
                 subtitleCollapsed="Choisissez votre option de livraison"
                 subtitleExpanded="Comment voulez-vous être livré ?">
@@ -32,18 +25,13 @@ export default function DeliveryOption({
                         <div className="flex flex-row justify-between items-center">
                             <Controller
                                 control={control}
-                                name="optionDelivery"
-                                rules={{ required: true }}
+                                name="optionDeliveryExpress"
                                 render={({ field }) => (
                                     <Checkbox
                                         radius="none"
                                         color="primary"
-                                        {...field}
-                                        checked={
-                                            field.value ===
-                                            DeliveryOptions.EXPRESS
-                                        }
-                                        value={DeliveryOptions.EXPRESS}
+                                        name={field.name}
+                                        isSelected={field.value}
                                         onChange={field.onChange}>
                                         <div className="d-flex flex-column gap-1">
                                             <span className="text-normal">

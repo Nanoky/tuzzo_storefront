@@ -4,14 +4,14 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Key, useState } from "react";
 
 export default function SectionAccordion({
-    key,
+    id,
     title,
     hasSubtitle = true,
     subtitleCollapsed,
     subtitleExpanded,
     children,
 }: {
-    key: string;
+    id: string;
     title: string;
     hasSubtitle?: boolean;
     subtitleCollapsed?: string;
@@ -23,7 +23,7 @@ export default function SectionAccordion({
     const handleSelectionChange = (keys: "all" | Set<Key>) => {
         if (keys === "all") {
             setIsCollapsed(false);
-        } else if (keys.size > 0 && keys.has(key)) {
+        } else if (keys.size > 0 && keys.has(id)) {
             setIsCollapsed(false);
         } else setIsCollapsed(true);
     };
@@ -41,7 +41,7 @@ export default function SectionAccordion({
                             : subtitleExpanded
                         : undefined
                 }
-                key={key}
+                key={id}
                 indicator={<FontAwesomeIcon icon={faChevronRight} />}>
                 {children}
             </AccordionItem>

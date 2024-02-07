@@ -22,44 +22,60 @@ export class OrderBusiness implements IOrderActions {
                 comment: param.comment,
                 finalPrice: param.finalPrice,
             });
+            const saveOrder = (customerId: string) => {
+                order.setCustomerId(customerId);
+
+                this.orderRepo
+                    .save({
+                        order,
+                        storeId: param.storeId,
+                    })
+                    .then((order) => {
+                        if (order) {
+                            this.orderItemRepo
+                                .save({
+                                    item: param.items.map((item) => {
+                                        return {
+                                            product: item.product,
+                                            quantity: item.quantity,
+                                            orderId: order.id,
+                                        };
+                                    }),
+                                    storeId: param.storeId,
+                                })
+                                .then(() => {
+                                    resolve(order);
+                                });
+                        } else {
+                            reject(
+                                "Echec lors de l'enregistrement de la commande"
+                            );
+                        }
+                    });
+            };
             this.orderCustomerRepo
-                .save({
-                    customer: param.customer,
+                .get({
+                    phone: `${param.customer.phoneIndicator}${param.customer.phone}`,
                     storeId: param.storeId,
                 })
                 .then((customer) => {
                     if (customer) {
-                        order.setCustomerId(customer.id ?? "");
-
-                        this.orderRepo
+                        saveOrder(customer.id ?? "");
+                    } else {
+                        this.orderCustomerRepo
                             .save({
-                                order,
+                                customer: param.customer,
                                 storeId: param.storeId,
                             })
-                            .then((order) => {
-                                if (order) {
-                                    this.orderItemRepo
-                                        .save({
-                                            item: param.items.map((item) => {
-                                                return {
-                                                    product: item.product,
-                                                    quantity: item.quantity,
-                                                    orderId: order.id,
-                                                };
-                                            }),
-                                            storeId: param.storeId,
-                                        })
-                                        .then(() => {
-                                            resolve(order);
-                                        });
+                            .then((customer) => {
+                                if (customer) {
+                                    saveOrder(customer.id ?? "");
                                 } else {
                                     reject(
                                         "Echec lors de l'enregistrement de la commande"
                                     );
                                 }
                             });
-                    } else {
-                        reject("Echec lors de l'enregistrement de la commande");
                     }
                 });
         });

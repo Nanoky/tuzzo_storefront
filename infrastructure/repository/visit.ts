@@ -7,8 +7,9 @@ import {
     VisitConverter,
     VisitStringAdapter,
 } from "../adapters/visit";
-import { IStorage, SessionStorage } from "../services/storage";
+import { IStorage } from "../services/storage";
 import { IDataAdapter } from "../adapters/data";
+import { CollectionNames } from "../enums/collection";
 
 export class VisitRepository implements IVisitRepository {
     private converter: FirestoreDataConverter<Visit, any>;
@@ -18,8 +19,8 @@ export class VisitRepository implements IVisitRepository {
     saveVisit(param: { visit: Visit; storeId: string }): Promise<void> {
         return this.service
             .create({
-                collection: "stores",
-                pathSegments: [param.storeId, "storefront_visits"],
+                collection: `${CollectionNames.STORES}`,
+                pathSegments: [param.storeId, `${CollectionNames.VISITS}`],
                 data: param.visit,
                 converter: this.converter,
             })

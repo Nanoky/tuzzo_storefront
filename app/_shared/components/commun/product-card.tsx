@@ -16,6 +16,7 @@ import { CustomImage } from "./custom-image";
 import { Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
+import { createProductRoute } from "../../services/router";
 
 export default function ProductCard({
     product,
@@ -50,7 +51,7 @@ export default function ProductCard({
     };
 
     const handleGoToProduct = () => {
-        router.push(`/produit/${storeSlug}+${product.slug}`);
+        router.push(createProductRoute(storeSlug, product.slug));
     };
 
     return (

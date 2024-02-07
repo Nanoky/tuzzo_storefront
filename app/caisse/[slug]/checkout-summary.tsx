@@ -3,16 +3,24 @@ import { useCart } from "@/app/_shared/hooks/cart";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Divider, Input } from "@nextui-org/react";
+import { Button, Divider, Input } from "@nextui-org/react";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "./order-form";
+import React from "react";
 
 export default function CheckoutSummary({
     control,
+    isButtonLoading,
 }: {
     control: Control<FormValues>;
+    isButtonLoading: boolean;
 }) {
+    const submitRef = React.useRef<HTMLButtonElement>(null);
     const { total } = useCart();
+
+    const handleSubmit = () => {
+        submitRef.current?.click();
+    }
     return (
         <Card>
             <CardHeader className="pb-2">
@@ -40,7 +48,7 @@ export default function CheckoutSummary({
                         </span>
                         <span className="text-xl text-bold">{total}F</span>
                     </div>
-                    <div>
+                    <div className="pt-2">
                         <Controller
                             control={control}
                             name="comment"
@@ -58,11 +66,10 @@ export default function CheckoutSummary({
             <Divider className="my-2"></Divider>
             <CardFooter>
                 <div className="d-flex justify-content-end">
-                    <button
-                        type="submit"
-                        className="btn btn-primary rounded-pill">
+                    <Button color="primary" radius="full" type="button" onClick={handleSubmit} isLoading={isButtonLoading}>
                         Commander
-                    </button>
+                    </Button>
+                    <button type="submit" ref={submitRef} className="hidden">Commander</button>
                 </div>
             </CardFooter>
         </Card>

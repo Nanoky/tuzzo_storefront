@@ -1,3 +1,7 @@
+.add-cart-section {
+    bottom: 1rem;
+}
+
 @media screen and (min-width: 1025px) {
     .px-product {
         padding-left: 7rem;
@@ -5,7 +9,6 @@
     }
 
     .add-cart-section {
-        bottom: 2rem;
         width: 86%;
         transform: translateX(8%);
     }
@@ -18,7 +21,6 @@
     }
 
     .add-cart-section {
-        bottom: 2rem;
         width: 96%;
         transform: translateX(2%);
     }
