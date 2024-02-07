@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCheck,
     faShoppingCart,
-    faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
@@ -23,7 +22,7 @@ export default function ProductCard({
     storeSlug,
 }: {
     product: Product;
-    storeSlug: string;
+    storeSlug?: string;
 }) {
     const [item, setItem] = useState<Product>();
     const { addToCart, items } = useCart();
@@ -51,7 +50,12 @@ export default function ProductCard({
     };
 
     const handleGoToProduct = () => {
-        router.push(createProductRoute(storeSlug, product.slug));
+        router.push(
+            createProductRoute({
+                storeSlug,
+                productSlug: product.slug,
+            })
+        );
     };
 
     return (
