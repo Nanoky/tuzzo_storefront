@@ -21,4 +21,9 @@ export interface OrderDTO extends DTO {
     order_date: Date;
     order_notes: string;
     order_numero: string;
+    order_channel: 4; // Web storefront
+    order_status_id: 1; // Ouverte
+    delivery_status_id: 1; // Non livré
+    is_activated: true;
+    payment_status_id: 1; // Non payé
 }

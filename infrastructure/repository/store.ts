@@ -9,6 +9,7 @@ import { FirestoreDataConverter } from "firebase/firestore";
 import { StoreAdapter } from "../adapters/store";
 import { FireStoreService } from "../services/firebase";
 import { ProductAdapter } from "../adapters/product";
+import { CollectionNames } from "../enums/collection";
 
 export class StoreRepository implements IStoreRepository {
     private converter: FirestoreDataConverter<Store, any>;
@@ -20,7 +21,7 @@ export class StoreRepository implements IStoreRepository {
     search(params: SearchStoreParams): Promise<Store[]> {
         if (params.slug) {
             return this.service.search({
-                collection: "stores",
+                collection: `${CollectionNames.STORES}`,
                 filters: [
                     { fieldPath: "website", opStr: "==", value: params.slug },
                 ],
@@ -31,7 +32,7 @@ export class StoreRepository implements IStoreRepository {
         if (params.id) {
             return this.service
                 .get({
-                    collection: "stores",
+                    collection: `${CollectionNames.STORES}`,
                     id: params.id,
                     converter: this.converter,
                 })
@@ -45,20 +46,20 @@ export class StoreRepository implements IStoreRepository {
         }
 
         return this.service.getAll({
-            collection: "stores",
+            collection: `${CollectionNames.STORES}`,
             converter: this.converter,
         });
     }
     getProducts(params: SearchStoreProductsParams): Promise<Product[]> {
         return this.service
             .search({
-                collection: "stores",
-                pathSegments: [params.storeId, "products"],
+                collection: `${CollectionNames.STORES}`,
+                pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
                 filters: [
                     { fieldPath: "isdeleted", opStr: "==", value: false },
                 ],
                 converter: this.productConverter,
-                limit: 9
+                limit: 9,
             })
             .then((data) => {
                 if (data) {
