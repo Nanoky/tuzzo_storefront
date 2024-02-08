@@ -19,6 +19,7 @@ import { searchProductBySlug } from "@/app/_shared/services/product";
 type Params = {
     storeSlug: string;
     productSlug: string;
+    isWildcard?: boolean;
 };
 
 type Props = {
@@ -31,12 +32,14 @@ function getSlugs(param: { slug: string }): Params {
 
     let storeSlug = "";
     let slug = "";
+    let isWildcard = false;
 
     // Fetch data from external API
 
     if (hostname?.includes("tuzzo")) {
         storeSlug = hostname?.split(".")[0] ?? "";
         slug = param.slug;
+        isWildcard = true;
     } else {
         const keys = param.slug.includes("+")
             ? param.slug.split("+")
@@ -49,6 +52,7 @@ function getSlugs(param: { slug: string }): Params {
     return {
         storeSlug,
         productSlug: slug,
+        isWildcard,
     };
 }
 
@@ -94,7 +98,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
-    const { storeSlug, productSlug } = await getSlugs(params);
+    const { storeSlug, productSlug, isWildcard } = await getSlugs(params);
     const { getStoreBySlug } = useShop();
     const { getProductBySlug } = useProducts();
 
@@ -114,7 +118,9 @@ export default async function ProductPage({ params }: Props) {
                 <div className="d-flex justify-content-center flex-row align-items-center gap-2">
                     <Breadcrumbs
                         title="Détails produit"
-                        home_url={createStoreRoute(store.slug)}></Breadcrumbs>
+                        home_url={createStoreRoute(
+                            isWildcard ? undefined : store.slug
+                        )}></Breadcrumbs>
                 </div>
                 <Card>
                     <CardBody>
