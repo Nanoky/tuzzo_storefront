@@ -8,15 +8,7 @@ import { headers } from "next/headers";
 function checkWildcard(): boolean {
     const headerList = headers();
     const hostname = headerList.get("host");
-
-    let storeSlug = "";
-
-    // Fetch data from external API
-
-    storeSlug = hostname?.split(".")[0] ?? "";
-
-    // Pass data to the page via props
-    return !!storeSlug;
+    return hostname?.split(".")[0] !== hostname;
 }
 
 export default function Header({ store }: { store: SerializeStore }) {
