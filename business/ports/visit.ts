@@ -4,6 +4,7 @@ export interface IVisitActions {
     saveVisit(param: {
         page: string;
         storeId: string;
+        productId?: string
     }): Promise<void>;
 }
 

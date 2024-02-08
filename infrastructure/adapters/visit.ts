@@ -32,6 +32,7 @@ export class VisitConverter implements FirestoreDataConverter<Visit, VisitDTO> {
     toFirestore(modelObject: Visit): VisitDTO {
         return {
             visit_date: modelObject.date,
+            product_id: modelObject.productId,
         };
     }
     fromFirestore(
@@ -41,6 +42,7 @@ export class VisitConverter implements FirestoreDataConverter<Visit, VisitDTO> {
         const data = snapshot.data(options);
         return new Visit({
             date: data.visit_date,
+            productId: data.product_id,
         });
     }
 }

@@ -6,10 +6,17 @@ export class VisitBusiness implements IVisitActions {
         private storage: IVisitStorage,
         private repository: IVisitRepository
     ) {}
-    async saveVisit(param: { page: string; storeId: string }) {
+    async saveVisit(param: {
+        page: string;
+        storeId: string;
+        productId?: string;
+    }) {
         const hasVisit = await this.storage.getVisits(param.page);
         if (!hasVisit) {
-            const visit = new Visit({ date: new Date() });
+            const visit = new Visit({
+                date: new Date(),
+                productId: param.productId,
+            });
             await this.repository.saveVisit({
                 visit,
                 storeId: param.storeId,
@@ -18,4 +25,3 @@ export class VisitBusiness implements IVisitActions {
         }
     }
 }
-    
