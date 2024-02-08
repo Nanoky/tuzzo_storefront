@@ -6,7 +6,6 @@ import CustomerInfos from "./customer-infos";
 import DeliveryOption from "./delivery-option";
 import PaymentOption from "./payment-option";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { DeliveryOptions, PaymentOptions } from "@/app/_shared/shared/enums";
 import { useCart } from "@/app/_shared/hooks/cart";
 import { saveOrder } from "@/app/_shared/services/order";
 import { enqueueSnackbar } from "notistack";
@@ -95,10 +94,10 @@ export default function OrderForm({
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="row">
-                <div className="col-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                <div className="md:col-span-2">
                     <Card>
-                        <CardBody>
+                        <CardBody className="2xs:p-2 md:p-4">
                             <div className="d-flex flex-column gap-2">
                                 <div className="d-flex flex-column gap-2">
                                     <span className="text-lg font-bold">
@@ -121,7 +120,7 @@ export default function OrderForm({
                         </CardBody>
                     </Card>
                 </div>
-                <div className="col-4">
+                <div className="col-auto">
                     <CheckoutSummary
                         control={control}
                         isButtonLoading={isLoading}></CheckoutSummary>

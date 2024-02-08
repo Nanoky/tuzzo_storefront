@@ -7,6 +7,8 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createNotFoundRoute } from "../_shared/services/router";
+import MiniProductCard from "../_shared/components/commun/mini-product-card";
+import { Fragment } from "react";
 
 type Params = {
     storeSlug: string;
@@ -71,11 +73,22 @@ export default async function ShopPage() {
                 <div>Bienvenue dans votre boutique</div>
                 <div>{store.name}</div>
             </div>
-            <div className="p-5 row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
+            <div className="p-3 md:p-5 lg:p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-4 gap-x-3">
                 {products.map((product) => (
-                    <div className="col" key={product.id}>
-                        <ProductCard product={product} />
-                    </div>
+                    <Fragment key={product.id}>
+                        <div className="hidden sm:block md:block lg:block">
+                            <ProductCard
+                                product={product}
+                                storeSlug={store.slug}
+                            />
+                        </div>
+                        <div className="block sm:hidden md:hidden lg:hidden">
+                            <MiniProductCard
+                                product={product}
+                                storeSlug={store.slug}
+                            />
+                        </div>
+                    </Fragment>
                 ))}
             </div>
         </Layout>

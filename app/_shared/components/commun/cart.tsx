@@ -69,6 +69,7 @@ export function CartButton({ slug }: { slug: string }) {
                 height={"fit-content"}
                 classNames={{
                     content: "bg-transparent",
+                    wrapper: "2xl:me-0 xl:me-4",
                 }}
                 maskClosable>
                 <CartPanel
