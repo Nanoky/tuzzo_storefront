@@ -79,13 +79,11 @@ export default async function ShopPage() {
                         <div className="hidden sm:block md:block lg:block">
                             <ProductCard
                                 product={product}
-                                storeSlug={store.slug}
                             />
                         </div>
                         <div className="block sm:hidden md:hidden lg:hidden">
                             <MiniProductCard
                                 product={product}
-                                storeSlug={store.slug}
                             />
                         </div>
                     </Fragment>

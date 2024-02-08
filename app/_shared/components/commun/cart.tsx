@@ -22,7 +22,13 @@ import { getCurrencyLabel } from "../../shared/currency";
 import { CustomImage } from "./custom-image";
 import { createCheckoutRoute } from "../../services/router";
 
-export function CartButton({ slug }: { slug: string }) {
+export function CartButton({
+    slug,
+    isWildcard,
+}: {
+    slug: string;
+    isWildcard?: boolean;
+}) {
     const { count, total, items, removeFromCart } = useCart();
     const [open, setOpen] = useState(false);
     const router = useRouter();
@@ -41,7 +47,7 @@ export function CartButton({ slug }: { slug: string }) {
     };
 
     const handleCheckout = () => {
-        router.push(createCheckoutRoute(slug));
+        router.push(createCheckoutRoute(isWildcard ? undefined : slug));
     };
 
     return (

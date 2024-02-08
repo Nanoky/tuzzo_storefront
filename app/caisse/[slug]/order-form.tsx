@@ -41,9 +41,11 @@ const defaultFormValues: FormValues = {
 export default function OrderForm({
     storeSlug,
     storeId,
+    isWildcard,
 }: {
     storeSlug: string;
     storeId: string;
+    isWildcard?: boolean;
 }) {
     const {
         handleSubmit,
@@ -85,7 +87,9 @@ export default function OrderForm({
                 reset(defaultFormValues);
                 emptyCart();
                 setIsLoading(false);
-                router.push(createSuccessRoute(storeSlug));
+                router.push(
+                    createSuccessRoute(isWildcard ? undefined : storeSlug)
+                );
             })
             .catch((error) => {
                 enqueueSnackbar(error.message, { variant: "error" });
