@@ -83,13 +83,13 @@ export class OrderConverter implements FirestoreDataConverter<Order, OrderDTO> {
             final_price: modelObject.finalPrice,
             order_date: modelObject.date,
             order_notes: modelObject.comment,
-            order_numero: `${this.generateRandom6DigitNumber()}`,
+            order_number: this.generateRandom6DigitNumber(),
             created_at: new Date(),
             modified_at: new Date(),
             delivery_status_id: 1,
             is_activated: true,
-            order_channel: 4,
-            order_status_id: 1,
+            order_channel_id: 4,
+            order_status_id: 2,
             payment_status_id: 1,
         };
     }

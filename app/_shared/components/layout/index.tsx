@@ -9,14 +9,18 @@ export default function Layout({
     children,
     store,
     hasFooter = true,
+    productId,
 }: {
     children: React.ReactNode;
     store: SerializeStore;
+    productId?: string;
     hasFooter?: boolean;
 }) {
     return (
         <div className="bg-white">
-            <VisitCounter storeId={store.id}></VisitCounter>
+            <VisitCounter
+                storeId={store.id}
+                productId={productId}></VisitCounter>
             <div className="fixed-top z-50">
                 <Header store={store}></Header>
             </div>

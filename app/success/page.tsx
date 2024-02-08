@@ -54,7 +54,7 @@ export default async function SuccessPage() {
                     </div>
                     <Button
                         as={Link}
-                        href={createStoreRoute(store.slug)}
+                        href={createStoreRoute()}
                         className="no-underline"
                         color="primary">
                         Revenir à la boutique

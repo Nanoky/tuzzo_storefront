@@ -40,11 +40,11 @@ export default async function CheckoutPage() {
                 <div className="d-flex justify-content-start flex-row align-items-center gap-2">
                     <Breadcrumbs
                         title="Caisse"
-                        home_url={createStoreRoute(store.slug)}></Breadcrumbs>
+                        home_url={createStoreRoute()}></Breadcrumbs>
                 </div>
                 <OrderForm
                     storeSlug={store.slug}
-                    storeId={store.id}></OrderForm>
+                    storeId={store.id} isWildcard></OrderForm>
             </div>
         </Layout>
     );

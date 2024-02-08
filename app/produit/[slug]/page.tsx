@@ -7,7 +7,10 @@ import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
 import AddCart from "./addCart";
 import { Metadata } from "next";
 import { Card, CardBody } from "@nextui-org/react";
-import { createNotFoundRoute, createStoreRoute } from "@/app/_shared/services/router";
+import {
+    createNotFoundRoute,
+    createStoreRoute,
+} from "@/app/_shared/services/router";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
@@ -106,8 +109,8 @@ export default async function ProductPage({ params }: Props) {
         redirect(createNotFoundRoute());
     }
     return (
-        <Layout store={store} hasFooter={false}>
-            <div className="d-flex flex-column gap-3 px-product w-100 py-4">
+        <Layout store={store} hasFooter={false} productId={product.id}>
+            <div className="d-flex flex-column gap-3 px-product w-100 py-4 mb-20 sm:mb-20 md:mb-20 lg:mb-0 xl:mb-0">
                 <div className="d-flex justify-content-center flex-row align-items-center gap-2">
                     <Breadcrumbs
                         title="Détails produit"
@@ -131,16 +134,22 @@ export default async function ProductPage({ params }: Props) {
                                 <span className="text-primary font-semibold">
                                     {product.price} {product.currency}
                                 </span>
-                                <span className="text-sm">
-                                    Ajoutez ce produit au panier pour le
-                                    commander
+                                <span
+                                    className={`text-sm ${
+                                        product.quantity === 0
+                                            ? "text-danger"
+                                            : "text-black"
+                                    }`}>
+                                    {product.quantity === 0
+                                        ? "Nous sommes en rupture de stock sur ce produit, mais il sera à nouveau disponible prochainement !"
+                                        : "Ajoutez ce produit au panier pour le commander"}
                                 </span>
                             </div>
                         </div>
                     </CardBody>
                 </Card>
             </div>
-            <div className="position-absolute add-cart-section">
+            <div className="absolute add-cart-section bottom-4">
                 <AddCart product={product}></AddCart>
             </div>
         </Layout>
