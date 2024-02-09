@@ -1,9 +1,14 @@
 import { Order, OrderCustomer, OrderItem } from "../models/order";
+import { Product } from "../models/product";
+import { Store } from "../models/store";
 
 export type SaveOrderParams = {
     customer: OrderCustomer;
-    items: OrderItem[];
-    storeId: string;
+    items: {
+        product: Product;
+        quantity: number;
+    }[];
+    store: Store;
     date: Date;
     comment: string;
     finalPrice: number;
@@ -14,7 +19,7 @@ export interface IOrderActions {
 }
 
 export interface IOrderRepository {
-    save(param: { order: Order; storeId: string }): Promise<Order | null>;
+    save(param: { order: Order }): Promise<Order | null>;
 }
 
 export interface IOrderCustomerRepository {
@@ -32,6 +37,5 @@ export interface IOrderItemRepository {
     saveMany(param: { item: OrderItem[]; storeId: string }): Promise<void>;
     save(param: {
         item: OrderItem;
-        storeId: string;
     }): Promise<OrderItem | null>;
 }

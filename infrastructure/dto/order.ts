@@ -1,3 +1,4 @@
+import { DocumentReference } from "firebase/firestore";
 import { DTO } from "./dto";
 
 export interface OrderCustomerDTO extends DTO {
@@ -9,14 +10,14 @@ export interface OrderCustomerDTO extends DTO {
 }
 
 export interface OrderItemDTO extends DTO {
-    product_id: string;
+    product_id: DocumentReference;
     quantity: number;
     price: number;
-    order_id: string;
+    order_id: DocumentReference;
 }
 
 export interface OrderDTO extends DTO {
-    customer_id: string;
+    customer_id: DocumentReference;
     final_price: number;
     order_date: Date;
     order_notes: string;
