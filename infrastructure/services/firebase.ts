@@ -149,13 +149,23 @@ export class FireStoreService {
         collection: string;
         pathSegments?: string[];
         data: TData;
-        converter: FirestoreDataConverter<TData, any>;
+        converter?: FirestoreDataConverter<TData, any>;
+        getConverter?: (db: Firestore) => FirestoreDataConverter<TData, any>;
     }) {
-        const collectionRef = collection(
+        let collectionRef: any = collection(
             this.db,
             param.collection,
             ...(param.pathSegments ?? [])
-        ).withConverter(param.converter);
+        );
+        if (param.getConverter) {
+            collectionRef = collectionRef.withConverter(
+                param.getConverter(this.db)
+            );
+        }
+
+        if (param.converter) {
+            collectionRef = collectionRef.withConverter(param.converter);
+        }
         const docRef = await addDoc(collectionRef, param.data);
         const docSnap = await getDoc(docRef);
 
@@ -194,14 +204,25 @@ export class FireStoreService {
         collection: string;
         pathSegments?: string[];
         data: TData[];
-        converter: FirestoreDataConverter<TData, any>;
+        converter?: FirestoreDataConverter<TData, any>;
+        getConverter?: (db: Firestore) => FirestoreDataConverter<TData, any>;
     }) {
         const batch = writeBatch(this.db);
-        const collectionRef = collection(
+        let collectionRef: any = collection(
             this.db,
             param.collection,
             ...(param.pathSegments ?? [])
-        ).withConverter(param.converter);
+        )
+
+        if (param.getConverter) {
+            collectionRef = collectionRef.withConverter(
+                param.getConverter(this.db)
+            );
+        }
+
+        if (param.converter) {
+            collectionRef = collectionRef.withConverter(param.converter);
+        }
 
         param.data.forEach((data) => {
             const docRef = doc(collectionRef);

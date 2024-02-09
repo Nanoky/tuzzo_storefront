@@ -19,20 +19,22 @@ export class OrderBusiness implements IOrderActions {
         try {
             let order: Order | null = new Order({
                 customer: param.customer,
-                items: param.items,
+                items: [],
                 date: param.date,
                 comment: param.comment,
                 finalPrice: param.finalPrice,
+                store: param.store,
             });
             const saveOrder = async (customerId: string) => {
                 if (order) {
                     order.setCustomerId(customerId);
 
                     // save order
-                    order = await this.orderRepo.save({
-                        order,
-                        storeId: param.storeId,
+                    const savedOrder = await this.orderRepo.save({
+                        order
                     });
+                    order.id = savedOrder?.id;
+
                     if (order) {
                         for (let index = 0; index < param.items.length; index++) {
                             const item = param.items[index];
@@ -40,15 +42,14 @@ export class OrderBusiness implements IOrderActions {
                                 item: {
                                     product: item.product,
                                     quantity: item.quantity,
-                                    orderId: order?.id,
+                                    order
                                 },
-                                storeId: param.storeId,
                             });
 
                             if (savedItem) {
                                 const products = await this.productRepo.search({
                                     id: item.product.id,
-                                    storeId: param.storeId,
+                                    storeId: order.store.id,
                                 });
                                 let product = products[0];
                                 if (product) {
@@ -56,7 +57,7 @@ export class OrderBusiness implements IOrderActions {
 
                                     await this.productRepo.update({
                                         product: product,
-                                        storeId: param.storeId,
+                                        storeId: order.store.id,
                                     });
                                 } else {
                                     throw new Error(
@@ -86,7 +87,7 @@ export class OrderBusiness implements IOrderActions {
             // check if customer exist
             const customer = await this.orderCustomerRepo.get({
                 phone: `${param.customer.phoneIndicator}${param.customer.phone}`,
-                storeId: param.storeId,
+                storeId: param.store.id,
             });
 
             if (customer) {
@@ -95,7 +96,7 @@ export class OrderBusiness implements IOrderActions {
                 // if customer not exist create it
                 const customer = await this.orderCustomerRepo.save({
                     customer: param.customer,
-                    storeId: param.storeId,
+                    storeId: param.store.id,
                 });
 
                 if (customer) {

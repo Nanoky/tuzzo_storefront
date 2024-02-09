@@ -12,6 +12,7 @@ import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createSuccessRoute } from "@/app/_shared/services/router";
+import { Store } from "@/business/models/store";
 
 type Options<TKey> = Map<TKey, boolean>;
 export type FormValues = {
@@ -40,11 +41,11 @@ const defaultFormValues: FormValues = {
 
 export default function OrderForm({
     storeSlug,
-    storeId,
+    store,
     isWildcard,
 }: {
     storeSlug: string;
-    storeId: string;
+    store: Store;
     isWildcard?: boolean;
 }) {
     const {
@@ -81,7 +82,7 @@ export default function OrderForm({
                     quantity: item.quantity,
                 };
             }),
-            storeId,
+            store,
         })
             .then(() => {
                 reset(defaultFormValues);
@@ -92,6 +93,8 @@ export default function OrderForm({
                 );
             })
             .catch((error) => {
+                console.error(error);
+                console.trace(error);
                 enqueueSnackbar(error.message, { variant: "error" });
                 setIsLoading(false);
             });

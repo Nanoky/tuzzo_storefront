@@ -1,12 +1,16 @@
 import { Order, OrderCustomer, OrderItem } from "@/business/models/order";
 import {
     DocumentData,
+    Firestore,
     FirestoreDataConverter,
     QueryDocumentSnapshot,
     SnapshotOptions,
+    doc,
 } from "firebase/firestore";
 import { OrderCustomerDTO, OrderDTO, OrderItemDTO } from "../dto/order";
 import { Product } from "@/business/models/product";
+import { CollectionNames } from "../enums/collection";
+import { Store } from "@/business/models/store";
 
 export class OrderCustomerConverter
     implements FirestoreDataConverter<OrderCustomer, OrderCustomerDTO>
@@ -39,12 +43,16 @@ export class OrderCustomerConverter
 export class OrderItemConverter
     implements FirestoreDataConverter<OrderItem, OrderItemDTO>
 {
+    constructor(private db: Firestore) {}
     toFirestore(modelObject: OrderItem): OrderItemDTO {
         return {
-            product_id: modelObject.product.id,
+            product_id: doc(this.db, `${CollectionNames.STORES}/${modelObject.order.store.id}/${CollectionNames.PRODUCTS}/${modelObject.product.id}`),
             quantity: modelObject.quantity,
             price: modelObject.product.price,
-            order_id: modelObject.orderId ?? "",
+            order_id: doc(
+                this.db,
+                `${CollectionNames.STORES}/${modelObject.order.store.id}/${CollectionNames.ORDERS}/${modelObject.order.id}`
+            ),
             created_at: new Date(),
             modified_at: new Date(),
         };
@@ -68,18 +76,36 @@ export class OrderItemConverter
                 slug: "",
             }),
             quantity: data.quantity,
-            orderId: data.order_id,
+            order: new Order({
+                id: data.order_id,
+                comment: "",
+                date: new Date(),
+                finalPrice: 0,
+                customer: {
+                    id: "",
+                    address: "",
+                    fullname: "",
+                    phone: "",
+                    phoneIndicator: "",
+                },
+                items: [],
+                store: new Store({ id: "", name: "", slug: "" }),
+            }),
         };
     }
 }
 
 export class OrderConverter implements FirestoreDataConverter<Order, OrderDTO> {
+    constructor(private db: Firestore) {}
     private generateRandom6DigitNumber() {
         return Math.floor(Math.random() * 1000000);
     }
     toFirestore(modelObject: Order): OrderDTO {
         return {
-            customer_id: modelObject.customer.id ?? "",
+            customer_id: doc(
+                this.db,
+                `${modelObject.customer.id}`
+            ),
             final_price: modelObject.finalPrice,
             order_date: modelObject.date,
             order_notes: modelObject.comment,
@@ -103,12 +129,23 @@ export class OrderConverter implements FirestoreDataConverter<Order, OrderDTO> {
                 fullname: "",
                 phone: "",
                 address: "",
+                id: data.customer_id,
             },
             items: [],
             date: data.order_date,
             comment: data.order_notes,
             finalPrice: data.final_price,
             id: snapshot.id,
+            store: new Store({
+                id: "",
+                name: "",
+                address: "",
+                phone: "",
+                description: "",
+                logo: "",
+                city: "",
+                slug: "",
+            }),
         });
     }
 }

@@ -32,7 +32,7 @@ export class VisitConverter implements FirestoreDataConverter<Visit, VisitDTO> {
     toFirestore(modelObject: Visit): VisitDTO {
         return {
             visit_date: modelObject.date,
-            product_id: modelObject.productId,
+            product_id: modelObject.productId ?? null,
         };
     }
     fromFirestore(

@@ -1,4 +1,5 @@
 import { Product } from "./product";
+import { Store } from "./store";
 
 export type OrderCustomer = {
     id?: string;
@@ -11,7 +12,7 @@ export type OrderCustomer = {
 export type OrderItem = {
     product: Product;
     quantity: number;
-    orderId?: string;
+    order: Order;
 };
 
 export class Order {
@@ -19,7 +20,7 @@ export class Order {
     public get id(): string | undefined {
         return this._id;
     }
-    private set id(value: string | undefined) {
+    public set id(value: string | undefined) {
         this._id = value;
     }
     private _customer!: OrderCustomer;
@@ -58,6 +59,14 @@ export class Order {
         this._finalPrice = value;
     }
 
+    private _store!: Store;
+    public get store(): Store {
+        return this._store;
+    }
+    private set store(value: Store) {
+        this._store = value;
+    }
+
     constructor(params: {
         id?: string;
         customer: OrderCustomer;
@@ -65,6 +74,7 @@ export class Order {
         date: Date;
         comment: string;
         finalPrice: number;
+        store: Store;
     }) {
         this.id = params.id;
         this.customer = params.customer;
@@ -72,6 +82,7 @@ export class Order {
         this.date = params.date;
         this.comment = params.comment;
         this.finalPrice = params.finalPrice;
+        this.store = params.store;
     }
 
     setCustomerId(id: string) {

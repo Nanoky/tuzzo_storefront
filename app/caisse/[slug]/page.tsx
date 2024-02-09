@@ -27,7 +27,7 @@ export default async function CheckoutPage({
                 </div>
                 <OrderForm
                     storeSlug={store.slug}
-                    storeId={store.id}></OrderForm>
+                    store={store}></OrderForm>
             </div>
         </Layout>
     );
