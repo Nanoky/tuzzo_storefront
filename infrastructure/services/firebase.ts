@@ -50,7 +50,7 @@ export class Firebase {
 
 export class FireStoreService {
     private _db!: Firestore;
-    private get db(): Firestore {
+    public get db(): Firestore {
         return this._db;
     }
     private set db(value: Firestore) {
