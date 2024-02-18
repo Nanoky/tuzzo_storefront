@@ -1,9 +1,11 @@
 import { CartBusiness } from "./business/logic/cart";
+import { CategoryBusiness } from "./business/logic/category";
 import { OrderBusiness } from "./business/logic/order";
 import { ProductBusiness } from "./business/logic/product";
 import { StoreBusiness } from "./business/logic/store";
 import { VisitBusiness } from "./business/logic/visit";
 import { CartRepository } from "./infrastructure/repository/cart";
+import { CategoryRepository } from "./infrastructure/repository/category";
 import {
     OrderCustomerRepository,
     OrderItemRepository,
@@ -34,6 +36,7 @@ export class Instances {
     private product!: ProductBusiness;
     private visit!: VisitBusiness;
     private order!: OrderBusiness;
+    private category!: CategoryBusiness;
     private constructor() {
         const sessionStorage = new SessionStorage();
 
@@ -59,6 +62,11 @@ export class Instances {
             orderRepo,
             orderCustomerRepo,
             orderItemRepo,
+            productRepository
+        );
+
+        const categoryRepository = new CategoryRepository(
+            this.apiService,
             productRepository
         );
     }
@@ -101,5 +109,13 @@ export class Instances {
         }
 
         return Instances.instance.order;
+    }
+
+    static getCategoryInstance() {
+        if (!Instances.instance) {
+            Instances.instance = new Instances();
+        }
+
+        return Instances.instance.category;
     }
 }

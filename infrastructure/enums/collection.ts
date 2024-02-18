@@ -6,4 +6,5 @@ export enum CollectionNames {
     ORDER_ITEMS = "order_items",
     CUSTOMERS = "customers",
     VISITS = "storefront_visits",
+    CATEGORIES = "collections",
 }
