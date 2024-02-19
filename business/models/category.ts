@@ -10,13 +10,6 @@ export class Category extends Entity {
     private set name(value: string) {
         this._name = value;
     }
-    private _products!: Product[];
-    public get products(): Product[] {
-        return this._products;
-    }
-    private set products(value: Product[]) {
-        this._products = value;
-    }
 
     private _store!: Store;
     public get store(): Store {
@@ -26,10 +19,9 @@ export class Category extends Entity {
         this._store = value;
     }
 
-    constructor(param: { id: string; name: string; products: Product[]; store: Store }) {
+    constructor(param: { id: string; name: string; store: Store }) {
         super({ id: param.id });
         this.name = param.name;
-        this.products = param.products;
         this.store = param.store;
     }
 }

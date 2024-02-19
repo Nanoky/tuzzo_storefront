@@ -1,35 +1,43 @@
 import { Category } from "@/business/models/category";
 import {
     DocumentData,
-    Firestore,
     FirestoreDataConverter,
     QueryDocumentSnapshot,
     SnapshotOptions,
-    doc,
-    getDoc,
 } from "firebase/firestore";
 import { CategoryDTO } from "../dto/category";
-import { CollectionNames } from "../enums/collection";
 import { Store } from "@/business/models/store";
-import { ProductAdapter } from "./product";
-import { Product } from "@/business/models/product";
-import { IProductRepository } from "@/business/ports/product";
+
+export class CategoryDTOConverter
+    implements FirestoreDataConverter<CategoryDTO, CategoryDTO>
+{
+    toFirestore(modelObject: CategoryDTO): CategoryDTO {
+        return modelObject;
+    }
+    fromFirestore(
+        snapshot: QueryDocumentSnapshot<DocumentData, DocumentData>,
+        options?: SnapshotOptions | undefined
+    ): CategoryDTO {
+        const data = snapshot.data(options);
+        return {
+            name: data.name,
+            collection_id: data.collection_id,
+            isdeleted: data.isdeleted,
+            products_of_this_collection: data.products_of_this_collection,
+        };
+    }
+}
 
 export class CategoryAdapter
     implements FirestoreDataConverter<Category, CategoryDTO>
 {
-    constructor(private db: Firestore, private productRepo: IProductRepository) {}
+    constructor() {}
     toFirestore(modelObject: Category): CategoryDTO {
         return {
             name: modelObject.name,
             collection_id: modelObject.id,
             isdeleted: false,
-            products_of_this_collection: modelObject.products.map((p) => {
-                return doc(
-                    this.db,
-                    `${CollectionNames.STORES}/${modelObject.store.id}/${CollectionNames.PRODUCTS}/${p.id}`
-                );
-            }),
+            products_of_this_collection: [],
         };
     }
     fromFirestore(
@@ -45,27 +53,6 @@ export class CategoryAdapter
                 name: "",
                 slug: "",
             }),
-            products: data.products_of_this_collection
-                .map(async (p: string) => {
-                    return await this.productRepo.search({
-                        id: p,
-                        storeId: snapshot.ref.parent.id,
-                    })
-                    /* const ref = doc(this.db, p).withConverter(
-                        new ProductAdapter()
-                    );
-
-                    const docSnap = await getDoc(ref);
-
-                    if (docSnap.exists()) {
-                        return docSnap.data();
-                    } else {
-                        return null;
-                    } */
-                })
-                /* .filter((product: Product | null) => {
-                    return product !== null;
-                }), */
         });
     }
 }
