@@ -17,7 +17,7 @@ import { CartItem } from "@/business/models/cart";
 import "./cart.css";
 import "./drawer.css";
 import { useRouter } from "next/navigation";
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Badge, Button, Card, CardBody } from "@nextui-org/react";
 import { getCurrencyLabel } from "../../shared/currency";
 import { CustomImage } from "./custom-image";
 import { createCheckoutRoute } from "../../services/router";
@@ -52,20 +52,20 @@ export function CartButton({
 
     return (
         <>
-            <button
-                className="btn btn-outline-primary position-relative border-3 rounded-4"
-                title="Cart"
-                onClick={handleClick}>
-                <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                {count > 0 && (
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-primary">
-                        {count}
-                        <span className="visually-hidden">
-                            Nombre d&apos;article dans le panier
-                        </span>
-                    </span>
-                )}
-            </button>
+            <Badge
+                isInvisible={count === 0}
+                content={count}
+                shape="circle"
+                color="danger">
+                <Button
+                    isIconOnly
+                    aria-label="Cart"
+                    variant="solid"
+                    className="bg-white"
+                    onClick={handleClick}>
+                    <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                </Button>
+            </Badge>
 
             <Drawer
                 open={open}

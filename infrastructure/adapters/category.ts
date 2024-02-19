@@ -6,7 +6,6 @@ import {
     SnapshotOptions,
 } from "firebase/firestore";
 import { CategoryDTO } from "../dto/category";
-import { Store } from "@/business/models/store";
 
 export class CategoryDTOConverter
     implements FirestoreDataConverter<CategoryDTO, CategoryDTO>
@@ -18,6 +17,7 @@ export class CategoryDTOConverter
         snapshot: QueryDocumentSnapshot<DocumentData, DocumentData>,
         options?: SnapshotOptions | undefined
     ): CategoryDTO {
+        console.debug("fromFirestore", snapshot.data(options));
         const data = snapshot.data(options);
         return {
             name: data.name,
@@ -48,11 +48,6 @@ export class CategoryAdapter
         return new Category({
             id: data.collection_id,
             name: data.name,
-            store: new Store({
-                id: "",
-                name: "",
-                slug: "",
-            }),
         });
     }
 }

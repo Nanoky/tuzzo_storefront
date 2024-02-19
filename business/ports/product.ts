@@ -10,7 +10,15 @@ export type SearchProductParams = {
     id?: string;
     slug?: string;
 };
+export interface SearchStoreProductsParams {
+    storeId: string;
+};
+export interface SearchBestProductsParams extends SearchStoreProductsParams {
+    count: number;
+}
 export interface IProductRepository {
     search(params: SearchProductParams): Promise<Product[]>;
     update(param: { product: Product; storeId: string }): Promise<Product | null>;
+    getCategoryProducts(param: { id: string; storeId: string }): Promise<Product[]>;
+    getBestProducts(params: SearchBestProductsParams): Promise<Product[]>;
 }

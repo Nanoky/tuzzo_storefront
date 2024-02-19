@@ -15,5 +15,5 @@ export type SearchCategoryParams = {
 
 export interface ICategoryRepository {
     search(params: SearchCategoryParams): Promise<Category[]>;
-    getProducts(param: { id: string; storeId: string }): Promise<Product[]>;
+    searchRaw(params: SearchCategoryParams): Promise<any>;
 }

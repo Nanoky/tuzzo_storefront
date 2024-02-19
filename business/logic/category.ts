@@ -1,12 +1,13 @@
 import { Category } from "../models/category";
 import { Product } from "../models/product";
 import { ICategoryActions, ICategoryRepository } from "../ports/category";
+import { IProductRepository } from "../ports/product";
 
 export class CategoryBusiness implements ICategoryActions {
-    constructor(private repository: ICategoryRepository) {}
+    constructor(private repository: ICategoryRepository, private productRepository: IProductRepository) {}
     getProducts(param: { id: string; storeId: string }): Promise<Product[]> {
-        return this.repository
-            .getProducts({
+        return this.productRepository
+            .getCategoryProducts({
                 id: param.id,
                 storeId: param.storeId,
             })

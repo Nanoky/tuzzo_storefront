@@ -19,8 +19,8 @@ export default function Home() {
     const defautShopSlug = "steco"; //"6P8v2H4sx7uIJDpPV8zm";
     handleRedirect();
     return (
-        <main className="bg-white h-100">
-            <div className="d-flex flex-column justify-content-center align-items-center h-100 gap-5 ">
+        <main className="bg-white h-full">
+            <div className="flex flex-col justify-center items-center h-full gap-5 ">
                 <Image src={logo} alt="logo" width={200} />
                 <Button
                     as={Link}

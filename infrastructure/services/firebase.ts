@@ -12,6 +12,7 @@ import {
     getDocs,
     getFirestore,
     limit,
+    orderBy,
     query,
     setDoc,
     updateDoc,
@@ -70,6 +71,7 @@ export class FireStoreService {
         }[];
         converter: FirestoreDataConverter<TData, any>;
         limit?: number;
+        orderBy?: string;
     }) {
         const collectionRef = collection(
             this.db,
@@ -82,12 +84,58 @@ export class FireStoreService {
             ...param.filters.map((filter) =>
                 where(filter.fieldPath, filter.opStr, filter.value)
             ),
-            ...(param.limit ? [limit(param.limit)] : [])
+            ...(param.limit ? [limit(param.limit)] : []),
+            ...(param.orderBy ? [orderBy(param.orderBy)] : [])
         ).withConverter<TData>(param.converter);
+
+        console.debug("q", q)
 
         const querySnapshot = await getDocs(q);
 
+        console.debug("querySnapshot", querySnapshot.size);
+
         let data: TData[] = [];
+
+        querySnapshot.forEach((doc) => {
+            data.push(doc.data());
+        });
+
+        return data;
+    }
+
+    async searchRaw(param: {
+        collection: string;
+        pathSegments?: string[];
+        filters: {
+            fieldPath: string | FieldPath;
+            opStr: WhereFilterOp;
+            value: unknown;
+        }[];
+        limit?: number;
+        orderBy?: string;
+    }) {
+        const collectionRef = collection(
+            this.db,
+            param.collection,
+            ...(param.pathSegments ?? [])
+        );
+
+        const q = query(
+            collectionRef,
+            ...param.filters.map((filter) =>
+                where(filter.fieldPath, filter.opStr, filter.value)
+            ),
+            ...(param.limit ? [limit(param.limit)] : []),
+            ...(param.orderBy ? [orderBy(param.orderBy)] : [])
+        );
+
+        console.debug("q", q)
+
+        const querySnapshot = await getDocs(q);
+
+        console.debug("querySnapshot", querySnapshot.size);
+
+        let data: any[] = [];
 
         querySnapshot.forEach((doc) => {
             data.push(doc.data());
@@ -212,7 +260,7 @@ export class FireStoreService {
             this.db,
             param.collection,
             ...(param.pathSegments ?? [])
-        )
+        );
 
         if (param.getConverter) {
             collectionRef = collectionRef.withConverter(

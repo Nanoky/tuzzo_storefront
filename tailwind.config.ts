@@ -1,6 +1,7 @@
 // tailwind.config.js
 import { nextui } from "@nextui-org/react";
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require('tailwindcss/colors') 
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -10,16 +11,22 @@ const config = {
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                ...colors,
+                primary: "#99ff99",
+                secondary: "#0544A8",
+                primaryNew: "#000000",
+                secondaryNew: "#EFE7D2",
+            }
+        },
         colors: {
-            primary: "#99ff99",
-            secondary: "#0544A8",
         },
         screens: {
-            '2xs': '320px',
-            'xs': '475px',
             ...defaultTheme.screens,
-          },
+            "2xs": "320px",
+            xs: "475px",
+        },
     },
     darkMode: "class",
     plugins: [nextui()],

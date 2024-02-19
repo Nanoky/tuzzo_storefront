@@ -7,3 +7,7 @@ export function getAllCategories(params: { storeId: string }) {
 export function searchCategoryById(param: { id: string; storeId: string }) {
     return Instances.getCategoryInstance().getById(param);
 }
+
+export function getCategoryProducts(param: { id: string; storeId: string }) {
+    return Instances.getCategoryInstance().getProducts(param);
+}

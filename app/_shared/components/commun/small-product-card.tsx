@@ -8,13 +8,12 @@ import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
 import { SerializeProduct } from "../../models/product";
 import Skeleton from "react-loading-skeleton";
-import { CustomImage } from "./custom-image";
 import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
 
-export default function ProductCard({
+export default function SmallProductCard({
     product,
     storeSlug,
 }: {
@@ -57,38 +56,40 @@ export default function ProductCard({
 
     return (
         <>
-            <Card className="cursor-pointer">
-                <CardBody>
+            <Card className="cursor-pointer h-auto w-40">
+                <CardBody className="p-0">
                     {item && (
                         <Image
                             src={item.images[0]}
-                            className="object-contain w-full h-72 rounded-b-none"
+                            className="object-contain h-28 w-full rounded-b-none"
                             onClick={handleGoToProduct}
-                            alt={item.name}
-                            width={"100%"}></Image>
+                            alt={item.name} width={'100%'}></Image>
                     )}
                     <div
-                        className="flex flex-row justify-between p-0 pt-3"
+                        className="p-4 h-32 flex flex-col justify-between"
                         onClick={handleGoToProduct}>
-                        <div className="line-clamp-1">
-                            {item ? (
-                                item.name
-                            ) : (
-                                <Skeleton count={1} width={"200px"} />
-                            )}
+                        <div>
+                            <div className="text-sm line-clamp-2 font-semibold">
+                                {item ? (
+                                    item.name
+                                ) : (
+                                    <Skeleton count={1} width={"200px"} />
+                                )}
+                            </div>
+                            <div className="text-xs text-gray-500 line-clamp-1">
+                                {item?.categories?.[0]?.name}
+                            </div>
                         </div>
-                        <div className="font-bold">
-                            {item ? (
-                                `${item.price} ${getCurrencyLabel(
-                                    item.currency
-                                )}`
-                            ) : (
-                                <Skeleton width="60px" count={1} />
-                            )}
-                        </div>
-                    </div>
-                    <div className="absolute cart-button z-10">
-                        {item && (
+                        <div className="flex flex-row justify-between items-center h-10">
+                            <span className="font-bold text-sm">
+                                {item ? (
+                                    `${item.price} ${getCurrencyLabel(
+                                        item.currency
+                                    )}`
+                                ) : (
+                                    <Skeleton width="60px" count={1} />
+                                )}
+                            </span>
                             <Button
                                 type="button"
                                 aria-label="Add to cart"
@@ -107,7 +108,7 @@ export default function ProductCard({
                                         icon={faShoppingCart}></FontAwesomeIcon>
                                 )}
                             </Button>
-                        )}
+                        </div>
                     </div>
                 </CardBody>
             </Card>

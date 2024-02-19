@@ -4,9 +4,9 @@ export function globalRedirection(hostname: string, pathname: string) {
 
 export function createStoreRoute(storeSlug?: string) {
     if (!storeSlug) {
-        return "/boutique";
+        return "/boutique-new";
     }
-    return `/boutique/${storeSlug}`;
+    return `/boutique-new/${storeSlug}`;
 }
 
 export function createProductRoute(params: {

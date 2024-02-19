@@ -3,14 +3,12 @@ import { Store } from "@/business/models/store";
 import {
     IStoreRepository,
     SearchStoreParams,
-    SearchStoreProductsParams,
 } from "@/business/ports/store";
 import { FirestoreDataConverter } from "firebase/firestore";
 import { StoreAdapter } from "../adapters/store";
 import { FireStoreService } from "../services/firebase";
 import { ProductAdapter } from "../adapters/product";
 import { CollectionNames } from "../enums/collection";
-
 export class StoreRepository implements IStoreRepository {
     private converter: FirestoreDataConverter<Store, any>;
     private productConverter: FirestoreDataConverter<Product, any>;
@@ -49,24 +47,5 @@ export class StoreRepository implements IStoreRepository {
             collection: `${CollectionNames.STORES}`,
             converter: this.converter,
         });
-    }
-    getProducts(params: SearchStoreProductsParams): Promise<Product[]> {
-        return this.service
-            .search({
-                collection: `${CollectionNames.STORES}`,
-                pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
-                filters: [
-                    { fieldPath: "isdeleted", opStr: "==", value: false },
-                ],
-                converter: this.productConverter,
-                limit: 9,
-            })
-            .then((data) => {
-                if (data) {
-                    return data;
-                } else {
-                    return [];
-                }
-            });
     }
 }

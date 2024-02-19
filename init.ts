@@ -45,10 +45,16 @@ export class Instances {
 
         const app = new Firebase();
         this.apiService = new FireStoreService(app);
-        const storeRepository = new StoreRepository(this.apiService);
-        this.store = new StoreBusiness(storeRepository);
 
-        const productRepository = new ProductRepository(this.apiService);
+        const categoryRepository = new CategoryRepository(this.apiService);
+        const productRepository = new ProductRepository(
+            this.apiService,
+            categoryRepository
+        );
+        const storeRepository = new StoreRepository(this.apiService);
+
+        this.store = new StoreBusiness(storeRepository, productRepository);
+
         this.product = new ProductBusiness(productRepository);
 
         const visitRepository = new VisitRepository(this.apiService);
@@ -65,8 +71,8 @@ export class Instances {
             productRepository
         );
 
-        const categoryRepository = new CategoryRepository(
-            this.apiService,
+        this.category = new CategoryBusiness(
+            categoryRepository,
             productRepository
         );
     }

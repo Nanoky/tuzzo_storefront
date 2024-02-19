@@ -8,10 +8,56 @@ import {
     DocumentData,
     SnapshotOptions,
 } from "firebase/firestore";
-import { ProductDTO } from "../dto/product";
+import { ProductDTO, ProductDTOFull } from "../dto/product";
 
-const DEFAULT_PRODUCT_IMAGE =
+export const DEFAULT_PRODUCT_IMAGE =
     "https://firebasestorage.googleapis.com/v0/b/ayoka-a2a41.appspot.com/o/no-product-image-available.png?alt=media&token=7edf44a6-472a-4352-8462-780ecc7e6347";
+
+export class ProductDTOAdapter
+    implements FirestoreDataConverter<ProductDTOFull, any>
+{
+    toFirestore(
+        modelObject: WithFieldValue<ProductDTOFull>
+    ): WithFieldValue<DocumentData>;
+    toFirestore(
+        modelObject: PartialWithFieldValue<ProductDTOFull>,
+        options: SetOptions
+    ): PartialWithFieldValue<DocumentData>;
+    toFirestore(
+        modelObject: ProductDTOFull,
+        options?: unknown
+    ): WithFieldValue<DocumentData> | PartialWithFieldValue<DocumentData> {
+        return {
+            name: modelObject.name,
+            description: modelObject.description,
+            price: modelObject.price,
+            currency: modelObject.currency,
+            product_images: modelObject.product_images,
+            product_categories: modelObject.product_categories,
+            quantity: modelObject.quantity,
+            total_unit_sold: modelObject.total_unit_sold,
+            slug: modelObject.slug,
+        };
+    }
+    fromFirestore(
+        snapshot: QueryDocumentSnapshot<DocumentData, DocumentData>,
+        options?: SnapshotOptions | undefined
+    ): ProductDTOFull {
+        const data = snapshot.data(options);
+        return {
+            id: snapshot.id,
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            currency: data.currency,
+            product_images: data.product_images,
+            product_categories: data.product_categories,
+            quantity: data.quantity,
+            total_unit_sold: data.total_unit_sold,
+            slug: data.slug,
+        };
+    }
+}
 
 export class ProductAdapter
     implements FirestoreDataConverter<Product, ProductDTO>
@@ -32,7 +78,7 @@ export class ProductAdapter
                 currency: modelObject.currency,
                 description: modelObject.description,
                 name: modelObject.name,
-                product_categories: modelObject.categories,
+                product_categories: modelObject.categories.map((cat) => cat.id),
                 product_images: modelObject.images,
                 quantity: modelObject.quantity,
                 price: modelObject.price,
@@ -59,7 +105,7 @@ export class ProductAdapter
                     ? data.product_images
                     : [DEFAULT_PRODUCT_IMAGE],
             quantity: data.quantity,
-            categories: data.product_categories,
+            categories: [],
             nbSold: data.total_unit_sold,
             slug: data.slug,
         });
