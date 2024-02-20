@@ -1,5 +1,3 @@
-import MiniProductCard from "@/app/_shared/components/commun/mini-product-card";
-import ProductCard from "@/app/_shared/components/commun/product-card";
 import Layout from "@/app/_shared/components/layout-new";
 import { useShop } from "@/app/_shared/hooks/shop";
 import { createNotFoundRoute } from "@/app/_shared/services/router";
@@ -7,7 +5,6 @@ import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { APP_LOGO } from "@/app/_shared/shared/constants";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { Fragment } from "react";
 import BestProducts from "./best-products";
 import { useCategories } from "@/app/_shared/hooks/category";
 import ListProducts from "./list-products";

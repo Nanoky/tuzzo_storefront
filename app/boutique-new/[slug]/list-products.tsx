@@ -1,4 +1,4 @@
-
+"use client";
 import MiniProductCard from "@/app/_shared/components/commun/mini-product-card";
 import ProductCard from "@/app/_shared/components/commun/product-card";
 import { useCategories } from "@/app/_shared/hooks/category";
@@ -25,24 +25,28 @@ export default function ListProducts({
     const [selectedCategory, setSelectedCategory] = useState<Category>();
     const [products, setProducts] = useState<Product[]>(initProducts ?? []);
 
-    if (!selectedCategory) {
-        storehook.getProducts(store.id).then((products) => {
-            //setProducts(products);
-        });
-    } else {
-        getProducts({ id: categories[0].id, storeId: store.id }).then(
-            (products) => {
+    useEffect(() => {
+        if (!selectedCategory) {
+            storehook.getProducts(store.id).then((products) => {
+                console.log("products", products);
                 setProducts(products);
-            }
-        );
-    }
+            });
+        } else {
+            getProducts({ id: categories[0].id, storeId: store.id }).then(
+                (products) => {
+                    console.log("products", products);
+                    setProducts(products);
+                }
+            );
+        }
+    }, [selectedCategory]);
 
     const handleSelectCategory = (category?: Category) => {
         setSelectedCategory(category);
     };
     return (
         <div className="flex flex-col gap-3">
-            <div className="flex flex-row flex-nowrap gap-1">
+            <div className="flex flex-row flex-nowrap gap-1 overflow-x-auto">
                 <Chip
                     className={`${
                         !selectedCategory

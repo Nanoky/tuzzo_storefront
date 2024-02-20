@@ -16,7 +16,7 @@ function handleRedirect() {
 }
 
 export default function Home() {
-    const defautShopSlug = "steco"; //"6P8v2H4sx7uIJDpPV8zm";
+    const defautShopSlug = "steco";
     handleRedirect();
     return (
         <main className="bg-white h-full">

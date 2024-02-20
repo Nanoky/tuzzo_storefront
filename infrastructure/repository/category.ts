@@ -79,6 +79,7 @@ export class CategoryRepository implements ICategoryRepository {
     }
 
     searchRaw(params: SearchCategoryParams): Promise<CategoryDTO[]> {
+        console.debug("searchRaw data", params);
         if (params.id) {
             return this.service
                 .searchRaw({
@@ -96,6 +97,7 @@ export class CategoryRepository implements ICategoryRepository {
                     ],
                 })
                 .then((data) => {
+                    console.debug("searchRaw res", data);
                     if (data) {
                         return data;
                     }

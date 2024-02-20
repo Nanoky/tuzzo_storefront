@@ -3,7 +3,6 @@ import {
     IProductRepository,
     SearchBestProductsParams,
     SearchProductParams,
-    SearchStoreProductsParams,
 } from "@/business/ports/product";
 import { FireStoreService } from "../services/firebase";
 import { FirestoreDataConverter } from "firebase/firestore";
@@ -30,23 +29,8 @@ export class ProductRepository implements IProductRepository {
         this.dtoConverter = new ProductDTOAdapter();
         this.dtoCatAdapter = new CategoryDTOConverter();
     }
-    async getBestProducts(
-        params: SearchBestProductsParams
-    ): Promise<Product[]> {
-        const list = await this.service
-            .search({
-                collection: `${CollectionNames.STORES}`,
-                pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
-                filters: [
-                    { fieldPath: "isdeleted", opStr: "==", value: false },
-                ],
-                converter: this.dtoConverter,
-                limit: params.count,
-                orderBy: "total_unit_sold",
-            })
-            .then((data) => {
-                return data;
-            });
+
+    async formatProductList(list: any[], storeId: string): Promise<Product[]> {
         if (list && list.length > 0) {
             console.debug("product list", list);
             const products = list.map(async (data) => {
@@ -55,7 +39,7 @@ export class ProductRepository implements IProductRepository {
                         return await this.categoryRepo
                             .search({
                                 id: cat,
-                                storeId: params.storeId,
+                                storeId: storeId,
                             })
                             .then((data) => {
                                 if (data && data.length > 0) {
@@ -96,6 +80,25 @@ export class ProductRepository implements IProductRepository {
         } else {
             return [];
         }
+    }
+    async getBestProducts(
+        params: SearchBestProductsParams
+    ): Promise<Product[]> {
+        const list = await this.service
+            .search({
+                collection: `${CollectionNames.STORES}`,
+                pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
+                filters: [
+                    { fieldPath: "isdeleted", opStr: "==", value: false },
+                ],
+                converter: this.dtoConverter,
+                limit: params.count,
+                orderBy: "total_unit_sold",
+            })
+            .then((data) => {
+                return data;
+            });
+        return await this.formatProductList(list, params.storeId);
     }
     async getCategoryProducts(param: {
         id: string;
@@ -155,47 +158,7 @@ export class ProductRepository implements IProductRepository {
                 converter: this.dtoConverter,
             });
 
-            if (list && list.length > 0) {
-                const products = list.map(async (data) => {
-                    const categoriesPromies =
-                        data.product_categories?.map(async (cat: any) => {
-                            return await this.categoryRepo
-                                .search({
-                                    id: cat,
-                                    storeId: params.storeId,
-                                })
-                                .then((data) => {
-                                    if (data && data.length > 0) {
-                                        return data[0];
-                                    }
-                                    throw new Error("Catégorie introuvable");
-                                });
-                        }) ?? [];
-
-                    const categories = await Promise.all(categoriesPromies);
-
-                    return new Product({
-                        id: data.id,
-                        name: data.name,
-                        description: data.description,
-                        price: data.price,
-                        currency: data.currency ?? "",
-                        images: data.product_images
-                            ? data.product_images?.length > 0
-                                ? data.product_images
-                                : [DEFAULT_PRODUCT_IMAGE]
-                            : [DEFAULT_PRODUCT_IMAGE],
-                        quantity: data.quantity ?? 0,
-                        categories: categories,
-                        nbSold: data.total_unit_sold ?? 0,
-                        slug: data.slug,
-                    });
-                });
-
-                return await Promise.all(products);
-            } else {
-                return [];
-            }
+            return await this.formatProductList(list, params.storeId);
         }
 
         if (params.id) {
@@ -217,47 +180,7 @@ export class ProductRepository implements IProductRepository {
                     }
                 });
 
-            if (list && list.length > 0) {
-                const products = list.map(async (data) => {
-                    const categoriesPromies =
-                        data.product_categories?.map(async (cat) => {
-                            return await this.categoryRepo
-                                .search({
-                                    id: cat,
-                                    storeId: params.storeId,
-                                })
-                                .then((data) => {
-                                    if (data && data.length > 0) {
-                                        return data[0];
-                                    }
-                                    throw new Error("Catégorie introuvable");
-                                });
-                        }) ?? [];
-
-                    const categories = await Promise.all(categoriesPromies);
-
-                    return new Product({
-                        id: data.id,
-                        name: data.name,
-                        description: data.description,
-                        price: data.price,
-                        currency: data.currency ?? "",
-                        images: data.product_images
-                            ? data.product_images?.length > 0
-                                ? data.product_images
-                                : [DEFAULT_PRODUCT_IMAGE]
-                            : [DEFAULT_PRODUCT_IMAGE],
-                        quantity: data.quantity ?? 0,
-                        categories: categories,
-                        nbSold: data.total_unit_sold ?? 0,
-                        slug: data.slug,
-                    });
-                });
-
-                return await Promise.all(products);
-            } else {
-                return [];
-            }
+            return await this.formatProductList(list, params.storeId);
         }
 
         const list = await this.service.search({
@@ -267,54 +190,6 @@ export class ProductRepository implements IProductRepository {
             converter: this.dtoConverter,
         });
 
-        if (list && list.length > 0) {
-            console.debug("product list", list);
-            const products = list.map(async (data) => {
-                const categoriesPromies =
-                    data.product_categories?.map(async (cat: any) => {
-                        return await this.categoryRepo
-                            .search({
-                                id: cat,
-                                storeId: params.storeId,
-                            })
-                            .then((data) => {
-                                if (data && data.length > 0) {
-                                    return data[0];
-                                }
-                                throw new Error("Catégorie introuvable");
-                            });
-                    }) ?? [];
-
-                console.debug(
-                    "product categories promies count",
-                    categoriesPromies.length
-                );
-
-                const categories = await Promise.all(categoriesPromies);
-
-                console.debug("product categories", categories);
-
-                return new Product({
-                    id: data.id,
-                    name: data.name,
-                    description: data.description,
-                    price: data.price,
-                    currency: data.currency ?? "",
-                    images: data.product_images
-                        ? data.product_images?.length > 0
-                            ? data.product_images
-                            : [DEFAULT_PRODUCT_IMAGE]
-                        : [DEFAULT_PRODUCT_IMAGE],
-                    quantity: data.quantity ?? 0,
-                    categories: categories,
-                    nbSold: data.total_unit_sold ?? 0,
-                    slug: data.slug,
-                });
-            });
-
-            return await Promise.all(products);
-        } else {
-            return [];
-        }
+        return await this.formatProductList(list, params.storeId);
     }
 }

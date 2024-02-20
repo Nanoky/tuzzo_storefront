@@ -88,11 +88,7 @@ export class FireStoreService {
             ...(param.orderBy ? [orderBy(param.orderBy)] : [])
         ).withConverter<TData>(param.converter);
 
-        console.debug("q", q)
-
         const querySnapshot = await getDocs(q);
-
-        console.debug("querySnapshot", querySnapshot.size);
 
         let data: TData[] = [];
 
@@ -129,11 +125,7 @@ export class FireStoreService {
             ...(param.orderBy ? [orderBy(param.orderBy)] : [])
         );
 
-        console.debug("q", q)
-
         const querySnapshot = await getDocs(q);
-
-        console.debug("querySnapshot", querySnapshot.size);
 
         let data: any[] = [];
 

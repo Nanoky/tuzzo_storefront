@@ -17,7 +17,7 @@ export default function Init() {
         <>
             {!initialized && (
                 <div
-                    className="position-absolute top-0 start-0 vw-100 vh-100 bg-white d-flex justify-content-center align-items-center"
+                    className="absolute top-0 start-0 w-screen h-screen bg-white flex justify-center items-center"
                     style={{ zIndex: 9999 }}>
                     <ThreeDots
                         visible={true}

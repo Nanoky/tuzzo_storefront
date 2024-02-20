@@ -51,7 +51,7 @@ export class ProductDTOAdapter
             price: data.price,
             currency: data.currency,
             product_images: data.product_images,
-            product_categories: data.product_categories,
+            product_categories: data.product_categories?.slice(1),
             quantity: data.quantity,
             total_unit_sold: data.total_unit_sold,
             slug: data.slug,
