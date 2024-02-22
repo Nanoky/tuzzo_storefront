@@ -2,7 +2,11 @@
 
 import { useCart } from "@/app/_shared/hooks/cart";
 import { Product } from "@/business/models/product";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCartShopping,
+    faMinus,
+    faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./add-chart.css";
@@ -26,33 +30,44 @@ export default function AddCart({ product }: { product: Product }) {
         setCount(count + 1);
     };
     return (
-        <div className="w-100 bg-[#94a3b8]/25 p-3 rounded-4 add-cart-container">
-            <div className="d-flex flex-row justify-content-between align-items-center">
+        <div className="w-full bg-tertiary p-3 rounded-full add-cart-container">
+            <div className="flex flex-row justify-between items-center">
                 <div
-                    className={`bg-white rounded-pill d-flex flex-row justify-content-between align-items-center gap-3 px-3 py-2 ${
+                    className={`flex flex-row justify-between items-center gap-3 px-3 py-2 ${
                         product.quantity <= 0 && "invisible"
                     }`}>
-                    <span
-                        className={`text-danger cursor-pointer ${
+                    <Button
+                        isIconOnly
+                        radius="full"
+                        variant="bordered"
+                        className={`bg-transparent border-primary ${
                             count <= 1 && "invisible"
                         }`}>
                         <FontAwesomeIcon
                             icon={faMinus}
                             onClick={handleMinus}></FontAwesomeIcon>
-                    </span>
-                    <span>{count}</span>
-                    <span className={`text-success cursor-pointer ${
-                        count >= product.quantity && "invisible"
-                    }`}>
+                    </Button>
+                    <span className="font-bold">{count}</span>
+                    <Button
+                        isIconOnly
+                        radius="full"
+                        variant="bordered"
+                        className={`bg-transparent border-primary flex flex-row justify-between items-center gap-3 px-3 py-2 ${
+                            count >= product.quantity && "invisible"
+                        }`}>
                         <FontAwesomeIcon
                             icon={faPlus}
                             onClick={handlePlus}></FontAwesomeIcon>
-                    </span>
+                    </Button>
                 </div>
                 <Button
                     color={product.quantity > 0 ? "primary" : "default"}
                     radius="full"
                     onClick={handleAdd}
+                    startContent={
+                        <FontAwesomeIcon
+                            icon={faCartShopping}></FontAwesomeIcon>
+                    }
                     type="button">
                     {product.quantity > 0
                         ? "Ajouter au panier"

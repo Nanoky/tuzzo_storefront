@@ -55,6 +55,7 @@ export class ProductDTOAdapter
             quantity: data.quantity,
             total_unit_sold: data.total_unit_sold,
             slug: data.slug,
+            isDeleted: data.isdeleted,
         };
     }
 }
@@ -94,6 +95,12 @@ export class ProductAdapter
         options?: SnapshotOptions | undefined
     ): Product {
         const data = snapshot.data(options);
+
+        console.debug("product", data)
+
+        if (data.isdeleted) {
+            throw new Error("Le produit recherché est supprimé");
+        }
         return new Product({
             id: snapshot.id,
             name: data.name,

@@ -1,12 +1,12 @@
 import { CustomImage } from "@/app/_shared/components/commun/custom-image";
-import Layout from "@/app/_shared/components/layout";
+import Layout from "@/app/_shared/components/layout-new";
 import { useProducts } from "@/app/_shared/hooks/product";
 import { useShop } from "@/app/_shared/hooks/shop";
 import "./product.css";
 import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
 import AddCart from "./addCart";
 import { Metadata } from "next";
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody, Divider, Link } from "@nextui-org/react";
 import {
     createNotFoundRoute,
     createStoreRoute,
@@ -15,6 +15,8 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { searchProductBySlug } from "@/app/_shared/services/product";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 type Params = {
     storeSlug: string;
@@ -114,50 +116,69 @@ export default async function ProductPage({ params }: Props) {
     }
     return (
         <Layout store={store} hasFooter={false} productId={product.id}>
-            <div className="d-flex flex-column gap-3 px-product w-100 py-4 mb-20 sm:mb-20 md:mb-20 lg:mb-0 xl:mb-0">
-                <div className="d-flex justify-content-center flex-row align-items-center gap-2">
-                    <Breadcrumbs
-                        title="Détails produit"
-                        home_url={createStoreRoute(
+            <div className="flex flex-col gap-4 px-product w-full py-4 sm:mb-20 md:mb-20 lg:mb-0 xl:mb-0">
+                <div className="flex justify-start flex-row items-center gap-2">
+                    <Button
+                        isIconOnly
+                        as={Link}
+                        className="bg-transparent text-primary text-2xl"
+                        href={createStoreRoute(
                             isWildcard ? undefined : store.slug
-                        )}></Breadcrumbs>
+                        )}>
+                        <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+                    </Button>
+                    <span className="font-bold text-2xl">{product.name}</span>
                 </div>
-                <Card>
+                <Card className="rounded-3xl">
                     <CardBody>
-                        <div className="d-flex flex-column gap-2">
-                            <div className="d-flex justify-content-center align-items-center">
-                                <CustomImage
-                                    url={product.images[0]}
-                                    name={product.name}
-                                    wAuto
-                                    isRelative
-                                    height="300px"></CustomImage>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-row justify-center items-center flex-nowrap overflow-x-auto">
+                                {product.images.map((image) => (
+                                    <CustomImage
+                                        url={image}
+                                        key={image}
+                                        name={product.name}
+                                        wAuto
+                                        isRelative
+                                        height="300px"></CustomImage>
+                                ))}
                             </div>
-                            <div className="flex flex-column gap-2">
+                            <div className="flex flex-col gap-2 p-2">
                                 <span className="font-bold text-lg">
                                     {product.name}
                                 </span>
                                 <span className="text-primary font-semibold">
                                     {product.price} {product.currency}
                                 </span>
-                                <span
-                                    className={`text-sm ${
-                                        product.quantity === 0
-                                            ? "text-danger"
-                                            : "text-black"
-                                    }`}>
-                                    {product.quantity === 0
-                                        ? "Nous sommes en rupture de stock sur ce produit, mais il sera à nouveau disponible prochainement !"
-                                        : "Ajoutez ce produit au panier pour le commander"}
-                                </span>
                             </div>
                         </div>
                     </CardBody>
                 </Card>
+
+                <div>
+                    <span
+                        className={`text-sm ${
+                            product.quantity === 0
+                                ? "text-danger"
+                                : "text-black"
+                        }`}>
+                        {product.quantity === 0
+                            ? "Nous sommes en rupture de stock sur ce produit, mais il sera à nouveau disponible prochainement !"
+                            : product.description
+                            ? product.description
+                            : "Ajoutez ce produit au panier pour le commander"}
+                    </span>
+                </div>
+
+                <Divider className="my-1" />
+
+                <div className="">
+                    <AddCart product={product}></AddCart>
+                </div>
             </div>
-            <div className="absolute add-cart-section bottom-4">
+            {/* <div className="absolute add-cart-section bottom-4">
                 <AddCart product={product}></AddCart>
-            </div>
+            </div> */}
         </Layout>
     );
 }

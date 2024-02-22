@@ -1,13 +1,14 @@
-import MiniProductCard from "@/app/_shared/components/commun/mini-product-card";
-import ProductCard from "@/app/_shared/components/commun/product-card";
-import Layout from "@/app/_shared/components/layout";
+import Layout from "@/app/_shared/components/layout-new";
 import { useShop } from "@/app/_shared/hooks/shop";
 import { createNotFoundRoute } from "@/app/_shared/services/router";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { APP_LOGO } from "@/app/_shared/shared/constants";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { Fragment } from "react";
+import BestProducts from "./best-products";
+import { useCategories } from "@/app/_shared/hooks/category";
+import ListProducts from "./list-products";
+import NotFound from "@/app/_shared/components/commun/404";
 
 type Props = {
     params: { slug: string };
@@ -43,38 +44,31 @@ export default async function ShopPage({
     params: { slug: string };
 }) {
     const { getStoreBySlug, getProducts } = useShop();
+    const { getCategories } = useCategories();
 
     const store = await getStoreBySlug(params.slug);
 
     if (!store) {
-        redirect(createNotFoundRoute());
+        console.error("Store not found", params, store);
+        return <NotFound></NotFound>;
     }
 
-    const products = await getProducts(store.id);
+    const categories = await getCategories(store.id);
+
+    const products = undefined; // await getProducts(store.id);
 
     return (
-        <Layout store={store}>
-            <div className="bg-black text-white text-center py-4">
-                <div>Bienvenue dans votre boutique</div>
-                <div>{store.name}</div>
-            </div>
-            <div className="p-3 md:p-5 lg:p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-4 gap-x-3">
-                {products.map((product) => (
-                    <Fragment key={product.id}>
-                        <div className="hidden sm:block md:block lg:block">
-                            <ProductCard
-                                product={product}
-                                storeSlug={store.slug}
-                            />
-                        </div>
-                        <div className="block sm:hidden md:hidden lg:hidden">
-                            <MiniProductCard
-                                product={product}
-                                storeSlug={store.slug}
-                            />
-                        </div>
-                    </Fragment>
-                ))}
+        <Layout store={store} withCover>
+            <div className="pt-8 flex flex-col gap-8 px-4">
+                <div>
+                    <BestProducts store={store}></BestProducts>
+                </div>
+                <div>
+                    <ListProducts
+                        store={store}
+                        categories={categories}
+                        initProducts={products}></ListProducts>
+                </div>
             </div>
         </Layout>
     );

@@ -11,18 +11,18 @@ function checkWildcard(): boolean {
     return hostname?.split(".")[0] !== hostname;
 }
 
-export default function Header({ store }: { store: SerializeStore }) {
+export default function Header({ store, cover = false }: { store: SerializeStore, cover?: boolean }) {
     const isWildcard = checkWildcard();
     return (
-        <header className="navbar py-3 px-4 bg-white">
+        <header className={`navbar py-3 px-4 bg-secondary ${cover ? "rounded-t-3xl" : ""}`}>
             <div className="flex flex-row justify-between items-center w-full px-2">
                 <div className="flex flex-row gap-2 items-center">
                     {store.logo && (
                         <Image
                             src={store.logo}
                             alt={store.name}
-                            width={30}
-                            height={30}></Image>
+                            width={50}
+                            height={50}></Image>
                     )}
                     <Link
                         className="text-lg cursor-pointer font-medium"

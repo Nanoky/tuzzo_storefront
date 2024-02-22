@@ -24,7 +24,7 @@ export default async function RootLayout({
             <html lang="en">
                 <body className={inter.className}>
                     <Providers>
-                        <Init></Init>
+                        {/* <Init></Init> */}
                         <div className="h-screen w-full">{children}</div>
                     </Providers>
                 </body>

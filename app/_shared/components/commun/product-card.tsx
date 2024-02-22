@@ -98,7 +98,7 @@ export default function ProductCard({
                                     else handleGoToProduct();
                                 }}
                                 variant="solid"
-                                className={`text-white bg-primaryNew`}>
+                                className={`text-white bg-primary`}>
                                 {isInCart ? (
                                     <FontAwesomeIcon
                                         icon={faCheck}></FontAwesomeIcon>

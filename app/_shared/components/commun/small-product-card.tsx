@@ -8,7 +8,13 @@ import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
 import { SerializeProduct } from "../../models/product";
 import Skeleton from "react-loading-skeleton";
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    Image,
+    Skeleton as NextSkeleton,
+} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
@@ -63,7 +69,8 @@ export default function SmallProductCard({
                             src={item.images[0]}
                             className="object-contain h-28 w-full rounded-b-none"
                             onClick={handleGoToProduct}
-                            alt={item.name} width={'100%'}></Image>
+                            alt={item.name}
+                            width={"100%"}></Image>
                     )}
                     <div
                         className="p-4 h-32 flex flex-col justify-between"
@@ -90,24 +97,28 @@ export default function SmallProductCard({
                                     <Skeleton width="60px" count={1} />
                                 )}
                             </span>
-                            <Button
-                                type="button"
-                                aria-label="Add to cart"
-                                isIconOnly
-                                onClick={(e) => {
-                                    if (!isInCart) handleAddToCart(e);
-                                    else handleGoToProduct();
-                                }}
-                                variant="solid"
-                                className={`text-white bg-primaryNew`}>
-                                {isInCart ? (
-                                    <FontAwesomeIcon
-                                        icon={faCheck}></FontAwesomeIcon>
-                                ) : (
-                                    <FontAwesomeIcon
-                                        icon={faShoppingCart}></FontAwesomeIcon>
-                                )}
-                            </Button>
+                            <NextSkeleton isLoaded={!!item} className="rounded-xl">
+                                <Button
+                                    type="button"
+                                    aria-label="Add to cart"
+                                    isIconOnly
+                                    onClick={(e) => {
+                                        if (!isInCart) handleAddToCart(e);
+                                        else handleGoToProduct();
+                                    }}
+                                    variant="solid"
+                                    className={`text-white bg-primary`}>
+                                    {isInCart ? (
+                                        <FontAwesomeIcon
+                                            icon={faCheck}></FontAwesomeIcon>
+                                    ) : (
+                                        <FontAwesomeIcon
+                                            icon={
+                                                faShoppingCart
+                                            }></FontAwesomeIcon>
+                                    )}
+                                </Button>
+                            </NextSkeleton>
                         </div>
                     </div>
                 </CardBody>

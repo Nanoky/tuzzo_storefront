@@ -1,7 +1,8 @@
 // tailwind.config.js
 import { nextui } from "@nextui-org/react";
 const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require('tailwindcss/colors') 
+const colors = require("tailwindcss/colors");
+const hideScrollbar = require("tailwind-scrollbar-hide");
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -14,14 +15,12 @@ const config = {
         extend: {
             colors: {
                 ...colors,
-                primary: "#99ff99",
-                secondary: "#0544A8",
-                primaryNew: "#000000",
-                secondaryNew: "#EFE7D2",
-            }
+                primary: "#000000",
+                secondary: "#EFE7D2",
+                tertiary: "#FFFFFF",
+            },
         },
-        colors: {
-        },
+        colors: {},
         screens: {
             ...defaultTheme.screens,
             "2xs": "320px",
@@ -29,7 +28,22 @@ const config = {
         },
     },
     darkMode: "class",
-    plugins: [nextui()],
+    plugins: [nextui({
+        themes: {
+            light: {
+                colors: {
+                    default: {
+                        DEFAULT: "#ffffff",
+                        foreground: "#000000",
+                    },
+                    primary: {
+                        DEFAULT: "#000000",
+                        foreground: "#ffffff",
+                    }
+                }
+            }
+        }
+    }), hideScrollbar],
 };
 
 export default config;

@@ -29,7 +29,7 @@ export class CategoryRepository implements ICategoryRepository {
                         {
                             fieldPath: "collection_id",
                             opStr: "==",
-                            value: params.id,
+                            value: Number.parseInt(params.id),
                         },
                     ],
                     converter: this.adapter,
@@ -81,6 +81,7 @@ export class CategoryRepository implements ICategoryRepository {
     searchRaw(params: SearchCategoryParams): Promise<CategoryDTO[]> {
         console.debug("searchRaw data", params);
         if (params.id) {
+            console.debug("searchRaw id", params.id);
             return this.service
                 .searchRaw({
                     collection: `${CollectionNames.STORES}`,
@@ -92,7 +93,7 @@ export class CategoryRepository implements ICategoryRepository {
                         {
                             fieldPath: "collection_id",
                             opStr: "==",
-                            value: params.id,
+                            value: Number.parseInt(params.id),
                         },
                     ],
                 })

@@ -32,49 +32,45 @@ export class ProductRepository implements IProductRepository {
 
     async formatProductList(list: any[], storeId: string): Promise<Product[]> {
         if (list && list.length > 0) {
-            console.debug("product list", list);
-            const products = list.map(async (data) => {
-                const categoriesPromies =
-                    data.product_categories?.map(async (cat: any) => {
-                        return await this.categoryRepo
-                            .search({
-                                id: cat,
-                                storeId: storeId,
-                            })
-                            .then((data) => {
-                                if (data && data.length > 0) {
-                                    return data[0];
-                                }
-                                throw new Error("Catégorie introuvable");
-                            });
-                    }) ?? [];
+            const products = list
+                .filter((data) => {
+                    return !data.isDeleted;
+                })
+                .map(async (data) => {
+                    const categoriesPromies =
+                        data.product_categories?.map(async (cat: any) => {
+                            return await this.categoryRepo
+                                .search({
+                                    id: cat,
+                                    storeId: storeId,
+                                })
+                                .then((data) => {
+                                    if (data && data.length > 0) {
+                                        return data[0];
+                                    }
+                                    throw new Error("Catégorie introuvable");
+                                });
+                        }) ?? [];
 
-                console.debug(
-                    "product categories promies count",
-                    categoriesPromies.length
-                );
+                    const categories = await Promise.all(categoriesPromies);
 
-                const categories = await Promise.all(categoriesPromies);
-
-                console.debug("product categories", categories);
-
-                return new Product({
-                    id: data.id,
-                    name: data.name,
-                    description: data.description,
-                    price: data.price,
-                    currency: data.currency ?? "",
-                    images: data.product_images
-                        ? data.product_images?.length > 0
-                            ? data.product_images
-                            : [DEFAULT_PRODUCT_IMAGE]
-                        : [DEFAULT_PRODUCT_IMAGE],
-                    quantity: data.quantity ?? 0,
-                    categories: categories,
-                    nbSold: data.total_unit_sold ?? 0,
-                    slug: data.slug,
+                    return new Product({
+                        id: data.id,
+                        name: data.name,
+                        description: data.description,
+                        price: data.price,
+                        currency: data.currency ?? "",
+                        images: data.product_images
+                            ? data.product_images?.length > 0
+                                ? data.product_images
+                                : [DEFAULT_PRODUCT_IMAGE]
+                            : [DEFAULT_PRODUCT_IMAGE],
+                        quantity: data.quantity ?? 0,
+                        categories: categories,
+                        nbSold: data.total_unit_sold ?? 0,
+                        slug: data.slug,
+                    });
                 });
-            });
 
             return await Promise.all(products);
         } else {
@@ -104,7 +100,6 @@ export class ProductRepository implements IProductRepository {
         id: string;
         storeId: string;
     }): Promise<Product[]> {
-        console.debug("getProducts", param);
         const categoryData: CategoryDTO = await this.categoryRepo
             .searchRaw({
                 id: param.id,
@@ -117,23 +112,25 @@ export class ProductRepository implements IProductRepository {
                 throw new Error("Catégorie introuvable");
             });
 
-        const promises = categoryData.products_of_this_collection.map(
-            async (product: any) => {
-                return await this.search({
-                    id: product.id,
-                    storeId: param.storeId,
-                }).then((data) => {
-                    if (data && data.length > 0) {
-                        return data[0];
-                    }
-                    throw new Error("Produit introuvable");
-                });
-            }
-        );
+        const promises =
+            categoryData.products_of_this_collection?.map(
+                async (product: any) => {
+                    return await this.search({
+                        id: product.id,
+                        storeId: param.storeId,
+                    }).then((data) => {
+                        if (data && data.length > 0) {
+                            return data[0];
+                        } else {
+                            return null;
+                        }
+                    });
+                }
+            ) ?? [];
 
         const products = await Promise.all(promises);
 
-        return products;
+        return products.filter((product) => product !== null) as Product[];
     }
     update(param: {
         product: Product;
@@ -149,14 +146,22 @@ export class ProductRepository implements IProductRepository {
     }
     async search(params: SearchProductParams): Promise<Product[]> {
         if (params.slug) {
-            const list = await this.service.search({
-                collection: `${CollectionNames.STORES}`,
-                pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
-                filters: [
-                    { fieldPath: "slug", opStr: "==", value: params.slug },
-                ],
-                converter: this.dtoConverter,
-            });
+            const list = await this.service
+                .search({
+                    collection: `${CollectionNames.STORES}`,
+                    pathSegments: [
+                        params.storeId,
+                        `${CollectionNames.PRODUCTS}`,
+                    ],
+                    filters: [
+                        { fieldPath: "slug", opStr: "==", value: params.slug },
+                    ],
+                    converter: this.dtoConverter,
+                })
+                .catch((err) => {
+                    console.error(err);
+                    return new Array<ProductDTOFull>();
+                });
 
             return await this.formatProductList(list, params.storeId);
         }
@@ -173,22 +178,34 @@ export class ProductRepository implements IProductRepository {
                     converter: this.dtoConverter,
                 })
                 .then((data) => {
-                    if (data) {
+                    console.debug("get product", data);
+                    if (data && !data.isDeleted) {
                         return [data];
                     } else {
                         return [];
                     }
+                })
+                .catch((err) => {
+                    console.error(err);
+                    return new Array<ProductDTOFull>();
                 });
 
             return await this.formatProductList(list, params.storeId);
         }
 
-        const list = await this.service.search({
-            collection: `${CollectionNames.STORES}`,
-            pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
-            filters: [{ fieldPath: "isdeleted", opStr: "==", value: false }],
-            converter: this.dtoConverter,
-        });
+        const list = await this.service
+            .search({
+                collection: `${CollectionNames.STORES}`,
+                pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
+                filters: [
+                    { fieldPath: "isdeleted", opStr: "==", value: false },
+                ],
+                converter: this.dtoConverter,
+            })
+            .catch((err) => {
+                console.error(err);
+                return new Array<ProductDTOFull>();
+            });
 
         return await this.formatProductList(list, params.storeId);
     }
