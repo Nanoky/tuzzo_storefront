@@ -54,7 +54,7 @@ export default function CheckoutSummary({
                     <Button
                         color="primary"
                         radius="full"
-                        type="button"
+                        type="submit"
                         className="px-6"
                         onClick={handleSubmit}
                         isLoading={isButtonLoading}>
