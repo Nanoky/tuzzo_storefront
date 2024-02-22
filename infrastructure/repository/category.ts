@@ -31,6 +31,11 @@ export class CategoryRepository implements ICategoryRepository {
                             opStr: "==",
                             value: Number.parseInt(params.id),
                         },
+                        {
+                            fieldPath: "isdeleted",
+                            opStr: "==",
+                            value: false,
+                        },
                     ],
                     converter: this.adapter,
                 })
@@ -50,6 +55,11 @@ export class CategoryRepository implements ICategoryRepository {
                     ],
                     filters: [
                         { fieldPath: "name", opStr: "==", value: params.name },
+                        {
+                            fieldPath: "isdeleted",
+                            opStr: "==",
+                            value: false,
+                        },
                     ],
                     converter: this.adapter,
                 })
@@ -61,11 +71,18 @@ export class CategoryRepository implements ICategoryRepository {
                 });
         } else {
             return this.service
-                .getAll({
+                .search({
                     collection: `${CollectionNames.STORES}`,
                     pathSegments: [
                         params.storeId,
                         `${CollectionNames.CATEGORIES}`,
+                    ],
+                    filters: [
+                        {
+                            fieldPath: "isdeleted",
+                            opStr: "==",
+                            value: false,
+                        },
                     ],
                     converter: this.adapter,
                 })
@@ -95,6 +112,11 @@ export class CategoryRepository implements ICategoryRepository {
                             opStr: "==",
                             value: Number.parseInt(params.id),
                         },
+                        {
+                            fieldPath: "isdeleted",
+                            opStr: "==",
+                            value: false,
+                        },
                     ],
                 })
                 .then((data) => {
@@ -114,6 +136,11 @@ export class CategoryRepository implements ICategoryRepository {
                     ],
                     filters: [
                         { fieldPath: "name", opStr: "==", value: params.name },
+                        {
+                            fieldPath: "isdeleted",
+                            opStr: "==",
+                            value: false,
+                        },
                     ],
                 })
                 .then((data) => {
