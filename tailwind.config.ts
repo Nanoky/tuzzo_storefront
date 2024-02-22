@@ -42,6 +42,11 @@ const config = {
                     }
                 }
             }
+        },
+        layout: {
+            radius: {
+                medium: "1.75rem",
+            }
         }
     }), hideScrollbar],
 };

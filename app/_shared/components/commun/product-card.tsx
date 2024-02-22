@@ -57,12 +57,12 @@ export default function ProductCard({
 
     return (
         <>
-            <Card className="cursor-pointer">
+            <Card className="cursor-pointer card-radius">
                 <CardBody>
                     {item && (
                         <Image
                             src={item.images[0]}
-                            className="object-contain w-full h-72 rounded-b-none"
+                            className="object-fill w-full h-72 card-radius"
                             onClick={handleGoToProduct}
                             alt={item.name}
                             width={"100%"}></Image>

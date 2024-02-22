@@ -24,3 +24,7 @@ body {
         padding-right: 1.3rem;
     }
 }
+
+.card-radius {
+    border-radius: 28px !important;
+}

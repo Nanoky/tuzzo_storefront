@@ -62,12 +62,12 @@ export default function SmallProductCard({
 
     return (
         <>
-            <Card className="cursor-pointer h-auto w-40">
+            <Card className="cursor-pointer h-auto w-40 card-radius">
                 <CardBody className="p-0">
                     {item && (
                         <Image
                             src={item.images[0]}
-                            className="object-contain h-28 w-full rounded-b-none"
+                            className="object-fill h-28 w-full rounded-b-none"
                             onClick={handleGoToProduct}
                             alt={item.name}
                             width={"100%"}></Image>

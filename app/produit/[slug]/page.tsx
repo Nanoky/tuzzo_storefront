@@ -162,7 +162,7 @@ export default async function ProductPage({ params }: Props) {
                             </div>
                         </div>
                     </div>
-                    <Card className="rounded-3xl">
+                    <Card className="card-radius">
                         <CardBody className="">
                             <div className="flex flex-col gap-2">
                                 <div className="h-80 min-w-full w-80 max-w-max"></div>

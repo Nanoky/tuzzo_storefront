@@ -142,7 +142,7 @@ function MiniProductCardBase({
 
     return (
         <>
-            <Card className="cursor-pointer w-full">
+            <Card className="cursor-pointer w-full card-radius">
                 <CardBody className="p-0 flex flex-row h-24">
                     {isLoaded && (
                         <Image

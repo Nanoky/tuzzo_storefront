@@ -80,7 +80,7 @@ export default function Accordion({
     };
 
     return (
-        <Card>
+        <Card className="card-radius">
             <CardBody className="p-4">
                 <div className="bg-tertiary">
                     <AccordionHeader
