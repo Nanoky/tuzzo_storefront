@@ -40,24 +40,26 @@ export default function AddCart({ product }: { product: Product }) {
                         isIconOnly
                         radius="full"
                         variant="bordered"
+                        onClick={handleMinus}
                         className={`bg-transparent border-primary ${
                             count <= 1 && "invisible"
                         }`}>
                         <FontAwesomeIcon
                             icon={faMinus}
-                            onClick={handleMinus}></FontAwesomeIcon>
+                            ></FontAwesomeIcon>
                     </Button>
                     <span className="font-bold">{count}</span>
                     <Button
                         isIconOnly
                         radius="full"
                         variant="bordered"
+                        onClick={handlePlus}
                         className={`bg-transparent border-primary flex flex-row justify-between items-center gap-3 px-3 py-2 ${
                             count >= product.quantity && "invisible"
                         }`}>
                         <FontAwesomeIcon
                             icon={faPlus}
-                            onClick={handlePlus}></FontAwesomeIcon>
+                            ></FontAwesomeIcon>
                     </Button>
                 </div>
                 <Button
