@@ -59,7 +59,7 @@ export default function ListProducts({
                             : "bg-white text-black"
                     }`}
                     classNames={{
-                        base: "p-6",
+                        base: "p-6 cursor-pointer",
                     }}
                     onClick={() => handleSelectCategory()}>
                     Tous les produits
@@ -73,7 +73,7 @@ export default function ListProducts({
                                 : "bg-white text-black"
                         }`}
                         classNames={{
-                            base: "p-6",
+                            base: "p-6 cursor-pointer",
                         }}
                         onClick={() => handleSelectCategory(category)}>
                         {category.name}

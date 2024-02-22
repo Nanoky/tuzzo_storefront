@@ -4,9 +4,10 @@ import SmallProductCard from "@/app/_shared/components/commun/small-product-card
 import { titleClassname, subtitleClassname } from "./shared";
 
 type Props = {
+    isWildcard?: boolean;
     store: Store;
 };
-export default async function BestProducts({ store }: Props) {
+export default async function BestProducts({ store, isWildcard = true }: Props) {
     const { getBestProducts } = useShop();
     const products = await getBestProducts(store.id, 10);
     return (
