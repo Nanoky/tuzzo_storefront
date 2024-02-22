@@ -123,7 +123,7 @@ export default async function ProductPage({ params }: Props) {
     }
     return (
         <Layout store={store} hasFooter={false} productId={product.id}>
-            <div className="relative w-screen overflow-x-hidden flex flex-col gap-4 px-5 lg:px-28 w-full py-4 sm:mb-20 md:mb-20 lg:mb-0 xl:mb-0">
+            <div className="w-screen overflow-x-hidden flex flex-col gap-4 px-5 lg:px-28 w-full py-4 sm:mb-20 md:mb-20 lg:mb-0 xl:mb-0">
                 <div className="flex justify-start flex-row items-center gap-2">
                     <Button
                         isIconOnly
@@ -136,60 +136,68 @@ export default async function ProductPage({ params }: Props) {
                     </Button>
                     <span className="font-bold text-2xl">{product.name}</span>
                 </div>
-                <div className="absolute top-24 left-auto pl-5 w-full">
-                    <div className="overflow-x-auto scrollbar-hide">
-                        <div className="w-fit flex flex-row justify-center gap-4 items-center flex-nowrap">
-                            {product.images.map((image) => (
-                                <div key={image} className={`${product.images.length > 1 ? "w-72" : "w-80"} h-72`}>
-                                    <Image
-                                        src={image}
-                                        alt={product.name}
-                                        width={296}
-                                        height={296}
-                                        classNames={{
-                                            wrapper: "h-full",
-                                        }}
-                                        className="object-cover h-full w-full rounded-3xl"></Image>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-                <Card className="rounded-3xl">
-                    <CardBody className="">
-                        <div className="flex flex-col gap-2">
-                            <div className="h-80 min-w-full w-80 max-w-max"></div>
-                            <div className="flex flex-col gap-2 p-2">
-                                <span className="font-bold text-lg">
-                                    {product.name}
-                                </span>
-                                <span className="text-primary font-semibold">
-                                    {product.price} {product.currency}
-                                </span>
+                <div className="relative overflow-x-hidden flex flex-col gap-4">
+                    <div className="absolute top-6 left-auto pl-5 w-full">
+                        <div className="overflow-x-auto scrollbar-hide">
+                            <div className="w-fit flex flex-row justify-center gap-4 items-center flex-nowrap">
+                                {product.images.map((image) => (
+                                    <div
+                                        key={image}
+                                        className={`${
+                                            product.images.length > 1
+                                                ? "w-72"
+                                                : "w-80"
+                                        } h-72`}>
+                                        <Image
+                                            src={image}
+                                            alt={product.name}
+                                            width={296}
+                                            height={296}
+                                            classNames={{
+                                                wrapper: "h-full",
+                                            }}
+                                            className="object-cover h-full w-full rounded-3xl"></Image>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                    </CardBody>
-                </Card>
+                    </div>
+                    <Card className="rounded-3xl">
+                        <CardBody className="">
+                            <div className="flex flex-col gap-2">
+                                <div className="h-80 min-w-full w-80 max-w-max"></div>
+                                <div className="flex flex-col gap-2 p-2">
+                                    <span className="font-bold text-lg">
+                                        {product.name}
+                                    </span>
+                                    <span className="text-primary font-semibold">
+                                        {product.price} {product.currency}
+                                    </span>
+                                </div>
+                            </div>
+                        </CardBody>
+                    </Card>
 
-                <div>
-                    <span
-                        className={`text-sm ${
-                            product.quantity === 0
-                                ? "text-danger"
-                                : "text-black"
-                        }`}>
-                        {product.quantity === 0
-                            ? "Nous sommes en rupture de stock sur ce produit, mais il sera à nouveau disponible prochainement !"
-                            : product.description
-                            ? product.description
-                            : "Ajoutez ce produit au panier pour le commander"}
-                    </span>
-                </div>
+                    <div>
+                        <span
+                            className={`text-sm ${
+                                product.quantity === 0
+                                    ? "text-danger"
+                                    : "text-black"
+                            }`}>
+                            {product.quantity === 0
+                                ? "Nous sommes en rupture de stock sur ce produit, mais il sera à nouveau disponible prochainement !"
+                                : product.description
+                                ? product.description
+                                : "Ajoutez ce produit au panier pour le commander"}
+                        </span>
+                    </div>
 
-                <Divider className="my-1" />
+                    <Divider className="my-1" />
 
-                <div className="">
-                    <AddCart product={product}></AddCart>
+                    <div className="">
+                        <AddCart product={product}></AddCart>
+                    </div>
                 </div>
             </div>
             {/* <div className="absolute add-cart-section bottom-4">
