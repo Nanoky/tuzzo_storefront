@@ -8,6 +8,7 @@ export function useCart() {
     const items = useAppSelector((state: RootState) => state.cart.items);
     const count = useAppSelector((state: RootState) => state.cart.nbItems);
     const total = useAppSelector((state: RootState) => state.cart.total);
+    const initialized = useAppSelector((state: RootState) => state.cart.initialized);
 
     const dispatch = useAppDispatch();
 
@@ -31,6 +32,7 @@ export function useCart() {
         items,
         count,
         total,
+        initialized,
         addToCart,
         removeFromCart,
         emptyCart

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "work-sans";
+    src: url("./WorkSans-VariableFont_wght.ttf");
+}
+
+body {
+    font-family: "work-sans" !important;
+}
+
 @media screen and (min-width: 1025px) {
     .px-page {
         padding-left: 7rem;
