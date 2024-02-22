@@ -14,12 +14,14 @@ type Props = {
     initProducts?: Product[];
     categories: Category[];
     store: Store;
+    isWildcard?: boolean;
 };
 
 export default function ListProducts({
     initProducts,
     categories,
     store,
+    isWildcard = true,
 }: Props) {
     const { getProducts } = useCategories();
     const storehook = useShop();
@@ -87,13 +89,13 @@ export default function ListProducts({
                         <div className="hidden sm:block md:block lg:block">
                             <ProductCard
                                 product={product}
-                                storeSlug={store.slug}
+                                storeSlug={isWildcard ? undefined : store.slug}
                             />
                         </div>
                         <div className="block sm:hidden md:hidden lg:hidden">
                             <MiniProductCard
                                 product={product}
-                                storeSlug={store.slug}
+                                storeSlug={isWildcard ? undefined : store.slug}
                             />
                         </div>
                     </Fragment>

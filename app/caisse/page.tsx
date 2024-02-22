@@ -1,10 +1,17 @@
 import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
-import Layout from "@/app/_shared/components/layout";
+import Layout from "@/app/_shared/components/layout-new";
 import { useShop } from "@/app/_shared/hooks/shop";
-import { createNotFoundRoute, createStoreRoute } from "@/app/_shared/services/router";
+import {
+    createNotFoundRoute,
+    createStoreRoute,
+} from "@/app/_shared/services/router";
 import OrderForm from "./[slug]/order-form";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@nextui-org/react";
+import Link from "next/link";
 
 type Params = {
     storeSlug: string;
@@ -36,15 +43,18 @@ export default async function CheckoutPage() {
     }
     return (
         <Layout store={store}>
-            <div className="d-flex flex-column gap-3 px-page w-100 py-4">
-                <div className="d-flex justify-content-start flex-row align-items-center gap-2">
-                    <Breadcrumbs
-                        title="Caisse"
-                        home_url={createStoreRoute(store.slug)}></Breadcrumbs>
+            <div className="flex flex-col gap-3 px-page w-100 py-4">
+                <div className="flex justify-start flex-row items-center gap-2">
+                    <Button
+                        isIconOnly
+                        as={Link}
+                        className="bg-transparent text-primary text-2xl"
+                        href={createStoreRoute()}>
+                        <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+                    </Button>
+                    <span className="font-bold text-2xl">Paiement</span>
                 </div>
-                <OrderForm
-                    storeSlug={store.slug}
-                    store={store}></OrderForm>
+                <OrderForm storeSlug={store.slug} store={store}></OrderForm>
             </div>
         </Layout>
     );

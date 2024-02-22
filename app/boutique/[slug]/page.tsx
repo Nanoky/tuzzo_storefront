@@ -66,6 +66,7 @@ export default async function ShopPage({
                 <div>
                     <ListProducts
                         store={store}
+                        isWildcard={false}
                         categories={categories}
                         initProducts={products}></ListProducts>
                 </div>
