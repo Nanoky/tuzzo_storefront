@@ -41,7 +41,7 @@ export default function CustomerInfos({
         <Accordion
             defaultOpened
             title="Entrez vos informations"
-            subtitle="Vos informations de livraison">
+            subtitle="Vos informations de livraison" checked={isValid}>
             <div className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1">
                     <Controller

@@ -1,3 +1,5 @@
+'use client';
+
 import {
     faCheck,
     faChevronDown,
@@ -5,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, CardBody } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function AccordionHeader({
     open,
@@ -28,7 +30,7 @@ function AccordionHeader({
             </div>
             <div>
                 {checked && (
-                    <Button className="bg-secondary/10 text-primary" isIconOnly>
+                    <Button className="bg-secondary/80 text-primary" isIconOnly>
                         {<FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>}
                     </Button>
                 )}
@@ -62,6 +64,12 @@ export default function Accordion({
     children: React.ReactNode;
 }) {
     const [open, setOpen] = useState(defaultOpened);
+
+    useEffect(() => {
+        if (checked) {
+            handleClose();
+        }
+    }, [checked]);
 
     const handleClose = () => {
         setOpen(false);
