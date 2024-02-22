@@ -17,13 +17,13 @@ export default function Init() {
         <>
             {!initialized && (
                 <div
-                    className="absolute top-0 start-0 w-screen h-screen bg-white flex justify-center items-center"
+                    className="absolute top-0 start-0 w-screen h-dvh bg-secondary flex justify-center items-center"
                     style={{ zIndex: 9999 }}>
                     <ThreeDots
                         visible={true}
                         height="80"
                         width="80"
-                        color="#4fa94d"
+                        color="#000000"
                         radius="9"
                         ariaLabel="three-dots-loading"
                         wrapperStyle={{}}
