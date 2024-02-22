@@ -80,37 +80,43 @@ export default function ListProducts({
                     </Chip>
                 ))}
             </div>
-            <div
-                className={`py-3 md:p-5 lg:p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-4 gap-x-3 ${
-                    !products.length && "hidden"
-                }`}>
-                {products.map((product) => (
-                    <Fragment key={product.id}>
-                        <div className="hidden sm:block md:block lg:block">
-                            <ProductCard
-                                product={product}
-                                storeSlug={isWildcard ? undefined : store.slug}
-                            />
-                        </div>
-                        <div className="block sm:hidden md:hidden lg:hidden">
-                            <MiniProductCard
-                                product={product}
-                                storeSlug={isWildcard ? undefined : store.slug}
-                            />
-                        </div>
-                    </Fragment>
-                ))}
-            </div>
-            <div
-                className={`min-h-60 max-h-full flex flex-col items-center justify-center gap-4 text-center ${
-                    products.length && "hidden"
-                }`}>
-                <span className="text-3xl font-bold">Ooops</span>
-                <span className="text-gray-500">
-                    {`Cette ${
-                        selectedCategory ? "catégorie" : "boutique"
-                    } n'a pas encore de produits`}
-                </span>
+            <div className="pe-4">
+                <div
+                    className={`py-3 md:p-5 lg:p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-4 gap-x-3 ${
+                        !products.length && "hidden"
+                    }`}>
+                    {products.map((product) => (
+                        <Fragment key={product.id}>
+                            <div className="hidden sm:block md:block lg:block">
+                                <ProductCard
+                                    product={product}
+                                    storeSlug={
+                                        isWildcard ? undefined : store.slug
+                                    }
+                                />
+                            </div>
+                            <div className="block sm:hidden md:hidden lg:hidden">
+                                <MiniProductCard
+                                    product={product}
+                                    storeSlug={
+                                        isWildcard ? undefined : store.slug
+                                    }
+                                />
+                            </div>
+                        </Fragment>
+                    ))}
+                </div>
+                <div
+                    className={`min-h-60 max-h-full flex flex-col items-center justify-center gap-4 text-center ${
+                        products.length && "hidden"
+                    }`}>
+                    <span className="text-3xl font-bold">Ooops</span>
+                    <span className="text-gray-500">
+                        {`Cette ${
+                            selectedCategory ? "catégorie" : "boutique"
+                        } n'a pas encore de produits`}
+                    </span>
+                </div>
             </div>
         </div>
     );

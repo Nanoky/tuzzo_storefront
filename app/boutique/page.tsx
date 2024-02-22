@@ -74,7 +74,7 @@ export default async function ShopPage() {
 
     return (
         <Layout store={store} withCover>
-            <div className="pt-8 flex flex-col gap-8 px-4">
+            <div className="pt-8 flex flex-col gap-8 ps-4">
                 <div>
                     <BestProducts store={store}></BestProducts>
                 </div>
