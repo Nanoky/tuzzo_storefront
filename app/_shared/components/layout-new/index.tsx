@@ -20,7 +20,7 @@ export default function Layout({
     withCover?: boolean;
 }) {
     return (
-        <div className={``}>
+        <div className={""}>
             <VisitCounter
                 storeId={store.id}
                 productId={productId}></VisitCounter>
@@ -44,7 +44,7 @@ export default function Layout({
                     </div>
                 </div>
             )}
-            <div className="relative z-10 w-full min-h-screen h-full bg-secondary">
+            <div className="relative z-10 w-full min-h-screen h-full bg-secondary overflow-y-auto">
                 <div className={`sticky top-0 z-50`}>
                     <Header store={store} cover={withCover}></Header>
                 </div>
