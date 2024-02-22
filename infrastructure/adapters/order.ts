@@ -113,7 +113,7 @@ export class OrderConverter implements FirestoreDataConverter<Order, OrderDTO> {
             created_at: new Date(),
             modified_at: new Date(),
             delivery_status_id: 1,
-            is_activated: true,
+            is_activated: false,
             order_channel_id: 4,
             order_status_id: 2,
             payment_status_id: 1,
