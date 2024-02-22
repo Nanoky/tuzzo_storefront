@@ -27,7 +27,7 @@ export default async function BestProducts({ store, isWildcard = true }: Props) 
                             <div key={product.id} className="h-full">
                                 <SmallProductCard
                                     product={product}
-                                    storeSlug={store.slug}
+                                    storeSlug={isWildcard ? undefined : store.slug}
                                 />
                             </div>
                         ))}
