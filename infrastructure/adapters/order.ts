@@ -18,7 +18,7 @@ export class OrderCustomerConverter
     toFirestore(modelObject: OrderCustomer): OrderCustomerDTO {
         return {
             name: modelObject.fullname,
-            phone_number: `${modelObject.phoneIndicator}${modelObject.phone}`,
+            phone_number: `${modelObject.phone}`,
             delivery_address: modelObject.address,
             notes: "Client enregistré depuis le web",
             created_at: new Date(),
