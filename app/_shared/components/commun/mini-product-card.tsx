@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCheck,
     faShoppingCart,
-    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
@@ -23,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
 import { CartItem } from "@/business/models/cart";
+import { TrashIcon } from "./icon";
 
 export function MiniCartProductCard({
     item,
@@ -43,7 +43,7 @@ export function MiniCartProductCard({
             onClick={() => {}}
             onClickButton={onDelete}
             buttonIcon={
-                <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                <TrashIcon />
             }></MiniProductCardBase>
     );
 }

@@ -10,19 +10,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCart } from "../../hooks/cart";
 import { useState } from "react";
 import Drawer from "rc-drawer";
-import Image from "next/image";
 import { Product } from "@/business/models/product";
 import { CartItem } from "@/business/models/cart";
 
 import "./cart.css";
 import "./drawer.css";
 import { useRouter } from "next/navigation";
-import { Badge, Button, Card, CardBody, Divider, Skeleton } from "@nextui-org/react";
-import { getCurrencyLabel } from "../../shared/currency";
-import { CustomImage } from "./custom-image";
+import {
+    Badge,
+    Button,
+    Card,
+    CardBody,
+    Divider,
+    Skeleton,
+} from "@nextui-org/react";
 import { createCheckoutRoute } from "../../services/router";
-import { useAppSelector } from "../../lib/hooks";
 import { MiniCartProductCard } from "./mini-product-card";
+import { CancelIcon, CartIcon } from "./icon";
+
 
 export function CartButton({
     slug,
@@ -67,9 +72,8 @@ export function CartButton({
                         variant="solid"
                         className="bg-white"
                         onClick={handleClick}>
-                        <FontAwesomeIcon
-                            icon={faShoppingCart}></FontAwesomeIcon>
-                    </Button>
+                            <CartIcon />
+                        </Button>
                 </Skeleton>
             </Badge>
 
@@ -134,7 +138,7 @@ export function CartPanel({
                     </span>
                 </div>
                 <Button color="primary" onClick={handleClose} isIconOnly>
-                    <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+                    <CancelIcon />
                 </Button>
             </div>
             {items.length === 0 ? (
