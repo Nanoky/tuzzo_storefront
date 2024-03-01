@@ -86,6 +86,7 @@ export class ProductRepository implements IProductRepository {
                 pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
                 filters: [
                     { fieldPath: "isdeleted", opStr: "==", value: false },
+                    { fieldPath: "ispublished", opStr: "==", value: true },
                 ],
                 converter: this.dtoConverter,
                 limit: params.count,
@@ -155,6 +156,7 @@ export class ProductRepository implements IProductRepository {
                     ],
                     filters: [
                         { fieldPath: "slug", opStr: "==", value: params.slug },
+                        { fieldPath: "ispublished", opStr: "==", value: true },
                     ],
                     converter: this.dtoConverter,
                 })
@@ -199,6 +201,7 @@ export class ProductRepository implements IProductRepository {
                 pathSegments: [params.storeId, `${CollectionNames.PRODUCTS}`],
                 filters: [
                     { fieldPath: "isdeleted", opStr: "==", value: false },
+                    { fieldPath: "ispublished", opStr: "==", value: true },
                 ],
                 converter: this.dtoConverter,
             })
