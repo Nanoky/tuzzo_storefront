@@ -147,7 +147,7 @@ function MiniProductCardBase({
                     {isLoaded && (
                         <Image
                             src={image}
-                            className="object-contain w-24 h-full rounded-e-none"
+                            className="object-cover w-24 h-full rounded-e-none"
                             onClick={handleClickProduct}
                             alt={title}
                             width={"100%"}></Image>

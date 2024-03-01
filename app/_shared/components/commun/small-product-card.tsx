@@ -67,7 +67,7 @@ export default function SmallProductCard({
                     {item && (
                         <Image
                             src={item.images[0]}
-                            className="object-fill h-28 w-full rounded-b-none"
+                            className="object-cover h-28 w-full rounded-b-none"
                             onClick={handleGoToProduct}
                             alt={item.name}
                             width={"100%"}></Image>

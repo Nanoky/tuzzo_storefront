@@ -62,7 +62,7 @@ export default function ProductCard({
                     {item && (
                         <Image
                             src={item.images[0]}
-                            className="object-fill w-full h-72 card-radius"
+                            className="object-cover w-full h-72 card-radius"
                             onClick={handleGoToProduct}
                             alt={item.name}
                             width={"100%"}></Image>

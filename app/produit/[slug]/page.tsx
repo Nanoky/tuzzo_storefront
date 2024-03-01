@@ -151,8 +151,8 @@ export default async function ProductPage({ params }: Props) {
                                         <Image
                                             src={image}
                                             alt={product.name}
-                                            width={296}
-                                            height={296}
+                                            width={1000}
+                                            height={1000}
                                             classNames={{
                                                 wrapper: "h-full",
                                             }}
