@@ -21,12 +21,20 @@ export class Cart {
 
     add(product: Product, quantity: number) {
         if (quantity > 0) {
-            const item = this.items.find(
+            const itemId = this.items.findIndex(
                 (item) => item.product.id === product.id
             );
-            if (item) {
-                item.quantity += quantity;
-                item.totalPrice = item.product.price * quantity;
+            if (itemId !== -1 && this.items[itemId]) {
+                const item: CartItem = {
+                    product,
+                    quantity: this.items[itemId].quantity + quantity,
+                    totalPrice:
+                        this.items[itemId].product.price *
+                        (this.items[itemId].quantity + quantity),
+                };
+                let items = [...this.items];
+                items.splice(itemId, 1, item);
+                this.items = [...items];
             } else {
                 this.items = [
                     ...this.items,
@@ -37,6 +45,8 @@ export class Cart {
                     },
                 ];
             }
+
+            console.debug("Product added to cart", this.items);
         }
     }
 
