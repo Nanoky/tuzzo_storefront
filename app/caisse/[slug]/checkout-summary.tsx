@@ -44,7 +44,7 @@ export default function CheckoutSummary({
                             <Textarea
                                 type="text"
                                 variant="bordered"
-                                label="Commantaires"
+                                label="Commentaires"
                                 {...field}
                             />
                         )}
