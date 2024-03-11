@@ -125,7 +125,7 @@ export default function ListProducts({
                             className={`min-h-60 max-h-full flex flex-col items-center justify-center gap-4 text-center ${
                                 (products.length || isLoading) && "hidden"
                             }`}>
-                            <span className="text-3xl font-bold">Ooops</span>
+                            <span className="text-3xl font-bold">Désolé</span>
                             <span className="text-gray-500">
                                 {`Cette ${
                                     selectedCategory ? "catégorie" : "boutique"
