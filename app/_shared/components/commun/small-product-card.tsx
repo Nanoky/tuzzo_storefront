@@ -18,6 +18,7 @@ import {
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
+import { formatPrice } from "../../shared/formatter";
 
 export default function SmallProductCard({
     product,
@@ -90,7 +91,7 @@ export default function SmallProductCard({
                         <div className="flex flex-row justify-between items-center h-10">
                             <span className="font-bold text-sm">
                                 {item ? (
-                                    `${item.price} ${getCurrencyLabel(
+                                    `${formatPrice(item.price)} ${getCurrencyLabel(
                                         item.currency
                                     )}`
                                 ) : (

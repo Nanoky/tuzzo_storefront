@@ -5,6 +5,7 @@ import { Control, Controller } from "react-hook-form";
 import { FormValues } from "./order-form";
 import React from "react";
 import Accordion from "@/app/_shared/components/commun/accordion";
+import { formatPrice } from "@/app/_shared/shared/formatter";
 
 export default function CheckoutSummary({
     control,
@@ -29,11 +30,11 @@ export default function CheckoutSummary({
                 <div className="flex flex-col gap-2">
                     <div className="flex justify-between">
                         <span className="text-sm">Sous-total</span>
-                        <span className="text-normal">{total}F</span>
+                        <span className="text-normal">{formatPrice(total)}F</span>
                     </div>
                     <div className="flex justify-between">
                         <span className="text-sm">Total</span>
-                        <span className="text-xl text-bold">{total}F</span>
+                        <span className="text-xl text-bold">{formatPrice(total)}F</span>
                     </div>
                 </div>
                 <div className="">

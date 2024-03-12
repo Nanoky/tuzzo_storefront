@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
 import { CartItem } from "@/business/models/cart";
+import { formatPrice } from "../../shared/formatter";
 
 export function MiniCartProductCard({
     item,
@@ -37,7 +38,7 @@ export function MiniCartProductCard({
             title={item.product.name}
             subtitle={`Quantité: ${item.quantity}`}
             image={item.product.images[0]}
-            cost={`${item.totalPrice} ${getCurrencyLabel(
+            cost={`${formatPrice(item.totalPrice)} ${getCurrencyLabel(
                 item.product.currency
             )}`}
             onClick={() => {}}
@@ -96,7 +97,7 @@ export function MiniProductCard({
             title={item?.name ?? ""}
             subtitle={item?.categories?.[0]?.name}
             image={item?.images[0] ?? ""}
-            cost={`${item?.price} ${getCurrencyLabel(item?.currency ?? "")}`}
+            cost={`${item?.price ? formatPrice(item.price) : ""} ${getCurrencyLabel(item?.currency ?? "")}`}
             onClick={handleGoToProduct}
             onClickButton={handleAddToCart}
             buttonIcon={

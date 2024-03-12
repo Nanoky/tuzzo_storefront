@@ -23,6 +23,7 @@ import { CustomImage } from "./custom-image";
 import { createCheckoutRoute } from "../../services/router";
 import { useAppSelector } from "../../lib/hooks";
 import { MiniCartProductCard } from "./mini-product-card";
+import { formatPrice } from "../../shared/formatter";
 
 export function CartButton({
     slug,
@@ -158,7 +159,7 @@ export function CartPanel({
             <Divider></Divider>
             <div className="flex flex-row justify-between py-2">
                 <span className="text-sm">Sous-total</span>
-                <span className="font-bold text-xl">{total} F</span>
+                <span className="font-bold text-xl">{formatPrice(total)} F</span>
             </div>
             {items.length > 0 && (
                 <div className="flex justify-center items-center py-2">

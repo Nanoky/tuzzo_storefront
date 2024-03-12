@@ -13,6 +13,7 @@ import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
+import { formatPrice } from "../../shared/formatter";
 
 export default function ProductCard({
     product,
@@ -79,7 +80,7 @@ export default function ProductCard({
                         </div>
                         <div className="font-bold">
                             {item ? (
-                                `${item.price} ${getCurrencyLabel(
+                                `${formatPrice(item.price)} ${getCurrencyLabel(
                                     item.currency
                                 )}`
                             ) : (
