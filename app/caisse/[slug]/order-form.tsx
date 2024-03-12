@@ -7,11 +7,11 @@ import PaymentOption from "./payment-option";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCart } from "@/app/_shared/hooks/cart";
 import { saveOrder } from "@/app/_shared/services/order";
-import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createSuccessRoute } from "@/app/_shared/services/router";
 import { Store } from "@/business/models/store";
+import { notifyError } from "@/app/_shared/services/notifier";
 
 type Options<TKey> = Map<TKey, boolean>;
 export type FormValues = {
@@ -91,7 +91,7 @@ export default function OrderForm({
             .catch((error) => {
                 console.error(error);
                 console.trace(error);
-                enqueueSnackbar(error.message, { variant: "error" });
+                notifyError(error.message);
                 setIsLoading(false);
             });
     };

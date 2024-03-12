@@ -1,8 +1,8 @@
+import { notifyError } from "@/app/_shared/services/notifier";
 import { CartItem } from "@/business/models/cart";
 import { Product } from "@/business/models/product";
 import { Instances } from "@/init";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { enqueueSnackbar } from "notistack";
 
 type CartOperationResponse = {
     count: number;
@@ -123,9 +123,7 @@ const slice = createSlice({
             state.nbItems = action.payload.count;
             state.total = action.payload.total;
 
-            enqueueSnackbar("Le produit a bien été ajouté au panier", {
-                variant: "success",
-            });
+            notifyError("Le produit a bien été ajouté au panier");
         });
         builder.addCase(removeItem.fulfilled, (state, action) => {
             state.items = action.payload.items;
