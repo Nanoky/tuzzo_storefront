@@ -49,6 +49,10 @@ export class ProductRepository implements IProductRepository {
                                         return data[0];
                                     }
                                     throw new Error("Catégorie introuvable");
+                                })
+                                .catch((err) => {
+                                    console.error(err);
+                                    return;
                                 });
                         }) ?? [];
 
@@ -66,7 +70,7 @@ export class ProductRepository implements IProductRepository {
                                 : [DEFAULT_PRODUCT_IMAGE]
                             : [DEFAULT_PRODUCT_IMAGE],
                         quantity: data.quantity ?? 0,
-                        categories: categories,
+                        categories: categories.filter((cat) => !!cat),
                         nbSold: data.total_unit_sold ?? 0,
                         slug: data.slug,
                     });
