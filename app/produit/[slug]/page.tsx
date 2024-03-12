@@ -24,6 +24,7 @@ import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { searchProductBySlug } from "@/app/_shared/services/product";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { formatPrice } from "@/app/_shared/shared/formatter";
 
 type Params = {
     storeSlug: string;
@@ -171,7 +172,7 @@ export default async function ProductPage({ params }: Props) {
                                         {product.name}
                                     </span>
                                     <span className="text-primary font-semibold">
-                                        {product.price} {product.currency}
+                                        {formatPrice(product.price)} {product.currency}
                                     </span>
                                 </div>
                             </div>
