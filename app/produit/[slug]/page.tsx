@@ -1,12 +1,19 @@
 import { CustomImage } from "@/app/_shared/components/commun/custom-image";
-import Layout from "@/app/_shared/components/layout";
+import Layout from "@/app/_shared/components/layout-new";
 import { useProducts } from "@/app/_shared/hooks/product";
 import { useShop } from "@/app/_shared/hooks/shop";
 import "./product.css";
 import Breadcrumbs from "@/app/_shared/components/commun/breadcrumbs";
 import AddCart from "./addCart";
 import { Metadata } from "next";
-import { Card, CardBody } from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    Divider,
+    Image,
+    Link,
+} from "@nextui-org/react";
 import {
     createNotFoundRoute,
     createStoreRoute,
@@ -15,6 +22,9 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { searchProductBySlug } from "@/app/_shared/services/product";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { formatPrice } from "@/app/_shared/shared/formatter";
 
 type Params = {
     storeSlug: string;
@@ -114,50 +124,101 @@ export default async function ProductPage({ params }: Props) {
     }
     return (
         <Layout store={store} hasFooter={false} productId={product.id}>
-            <div className="d-flex flex-column gap-3 px-product w-100 py-4 mb-20 sm:mb-20 md:mb-20 lg:mb-0 xl:mb-0">
-                <div className="d-flex justify-content-center flex-row align-items-center gap-2">
-                    <Breadcrumbs
-                        title="Détails produit"
-                        home_url={createStoreRoute(
+            <div className="w-screen overflow-x-hidden flex flex-col gap-4 px-5 lg:px-28 w-full py-4 sm:mb-20 md:mb-20 lg:mb-0 xl:mb-0">
+                <div className="flex justify-start flex-row items-center gap-2">
+                    <Button
+                        isIconOnly
+                        as={Link}
+                        className="bg-transparent text-primary text-2xl"
+                        href={createStoreRoute(
                             isWildcard ? undefined : store.slug
-                        )}></Breadcrumbs>
+                        )}>
+                        <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+                    </Button>
+                    <span className="font-bold text-2xl">{product.name}</span>
                 </div>
-                <Card>
-                    <CardBody>
-                        <div className="d-flex flex-column gap-2">
-                            <div className="d-flex justify-content-center align-items-center">
-                                <CustomImage
-                                    url={product.images[0]}
-                                    name={product.name}
-                                    wAuto
-                                    isRelative
-                                    height="300px"></CustomImage>
-                            </div>
-                            <div className="flex flex-column gap-2">
-                                <span className="font-bold text-lg">
-                                    {product.name}
-                                </span>
-                                <span className="text-primary font-semibold">
-                                    {product.price} {product.currency}
-                                </span>
-                                <span
-                                    className={`text-sm ${
-                                        product.quantity === 0
-                                            ? "text-danger"
-                                            : "text-black"
-                                    }`}>
-                                    {product.quantity === 0
-                                        ? "Nous sommes en rupture de stock sur ce produit, mais il sera à nouveau disponible prochainement !"
-                                        : "Ajoutez ce produit au panier pour le commander"}
-                                </span>
+                <div className="relative overflow-x-hidden flex flex-col gap-4">
+                    {product.images.length > 1 && (
+                        <div className="absolute top-6 left-auto pl-5 w-full">
+                            <div className="overflow-x-auto scrollbar-hide">
+                                <div className="w-fit flex flex-row justify-center gap-4 items-center flex-nowrap">
+                                    {product.images.map((image) => (
+                                        <div
+                                            key={image}
+                                            className={`${
+                                                product.images.length > 1
+                                                    ? "w-72"
+                                                    : "w-80"
+                                            } h-72`}>
+                                            <Image
+                                                src={image}
+                                                alt={product.name}
+                                                width={1000}
+                                                height={1000}
+                                                classNames={{
+                                                    wrapper: "h-full",
+                                                }}
+                                                className="object-cover h-full w-full rounded-3xl"></Image>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </CardBody>
-                </Card>
+                    )}
+                    <Card className="card-radius">
+                        <CardBody className="">
+                            <div className="flex flex-col gap-2">
+                                <div className="h-80 min-w-full w-80 max-w-max">
+                                    {product.images.length === 1 && (
+                                        <Image
+                                            src={product.images[0]}
+                                            alt={product.name}
+                                            width={1000}
+                                            height={1000}
+                                            classNames={{
+                                                wrapper: "h-full",
+                                            }}
+                                            className="object-cover h-full w-full rounded-3xl"></Image>
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-2 p-2">
+                                    <span className="font-bold text-lg">
+                                        {product.name}
+                                    </span>
+                                    <span className="text-primary font-semibold">
+                                        {formatPrice(product.price)}{" "}
+                                        {product.currency}
+                                    </span>
+                                </div>
+                            </div>
+                        </CardBody>
+                    </Card>
+
+                    <div>
+                        <span
+                            className={`text-sm ${
+                                product.quantity === 0
+                                    ? "text-danger"
+                                    : "text-black"
+                            }`}>
+                            {product.quantity === 0
+                                ? "Nous sommes en rupture de stock sur ce produit, mais il sera à nouveau disponible prochainement !"
+                                : product.description
+                                ? product.description
+                                : "Ajoutez ce produit au panier pour le commander"}
+                        </span>
+                    </div>
+
+                    <Divider className="my-1" />
+
+                    <div className="">
+                        <AddCart product={product}></AddCart>
+                    </div>
+                </div>
             </div>
-            <div className="absolute add-cart-section bottom-4">
+            {/* <div className="absolute add-cart-section bottom-4">
                 <AddCart product={product}></AddCart>
-            </div>
+            </div> */}
         </Layout>
     );
 }

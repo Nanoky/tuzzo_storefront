@@ -1,4 +1,4 @@
-import Layout from "@/app/_shared/components/layout";
+import Layout from "@/app/_shared/components/layout-new";
 import { useShop } from "@/app/_shared/hooks/shop";
 import { createNotFoundRoute, createStoreRoute } from "@/app/_shared/services/router";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
@@ -40,15 +40,15 @@ export default async function SuccessPage() {
 
     return (
         <Layout store={store}>
-            <div className="flex flex-column justify-center items-center pt-4">
-                <div className="flex flex-column justify-center items-center gap-3">
-                    <span className="text-9xl text-primary">
+            <div className="flex flex-col justify-center items-center pt-4 h-full">
+                <div className="flex flex-col justify-center items-center gap-3">
+                    <span className="text-9xl text-primary bg-tertiary rounded-full">
                         <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>
                     </span>
                     <span className="text-3xl text-primary text-bold">
                         Bravo !
                     </span>
-                    <div className="text-semibold flex flex-column justify-center items-center">
+                    <div className="text-semibold flex flex-col justify-center items-center">
                         <span>Votre commande a bien été envoyée</span>
                         <span>Merci de nous avoir fait confiance!</span>
                     </div>

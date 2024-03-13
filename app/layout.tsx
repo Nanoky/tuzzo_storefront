@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import "bootstrap/dist/css/bootstrap.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./colors.css";
+import "./globals.css";
 import Init from "./_shared/components/commun/init";
 import StoreProvider from "./storeProvider";
 import { Providers } from "./providers";
@@ -26,7 +25,7 @@ export default async function RootLayout({
                 <body className={inter.className}>
                     <Providers>
                         <Init></Init>
-                        <div className="vh-100 vw-100">{children}</div>
+                        <div className="h-screen w-full">{children}</div>
                     </Providers>
                 </body>
             </html>

@@ -6,6 +6,10 @@ import { useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "./order-form";
 import { PaymentOptions } from "@/app/_shared/shared/enums";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoneyBill1Wave } from "@fortawesome/free-solid-svg-icons";
+import Accordion from "@/app/_shared/components/commun/accordion";
+import { MoneyIcon } from "@/app/_shared/components/commun/icons/money-icon";
 
 export default function PaymentOption({
     control,
@@ -13,41 +17,37 @@ export default function PaymentOption({
     control: Control<FormValues>;
 }) {
     return (
-        <SectionCard>
-            <SectionAccordion
-                id="paiement"
-                title="Option de paiement"
-                subtitleCollapsed="Choisissez votre option de paiement"
-                subtitleExpanded="Comment voulez-vous payer ?">
-                <div>
-                    <SectionCard>
-                        <div className="d-flex flex-row justify-content-between">
-                            <Controller
-                                control={control}
-                                name="optionPaymentCash"
-                                render={({ field }) => (
-                                    <Checkbox
-                                        radius="none"
-                                        color="primary"
-                                        isSelected={
-                                            field.value
-                                        } onChange={field.onChange}>
-                                        <div className="d-flex flex-column gap-1">
-                                            <span className="text-normal">
-                                                Paiement à la livraison
-                                            </span>
-                                            <span className="text-xs">
-                                                Payez en espèce lors de votre
-                                                livraison
-                                            </span>
-                                        </div>
-                                    </Checkbox>
-                                )}
-                            />
-                        </div>
-                    </SectionCard>
-                </div>
-            </SectionAccordion>
-        </SectionCard>
+        <Accordion
+            defaultOpened
+            title="Option de paiement"
+            subtitle="Quel est votre moyen de paiement ?">
+            <div>
+                <Controller
+                    control={control}
+                    name="optionPaymentCash"
+                    render={({ field }) => (
+                        <Checkbox
+                            radius="full"
+                            color="primary"
+                            className="w-full m-0 max-w-full items-start gap-3"
+                            classNames={{
+                                wrapper: `border-2 border-primary`,
+                                label: "w-full"
+                            }}
+                            isSelected={field.value}
+                            onChange={field.onChange}>
+                            <div className="flex flex-row justify-between">
+                                <span className="text-sm">
+                                    Paiement à la livraison
+                                </span>
+                                <span>
+                                    <MoneyIcon />
+                                </span>
+                            </div>
+                        </Checkbox>
+                    )}
+                />
+            </div>
+        </Accordion>
     );
 }

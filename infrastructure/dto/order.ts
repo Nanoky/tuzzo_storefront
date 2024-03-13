@@ -25,6 +25,6 @@ export interface OrderDTO extends DTO {
     order_channel_id: 4; // Web storefront
     order_status_id: 2; // En cours de traitement
     delivery_status_id: 1; // Non livré
-    is_activated: true;
+    is_activated: false;
     payment_status_id: 1; // Non payé
 }

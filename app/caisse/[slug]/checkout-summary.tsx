@@ -1,12 +1,11 @@
 "use client";
 import { useCart } from "@/app/_shared/hooks/cart";
-import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Button, Divider, Input } from "@nextui-org/react";
+import { Button, Divider, Input, Textarea } from "@nextui-org/react";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "./order-form";
 import React from "react";
+import Accordion from "@/app/_shared/components/commun/accordion";
+import { formatPrice } from "@/app/_shared/shared/formatter";
 
 export default function CheckoutSummary({
     control,
@@ -20,58 +19,50 @@ export default function CheckoutSummary({
 
     const handleSubmit = () => {
         submitRef.current?.click();
-    }
+    };
     return (
-        <Card>
-            <CardHeader className="pb-2">
-                <div className="d-flex flex-column">
-                    <span className="text-normal text-semibold">
-                        Resumé de la commande
-                    </span>
-                    <span className="text-sm">
-                        Voici le total de votre commande
-                    </span>
-                </div>
-            </CardHeader>
-            <Divider className="my-2"></Divider>
-            <CardBody>
-                <div className="d-flex flex-column gap-2">
-                    <div className="d-flex justify-content-between">
+        <Accordion
+            title="Résumé"
+            subtitle="Voici le résumé de votre commande"
+            defaultOpened>
+            <div className="flex flex-col gap-4">
+                <Divider></Divider>
+                <div className="flex flex-col gap-2">
+                    <div className="flex justify-between">
                         <span className="text-sm">Sous-total</span>
-                        <span className="text-normal">{total}F</span>
+                        <span className="text-normal">{formatPrice(total)}F</span>
                     </div>
-                    <div className="d-flex justify-content-between">
-                        <span className="text-normal">
-                            Total{" "}
-                            <FontAwesomeIcon
-                                icon={faCircleInfo}></FontAwesomeIcon>
-                        </span>
-                        <span className="text-xl text-bold">{total}F</span>
-                    </div>
-                    <div className="pt-2">
-                        <Controller
-                            control={control}
-                            name="comment"
-                            render={({ field }) => (
-                                <Input
-                                    type="text"
-                                    variant="underlined"
-                                    label="D'autres commentaires sur votre commande"
-                                    {...field}></Input>
-                            )}
-                        />
+                    <div className="flex justify-between">
+                        <span className="text-sm">Total</span>
+                        <span className="text-xl text-bold">{formatPrice(total)}F</span>
                     </div>
                 </div>
-            </CardBody>
-            <Divider className="my-2"></Divider>
-            <CardFooter>
-                <div className="d-flex justify-content-end">
-                    <Button color="primary" radius="full" type="button" onClick={handleSubmit} isLoading={isButtonLoading}>
-                        Commander
+                <div className="">
+                    <Controller
+                        control={control}
+                        name="comment"
+                        render={({ field }) => (
+                            <Textarea
+                                type="text"
+                                variant="bordered"
+                                label="Commentaires"
+                                {...field}
+                            />
+                        )}
+                    />
+                </div>
+                <div className="flex justify-center">
+                    <Button
+                        color="primary"
+                        radius="full"
+                        type="submit"
+                        className="px-6"
+                        onClick={handleSubmit}
+                        isLoading={isButtonLoading}>
+                        Valider
                     </Button>
-                    <button type="submit" ref={submitRef} className="hidden">Commander</button>
                 </div>
-            </CardFooter>
-        </Card>
+            </div>
+        </Accordion>
     );
 }
