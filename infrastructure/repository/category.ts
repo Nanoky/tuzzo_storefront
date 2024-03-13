@@ -40,10 +40,14 @@ export class CategoryRepository implements ICategoryRepository {
                     converter: this.adapter,
                 })
                 .then((data) => {
+                    console.debug("search res", data);
                     if (data) {
                         return data;
                     }
                     throw new Error("Catégorie introuvable");
+                }).catch((err) => {
+                    console.error(err);
+                    throw err;
                 });
         } else if (params.name) {
             return this.service

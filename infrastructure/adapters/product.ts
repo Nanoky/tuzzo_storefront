@@ -51,7 +51,9 @@ export class ProductDTOAdapter
             price: data.price,
             currency: data.currency,
             product_images: data.product_images,
-            product_categories: data.product_categories?.slice(1),
+            product_categories: data.product_categories?.filter((cat: any) => {
+                return !!cat;
+            }),
             quantity: data.quantity,
             total_unit_sold: data.total_unit_sold,
             slug: data.slug,
@@ -95,8 +97,6 @@ export class ProductAdapter
         options?: SnapshotOptions | undefined
     ): Product {
         const data = snapshot.data(options);
-
-        console.debug("product", data)
 
         if (data.isdeleted) {
             throw new Error("Le produit recherché est supprimé");

@@ -161,6 +161,7 @@ export class ProductRepository implements IProductRepository {
                     filters: [
                         { fieldPath: "slug", opStr: "==", value: params.slug },
                         { fieldPath: "ispublished", opStr: "==", value: true },
+                        { fieldPath: "isdeleted", opStr: "==", value: false },
                     ],
                     converter: this.dtoConverter,
                 })
@@ -184,7 +185,6 @@ export class ProductRepository implements IProductRepository {
                     converter: this.dtoConverter,
                 })
                 .then((data) => {
-                    console.debug("get product", data);
                     if (data && !data.isDeleted) {
                         return [data];
                     } else {
