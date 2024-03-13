@@ -51,6 +51,7 @@ export default function OrderForm({
         reset,
         getFieldState,
         formState: { errors },
+        getValues,
         trigger,
     } = useForm<FormValues>({
         defaultValues: defaultFormValues,
@@ -102,6 +103,8 @@ export default function OrderForm({
                     <CustomerInfos
                         control={control}
                         trigger={trigger}
+                        store={store}
+                        getValues={getValues}
                         errors={errors}></CustomerInfos>
                     <DeliveryOption control={control}></DeliveryOption>
                     <PaymentOption control={control}></PaymentOption>

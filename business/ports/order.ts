@@ -14,8 +14,14 @@ export type SaveOrderParams = {
     finalPrice: number;
 };
 
+export type SearchOrderCustomersParams = {
+    phone: string;
+    store: Store;
+}
+
 export interface IOrderActions {
     saveOrder(param: SaveOrderParams): Promise<Order>;
+    searchCustomers(param: SearchOrderCustomersParams): Promise<OrderCustomer | null>
 }
 
 export interface IOrderRepository {

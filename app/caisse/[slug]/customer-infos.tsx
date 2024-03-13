@@ -5,21 +5,30 @@ import {
     Control,
     Controller,
     FieldErrors,
+    UseFormGetValues,
     UseFormTrigger,
 } from "react-hook-form";
 import { FormValues } from "./order-form";
 import Accordion from "@/app/_shared/components/commun/accordion";
+import { OrderCustomer } from "@/business/models/order";
+import { searchCustomers } from "@/app/_shared/services/order";
+import { Store } from "@/business/models/store";
 
 export default function CustomerInfos({
     control,
     errors,
     trigger,
+    store,
+    getValues
 }: {
     control: Control<FormValues>;
     errors: FieldErrors<FormValues>;
     trigger: UseFormTrigger<FormValues>;
+    store: Store;
+    getValues: UseFormGetValues<FormValues>
 }) {
     const [isValid, setIsValid] = useState(false);
+    const [customer, setCustomer] = useState<OrderCustomer>();
     const handleCheckValidity = () => {
         trigger("name");
         trigger("phone");
@@ -27,21 +36,27 @@ export default function CustomerInfos({
 
         console.log(errors);
 
-        if (
-            !errors.name &&
-            !errors.phone &&
-            !errors.address
-        ) {
+        if (!errors.name && !errors.phone && !errors.address) {
             setIsValid(true);
         } else {
             setIsValid(false);
         }
     };
+
+    const search = () => {
+        const pattern = getValues("phone");
+        searchCustomers({ phone: pattern, store }).then((customer) => {
+            if (customer) {
+                setCustomer(customer);
+            }
+        });
+    };
     return (
         <Accordion
             defaultOpened
             title="Entrez vos informations"
-            subtitle="Vos informations de livraison" checked={isValid}>
+            subtitle="Vos informations de livraison"
+            checked={isValid}>
             <div className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1">
                     <Controller
@@ -55,6 +70,7 @@ export default function CustomerInfos({
                                 radius="sm"
                                 label="Numéro de téléphone"
                                 {...field}
+                                onFocusChange={() => search()}
                                 isInvalid={fieldState.invalid}
                                 errorMessage={
                                     fieldState.invalid &&
