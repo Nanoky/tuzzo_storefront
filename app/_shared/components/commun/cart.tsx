@@ -62,12 +62,12 @@ export function CartButton({
                 shape="circle"
                 color="danger"
                 size="lg">
-                <Skeleton isLoaded={!!items} className="rounded-xl">
+                <Skeleton isLoaded={!!items} className="rounded-2xl">
                     <Button
                         isIconOnly
                         aria-label="Cart"
                         variant="solid"
-                        className="bg-white"
+                        className="bg-white rounded-2xl"
                         onClick={handleClick}>
                         <ShoppingCartIcon isBlack />
                     </Button>

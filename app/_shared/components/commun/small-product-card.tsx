@@ -109,7 +109,7 @@ export default function SmallProductCard({
                                         else handleGoToProduct();
                                     }}
                                     variant="solid"
-                                    className={`text-white bg-primary`}>
+                                    className={`text-white bg-primary rounded-2xl`}>
                                     {isInCart ? (
                                         <FontAwesomeIcon
                                             icon={faCheck}></FontAwesomeIcon>

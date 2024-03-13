@@ -188,7 +188,7 @@ function MiniProductCardBase({
                                     isIconOnly
                                     onClick={handleClickButton}
                                     color="primary"
-                                    className={`rounded-xl text-white`}>
+                                    className={`rounded-2xl text-white`}>
                                     {buttonIcon}
                                 </Button>
                             </NextSkeleton>
