@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
 import { formatPrice } from "../../shared/formatter";
+import { ShoppingCartIcon } from "./icons/shopping-cart";
 
 export default function ProductCard({
     product,
@@ -104,8 +105,7 @@ export default function ProductCard({
                                     <FontAwesomeIcon
                                         icon={faCheck}></FontAwesomeIcon>
                                 ) : (
-                                    <FontAwesomeIcon
-                                        icon={faShoppingCart}></FontAwesomeIcon>
+                                    <ShoppingCartIcon />
                                 )}
                             </Button>
                         )}

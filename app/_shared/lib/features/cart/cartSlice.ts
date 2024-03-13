@@ -1,4 +1,4 @@
-import { notifyError } from "@/app/_shared/services/notifier";
+import { notifyError, notifySuccess } from "@/app/_shared/services/notifier";
 import { CartItem } from "@/business/models/cart";
 import { Product } from "@/business/models/product";
 import { Instances } from "@/init";
@@ -123,7 +123,7 @@ const slice = createSlice({
             state.nbItems = action.payload.count;
             state.total = action.payload.total;
 
-            notifyError("Le produit a bien été ajouté au panier");
+            notifySuccess("Le produit a bien été ajouté au panier");
         });
         builder.addCase(removeItem.fulfilled, (state, action) => {
             state.items = action.payload.items;

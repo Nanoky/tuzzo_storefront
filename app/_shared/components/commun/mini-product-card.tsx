@@ -24,6 +24,8 @@ import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
 import { CartItem } from "@/business/models/cart";
 import { formatPrice } from "../../shared/formatter";
+import { TrashIcon } from "./icons/trash-icon";
+import { ShoppingCartIcon } from "./icons/shopping-cart";
 
 export function MiniCartProductCard({
     item,
@@ -44,7 +46,7 @@ export function MiniCartProductCard({
             onClick={() => {}}
             onClickButton={onDelete}
             buttonIcon={
-                <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                <TrashIcon />
             }></MiniProductCardBase>
     );
 }
@@ -104,7 +106,7 @@ export function MiniProductCard({
                 isInCart ? (
                     <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
                 ) : (
-                    <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                    <ShoppingCartIcon />
                 )
             }></MiniProductCardBase>
     );

@@ -9,6 +9,7 @@ import { PaymentOptions } from "@/app/_shared/shared/enums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoneyBill1Wave } from "@fortawesome/free-solid-svg-icons";
 import Accordion from "@/app/_shared/components/commun/accordion";
+import { MoneyIcon } from "@/app/_shared/components/commun/icons/money-icon";
 
 export default function PaymentOption({
     control,
@@ -40,10 +41,7 @@ export default function PaymentOption({
                                     Paiement à la livraison
                                 </span>
                                 <span>
-                                    <FontAwesomeIcon
-                                        icon={
-                                            faMoneyBill1Wave
-                                        }></FontAwesomeIcon>
+                                    <MoneyIcon />
                                 </span>
                             </div>
                         </Checkbox>

@@ -24,6 +24,7 @@ import { createCheckoutRoute } from "../../services/router";
 import { useAppSelector } from "../../lib/hooks";
 import { MiniCartProductCard } from "./mini-product-card";
 import { formatPrice } from "../../shared/formatter";
+import { ShoppingCartIcon } from "./icons/shopping-cart";
 
 export function CartButton({
     slug,
@@ -68,8 +69,7 @@ export function CartButton({
                         variant="solid"
                         className="bg-white"
                         onClick={handleClick}>
-                        <FontAwesomeIcon
-                            icon={faShoppingCart}></FontAwesomeIcon>
+                        <ShoppingCartIcon isBlack />
                     </Button>
                 </Skeleton>
             </Badge>

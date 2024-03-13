@@ -6,7 +6,7 @@ export enum DeliveryOptions {
 
 export enum PaymentOptions {
     CASH = "cash",
-    CREDIT_CARD = "credit card",
-    PAYPAL = "paypal",
-    CRYPTO = "crypto",
+    MTN = "mtn",
+    ORANGE = "orange",
+    WAVE = "wave",
 }
