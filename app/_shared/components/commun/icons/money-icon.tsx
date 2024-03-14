@@ -10,7 +10,7 @@ export const MoneyIcon = ({color = "black"}: Props) => {
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_1220_2280)">
+            <g clipPath="url(#clip0_1220_2280)">
                 <path
                     d="M0.272626 10.0263C0.0576336 10.1054 -0.0531829 10.3438 0.0251347 10.5596L0.286805 11.2795L2.2792 9.28711L0.272626 10.0263Z"
                     fill={color}

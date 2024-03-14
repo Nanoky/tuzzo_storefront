@@ -52,7 +52,7 @@ export class OrderCustomerRepository implements IOrderCustomerRepository {
                         value: param.phone,
                     },
                     {
-                        fieldPath: "deleted",
+                        fieldPath: "isdeleted",
                         opStr: "==",
                         value: false,
                     },

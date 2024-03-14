@@ -30,3 +30,5 @@ export const PAYMENT_OPTIONS: {
         icon: <MTNIcon />,
     },
 ];
+
+export const CUSTOMER_DEFAULT_PHONE_INPUT_VALUE = "+225";
