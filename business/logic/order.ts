@@ -1,10 +1,11 @@
-import { Order } from "../models/order";
+import { Order, OrderCustomer } from "../models/order";
 import {
     IOrderActions,
     IOrderCustomerRepository,
     IOrderItemRepository,
     IOrderRepository,
     SaveOrderParams,
+    SearchOrderCustomersParams,
 } from "../ports/order";
 import { IProductRepository } from "../ports/product";
 
@@ -15,6 +16,12 @@ export class OrderBusiness implements IOrderActions {
         private orderItemRepo: IOrderItemRepository,
         private productRepo: IProductRepository
     ) {}
+    searchCustomers(param: SearchOrderCustomersParams): Promise<OrderCustomer | null> {
+        return this.orderCustomerRepo.get({
+            phone: param.phone,
+            storeId: param.store.id,
+        });
+    }
     async saveOrder(param: SaveOrderParams) {
         try {
             let order: Order | null = new Order({

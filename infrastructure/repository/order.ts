@@ -51,6 +51,11 @@ export class OrderCustomerRepository implements IOrderCustomerRepository {
                         opStr: "==",
                         value: param.phone,
                     },
+                    {
+                        fieldPath: "isdeleted",
+                        opStr: "==",
+                        value: false,
+                    },
                 ],
                 converter: this.converter,
                 limit: 1,

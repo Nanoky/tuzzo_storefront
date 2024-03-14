@@ -23,7 +23,7 @@ export class OrderCustomerConverter
             notes: "Client enregistré depuis le web",
             created_at: new Date(),
             modified_at: new Date(),
-            isDeleted: false,
+            isdeleted: false,
         };
     }
     fromFirestore(
