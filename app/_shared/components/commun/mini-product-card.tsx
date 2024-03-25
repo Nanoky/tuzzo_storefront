@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCheck,
     faShoppingCart,
-    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
