@@ -175,17 +175,21 @@ export class ProductRepository implements IProductRepository {
 
         if (params.id) {
             const list = await this.service
-                .get({
+                .search({
                     collection: `${CollectionNames.STORES}`,
                     pathSegments: [
                         params.storeId,
                         `${CollectionNames.PRODUCTS}`,
+                        params.id,
                     ],
-                    id: params.id,
+                    filters: [
+                        { fieldPath: "isdeleted", opStr: "==", value: false },
+                        { fieldPath: "ispublished", opStr: "==", value: true },
+                    ],
                     converter: this.dtoConverter,
                 })
                 .then((data) => {
-                    if (data && !data.isDeleted) {
+                    if (data) {
                         return [data];
                     } else {
                         return [];
