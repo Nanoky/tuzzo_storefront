@@ -1,4 +1,5 @@
 import { Entity } from "../shared/entity";
+import { Category } from "./category";
 
 export class Product extends Entity {
     private _name!: string;
@@ -50,11 +51,11 @@ export class Product extends Entity {
     private set currency(value: string) {
         this._currency = value;
     }
-    private _categories!: string[];
-    public get categories(): string[] {
+    private _categories!: Category[];
+    public get categories(): Category[] {
         return this._categories;
     }
-    private set categories(value: string[]) {
+    private set categories(value: Category[]) {
         this._categories = value;
     }
 
@@ -75,7 +76,7 @@ export class Product extends Entity {
         images?: string[];
         nbSold: number;
         currency: string;
-        categories?: string[];
+        categories?: Category[];
         slug: string;
     }) {
         super({

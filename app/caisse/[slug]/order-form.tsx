@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardBody } from "@nextui-org/react";
 import CheckoutSummary from "./checkout-summary";
 import CustomerInfos from "./customer-infos";
 import DeliveryOption from "./delivery-option";
@@ -18,7 +17,6 @@ type Options<TKey> = Map<TKey, boolean>;
 export type FormValues = {
     name: string;
     phone: string;
-    indicator: string;
     address: string;
     optionDeliveryExpress: boolean; //Options<DeliveryOptions>;
     optionPaymentCash: boolean; //Options<PaymentOptions>;
@@ -27,8 +25,7 @@ export type FormValues = {
 
 const defaultFormValues: FormValues = {
     name: "",
-    phone: "",
-    indicator: "+225",
+    phone: "+225",
     address: "",
     optionDeliveryExpress: true /* new Map<DeliveryOptions, boolean>([
         [DeliveryOptions.EXPRESS, true],
@@ -70,7 +67,6 @@ export default function OrderForm({
             comment: data.comment,
             customer: {
                 address: data.address,
-                phoneIndicator: data.indicator,
                 fullname: data.name,
                 phone: data.phone,
             },
@@ -101,33 +97,16 @@ export default function OrderForm({
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                <div className="md:col-span-2">
-                    <Card>
-                        <CardBody className="2xs:p-2 md:p-4">
-                            <div className="d-flex flex-column gap-2">
-                                <div className="d-flex flex-column gap-2">
-                                    <span className="text-lg font-bold">
-                                        On y est presque !
-                                    </span>
-                                    <span className="text-sm">
-                                        Remplissez ce formulaire pour passer
-                                        commande
-                                    </span>
-                                </div>
-                                <CustomerInfos
-                                    control={control}
-                                    trigger={trigger}
-                                    errors={errors}></CustomerInfos>
-                                <DeliveryOption
-                                    control={control}></DeliveryOption>
-                                <PaymentOption
-                                    control={control}></PaymentOption>
-                            </div>
-                        </CardBody>
-                    </Card>
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3">
+                <div className="flex flex-col gap-4 lg:col-span-2">
+                    <CustomerInfos
+                        control={control}
+                        trigger={trigger}
+                        errors={errors}></CustomerInfos>
+                    <DeliveryOption control={control}></DeliveryOption>
+                    <PaymentOption control={control}></PaymentOption>
                 </div>
-                <div className="col-auto">
+                <div className="h-fit">
                     <CheckoutSummary
                         control={control}
                         isButtonLoading={isLoading}></CheckoutSummary>

@@ -3,25 +3,59 @@
 import { Product } from "@/business/models/product";
 import "./product-card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
 import { SerializeProduct } from "../../models/product";
 import Skeleton from "react-loading-skeleton";
-import { CustomImage } from "./custom-image";
-import { Button, Card, CardBody } from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    Image,
+    Skeleton as NextSkeleton,
+} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
+import { CartItem } from "@/business/models/cart";
+import { TrashIcon } from "./icon";
 
-export default function MiniProductCard({
+export function MiniCartProductCard({
+    item,
+    onDelete,
+}: {
+    item: CartItem;
+    onDelete: () => void;
+}) {
+    return (
+        <MiniProductCardBase
+            isLoaded={!!item}
+            title={item.product.name}
+            subtitle={`Quantité: ${item.quantity}`}
+            image={item.product.images[0]}
+            cost={`${item.totalPrice} ${getCurrencyLabel(
+                item.product.currency
+            )}`}
+            onClick={() => {}}
+            onClickButton={onDelete}
+            buttonIcon={
+                <TrashIcon />
+            }></MiniProductCardBase>
+    );
+}
+
+export function MiniProductCard({
     product,
     storeSlug,
 }: {
     product: Product;
     storeSlug?: string;
 }) {
-    const [item, setItem] = useState<Product>();
+    const [item, setItem] = useState<SerializeProduct>();
     const { addToCart, items } = useCart();
 
     const [isInCart, setIsInCart] = useState(false);
@@ -42,7 +76,8 @@ export default function MiniProductCard({
     }, [items]);
 
     const handleAddToCart = (e: any) => {
-        addToCart(product, 1);
+        if (!isInCart) addToCart(product, 1);
+        else handleGoToProduct();
         e?.preventDefault();
     };
 
@@ -56,59 +91,104 @@ export default function MiniProductCard({
     };
 
     return (
+        <MiniProductCardBase
+            isLoaded={!!item}
+            title={item?.name ?? ""}
+            subtitle={item?.categories?.[0]?.name}
+            image={item?.images[0] ?? ""}
+            cost={`${item?.price} ${getCurrencyLabel(item?.currency ?? "")}`}
+            onClick={handleGoToProduct}
+            onClickButton={handleAddToCart}
+            buttonIcon={
+                isInCart ? (
+                    <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
+                ) : (
+                    <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                )
+            }></MiniProductCardBase>
+    );
+}
+
+function MiniProductCardBase({
+    isLoaded,
+    title,
+    subtitle,
+    cost,
+    image,
+    buttonIcon,
+    onClickButton,
+    onClick,
+}: {
+    isLoaded?: boolean;
+    title: string;
+    subtitle?: string;
+    image: string;
+    cost: string;
+    buttonIcon: JSX.Element;
+    onClickButton?: (e: any) => void;
+    onClick?: () => void;
+}) {
+    const handleClickButton = (e: any) => {
+        if (onClickButton) {
+            onClickButton(e);
+        }
+    };
+
+    const handleClickProduct = () => {
+        if (onClick) {
+            onClick();
+        }
+    };
+
+    return (
         <>
-            <Card className="cursor-pointer">
+            <Card className="cursor-pointer w-full card-radius">
                 <CardBody className="p-0 flex flex-row h-24">
-                    {item && (
-                        <CustomImage
-                            url={item.images[0]}
-                            name={item.name}
-                            width="90px"
-                            height="100%"
-                            wAuto
-                            onClick={handleGoToProduct}></CustomImage>
+                    {isLoaded && (
+                        <Image
+                            src={image}
+                            className="object-contain w-24 h-full rounded-e-none"
+                            onClick={handleClickProduct}
+                            alt={title}
+                            width={"100%"}></Image>
                     )}
                     <div
                         className="flex flex-row justify-between items-center grow p-3"
-                        onClick={handleGoToProduct}>
-                        <div className="text-wrap text-xs font-medium">
-                            {item ? (
-                                item.name
-                            ) : (
-                                <Skeleton count={1} width={"200px"} />
-                            )}
-                        </div>
-                        <div className="flex flex-column gap-2 items-end">
-                            <div className="font-bold">
-                                {item ? (
-                                    `${item.price} ${getCurrencyLabel(
-                                        item.currency
-                                    )}`
+                        onClick={handleClickProduct}>
+                        <div className="flex flex-col gap-3">
+                            <div className="flex flex-col">
+                                {isLoaded ? (
+                                    <>
+                                        <span className="text-sm font-bold text-wrap">
+                                            {title}
+                                        </span>
+                                        <span className="text-xs text-gray-700">
+                                            {subtitle}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <Skeleton count={1} width={"200px"} />
+                                )}
+                            </div>
+                            <div className="text-sm">
+                                {isLoaded ? (
+                                    cost
                                 ) : (
                                     <Skeleton width="60px" count={1} />
                                 )}
                             </div>
-                            <Button
-                                type="button"
-                                isIconOnly
-                                onClick={(e) => {
-                                    if (!isInCart) handleAddToCart(e);
-                                    else handleGoToProduct();
-                                }}
-                                color="primary"
-                                className={`rounded-xl ${
-                                    isInCart
-                                        ? "text-white"
-                                        : "text-black opacity-75"
-                                }`}>
-                                {isInCart ? (
-                                    <FontAwesomeIcon
-                                        icon={faCheck}></FontAwesomeIcon>
-                                ) : (
-                                    <FontAwesomeIcon
-                                        icon={faShoppingCart}></FontAwesomeIcon>
-                                )}
-                            </Button>
+                        </div>
+                        <div className="flex justify-center items-center">
+                            <NextSkeleton isLoaded={isLoaded}>
+                                <Button
+                                    type="button"
+                                    isIconOnly
+                                    onClick={handleClickButton}
+                                    color="primary"
+                                    className={`rounded-xl text-white`}>
+                                    {buttonIcon}
+                                </Button>
+                            </NextSkeleton>
                         </div>
                     </div>
                 </CardBody>

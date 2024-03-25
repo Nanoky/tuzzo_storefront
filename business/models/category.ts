@@ -11,17 +11,8 @@ export class Category extends Entity {
         this._name = value;
     }
 
-    private _store!: Store;
-    public get store(): Store {
-        return this._store;
-    }
-    private set store(value: Store) {
-        this._store = value;
-    }
-
-    constructor(param: { id: string; name: string; store: Store }) {
+    constructor(param: { id: string; name: string }) {
         super({ id: param.id });
         this.name = param.name;
-        this.store = param.store;
     }
 }

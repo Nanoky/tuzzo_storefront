@@ -9,5 +9,14 @@
     "frameworksBackend": {
       "region": "us-central1"
     }
+  },
+  "emulators": {
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }

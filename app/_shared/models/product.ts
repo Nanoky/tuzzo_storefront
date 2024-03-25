@@ -1,5 +1,6 @@
 import { Product } from "@/business/models/product";
 import { Serializable } from "../shared/serialize";
+import { SerializeCategory } from "./category";
 
 export class SerializeProduct extends Product implements Serializable {
     toJSON(): any {
@@ -12,7 +13,12 @@ export class SerializeProduct extends Product implements Serializable {
             images: this.images,
             quantity: this.quantity,
             nbSold: this.nbSold,
-            categories: this.categories,
+            categories: this.categories.map((c) => {
+                return {
+                    id: c.id,
+                    name: c.name,
+                };
+            }),
             slug: this.slug,
         };
     }
@@ -27,7 +33,12 @@ export class SerializeProduct extends Product implements Serializable {
             images: json.images,
             quantity: json.quantity,
             nbSold: json.nbSold,
-            categories: json.categories,
+            categories: json.categories.map((c: any) => {
+                return SerializeCategory.fromJSON({
+                    id: c.id,
+                    name: c.name,
+                });
+            }),
             slug: json.slug,
         });
     }

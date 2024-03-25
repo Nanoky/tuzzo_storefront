@@ -3,16 +3,13 @@
 import { Product } from "@/business/models/product";
 import "./product-card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faCheck,
-    faShoppingCart,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../../hooks/cart";
 import { useEffect, useState } from "react";
 import { SerializeProduct } from "../../models/product";
 import Skeleton from "react-loading-skeleton";
 import { CustomImage } from "./custom-image";
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
@@ -60,18 +57,18 @@ export default function ProductCard({
 
     return (
         <>
-            <Card className="cursor-pointer">
+            <Card className="cursor-pointer card-radius">
                 <CardBody>
                     {item && (
-                        <CustomImage
-                            url={item.images[0]}
-                            name={item.name}
-                            width="100%"
-                            height="300px"
-                            onClick={handleGoToProduct}></CustomImage>
+                        <Image
+                            src={item.images[0]}
+                            className="object-fill w-full h-72 card-radius"
+                            onClick={handleGoToProduct}
+                            alt={item.name}
+                            width={"100%"}></Image>
                     )}
                     <div
-                        className="card-body d-flex flex-row justify-content-between p-0 pt-3"
+                        className="flex flex-row justify-between p-0 pt-3"
                         onClick={handleGoToProduct}>
                         <div className="line-clamp-1">
                             {item ? (
@@ -80,7 +77,7 @@ export default function ProductCard({
                                 <Skeleton count={1} width={"200px"} />
                             )}
                         </div>
-                        <div className="fw-bold">
+                        <div className="font-bold">
                             {item ? (
                                 `${item.price} ${getCurrencyLabel(
                                     item.currency
@@ -90,20 +87,18 @@ export default function ProductCard({
                             )}
                         </div>
                     </div>
-                    <div className="position-absolute cart-button">
+                    <div className="absolute cart-button z-10">
                         {item && (
-                            <button
+                            <Button
                                 type="button"
-                                title="Add to cart"
+                                aria-label="Add to cart"
+                                isIconOnly
                                 onClick={(e) => {
                                     if (!isInCart) handleAddToCart(e);
                                     else handleGoToProduct();
                                 }}
-                                className={`btn rounded-4 border-0 ${
-                                    isInCart
-                                        ? "text-white bg-primary"
-                                        : "text-black bg-white opacity-75"
-                                }`}>
+                                variant="solid"
+                                className={`text-white bg-primary`}>
                                 {isInCart ? (
                                     <FontAwesomeIcon
                                         icon={faCheck}></FontAwesomeIcon>
@@ -111,7 +106,7 @@ export default function ProductCard({
                                     <FontAwesomeIcon
                                         icon={faShoppingCart}></FontAwesomeIcon>
                                 )}
-                            </button>
+                            </Button>
                         )}
                     </div>
                 </CardBody>
