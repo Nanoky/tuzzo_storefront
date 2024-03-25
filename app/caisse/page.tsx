@@ -54,7 +54,7 @@ export default async function CheckoutPage() {
                     </Button>
                     <span className="font-bold text-2xl">Paiement</span>
                 </div>
-                <OrderForm storeSlug={store.slug} store={store}></OrderForm>
+                <OrderForm storeSlug={store.slug} store={store} isWildcard></OrderForm>
             </div>
         </Layout>
     );

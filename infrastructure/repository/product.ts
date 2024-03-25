@@ -49,6 +49,10 @@ export class ProductRepository implements IProductRepository {
                                         return data[0];
                                     }
                                     throw new Error("Catégorie introuvable");
+                                })
+                                .catch((err) => {
+                                    console.error(err);
+                                    return;
                                 });
                         }) ?? [];
 
@@ -66,7 +70,7 @@ export class ProductRepository implements IProductRepository {
                                 : [DEFAULT_PRODUCT_IMAGE]
                             : [DEFAULT_PRODUCT_IMAGE],
                         quantity: data.quantity ?? 0,
-                        categories: categories,
+                        categories: categories.filter((cat) => !!cat),
                         nbSold: data.total_unit_sold ?? 0,
                         slug: data.slug,
                     });
@@ -157,6 +161,7 @@ export class ProductRepository implements IProductRepository {
                     filters: [
                         { fieldPath: "slug", opStr: "==", value: params.slug },
                         { fieldPath: "ispublished", opStr: "==", value: true },
+                        { fieldPath: "isdeleted", opStr: "==", value: false },
                     ],
                     converter: this.dtoConverter,
                 })
@@ -180,7 +185,6 @@ export class ProductRepository implements IProductRepository {
                     converter: this.dtoConverter,
                 })
                 .then((data) => {
-                    console.debug("get product", data);
                     if (data && !data.isDeleted) {
                         return [data];
                     } else {

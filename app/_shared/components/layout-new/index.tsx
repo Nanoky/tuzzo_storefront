@@ -27,13 +27,14 @@ export default function Layout({
             {withCover && (
                 <div className="h-60">
                     <Image
-                        src={"/images/default-cover.png"}
+                        src={"/images/Background.svg"}
                         alt={store.name}
-                        fill
-                        className="z-0 absolute top-0 w-full object-cover"></Image>
-                    <div className="absolute top-0 w-full h-full bg-black/40 "></div>
+                        width={1920}
+                        height={600}
+                        className="z-0 absolute top-0 w-full h-60 object-cover"></Image>
+                    {/* <div className="absolute top-0 w-full h-full bg-black/40 "></div> */}
                     <div className="relative w-full h-full flex justify-center items-center px-3 z-10">
-                        <div className="text-center flex flex-col text-white">
+                        <div className="text-center flex flex-col text-quaternary">
                             <span className="font-black text-xl md:text-3xl">
                                 {store.name}
                             </span>

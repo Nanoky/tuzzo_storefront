@@ -18,6 +18,8 @@ import {
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
+import { formatPrice } from "../../shared/formatter";
+import { ShoppingCartIcon } from "./icons/shopping-cart";
 
 export default function SmallProductCard({
     product,
@@ -67,7 +69,7 @@ export default function SmallProductCard({
                     {item && (
                         <Image
                             src={item.images[0]}
-                            className="object-fill h-28 w-full rounded-b-none"
+                            className="object-cover h-28 w-full rounded-b-none"
                             onClick={handleGoToProduct}
                             alt={item.name}
                             width={"100%"}></Image>
@@ -90,7 +92,7 @@ export default function SmallProductCard({
                         <div className="flex flex-row justify-between items-center h-10">
                             <span className="font-bold text-sm">
                                 {item ? (
-                                    `${item.price} ${getCurrencyLabel(
+                                    `${formatPrice(item.price)} ${getCurrencyLabel(
                                         item.currency
                                     )}`
                                 ) : (
@@ -107,15 +109,12 @@ export default function SmallProductCard({
                                         else handleGoToProduct();
                                     }}
                                     variant="solid"
-                                    className={`text-white bg-primary`}>
+                                    className={`text-white bg-primary rounded-2xl`}>
                                     {isInCart ? (
                                         <FontAwesomeIcon
                                             icon={faCheck}></FontAwesomeIcon>
                                     ) : (
-                                        <FontAwesomeIcon
-                                            icon={
-                                                faShoppingCart
-                                            }></FontAwesomeIcon>
+                                        <ShoppingCartIcon />
                                     )}
                                 </Button>
                             </NextSkeleton>

@@ -24,6 +24,7 @@ import { searchStoreBySlug } from "@/app/_shared/services/store";
 import { searchProductBySlug } from "@/app/_shared/services/product";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { formatPrice } from "@/app/_shared/shared/formatter";
 
 type Params = {
     storeSlug: string;
@@ -137,41 +138,56 @@ export default async function ProductPage({ params }: Props) {
                     <span className="font-bold text-2xl">{product.name}</span>
                 </div>
                 <div className="relative overflow-x-hidden flex flex-col gap-4">
-                    <div className="absolute top-6 left-auto pl-5 w-full">
-                        <div className="overflow-x-auto scrollbar-hide">
-                            <div className="w-fit flex flex-row justify-center gap-4 items-center flex-nowrap">
-                                {product.images.map((image) => (
-                                    <div
-                                        key={image}
-                                        className={`${
-                                            product.images.length > 1
-                                                ? "w-72"
-                                                : "w-80"
-                                        } h-72`}>
+                    {product.images.length > 1 && (
+                        <div className="absolute top-6 left-auto pl-5 w-full">
+                            <div className="overflow-x-auto scrollbar-hide">
+                                <div className="w-fit flex flex-row justify-center gap-4 items-center flex-nowrap">
+                                    {product.images.map((image) => (
+                                        <div
+                                            key={image}
+                                            className={`${
+                                                product.images.length > 1
+                                                    ? "w-72"
+                                                    : "w-80"
+                                            } h-72`}>
+                                            <Image
+                                                src={image}
+                                                alt={product.name}
+                                                width={1000}
+                                                height={1000}
+                                                classNames={{
+                                                    wrapper: "h-full",
+                                                }}
+                                                className="object-cover h-full w-full rounded-3xl"></Image>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <Card className="card-radius">
+                        <CardBody className="">
+                            <div className="flex flex-col gap-2">
+                                <div className="h-80 min-w-full w-80 max-w-max">
+                                    {product.images.length === 1 && (
                                         <Image
-                                            src={image}
+                                            src={product.images[0]}
                                             alt={product.name}
-                                            width={296}
-                                            height={296}
+                                            width={1000}
+                                            height={1000}
                                             classNames={{
                                                 wrapper: "h-full",
                                             }}
                                             className="object-cover h-full w-full rounded-3xl"></Image>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                    <Card className="card-radius">
-                        <CardBody className="">
-                            <div className="flex flex-col gap-2">
-                                <div className="h-80 min-w-full w-80 max-w-max"></div>
+                                    )}
+                                </div>
                                 <div className="flex flex-col gap-2 p-2">
                                     <span className="font-bold text-lg">
                                         {product.name}
                                     </span>
                                     <span className="text-primary font-semibold">
-                                        {product.price} {product.currency}
+                                        {formatPrice(product.price)}{" "}
+                                        {product.currency}
                                     </span>
                                 </div>
                             </div>

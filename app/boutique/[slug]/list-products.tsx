@@ -93,7 +93,7 @@ export default function ListProducts({
                     </div>
                     <div className="pe-4">
                         <div
-                            className={`py-3 md:p-5 lg:p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-4 gap-x-3 ${
+                            className={`py-3 md:p-5 lg:p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 ${
                                 (!products.length || isLoading) && "hidden"
                             }`}>
                             {products.map((product) => (
@@ -125,7 +125,7 @@ export default function ListProducts({
                             className={`min-h-60 max-h-full flex flex-col items-center justify-center gap-4 text-center ${
                                 (products.length || isLoading) && "hidden"
                             }`}>
-                            <span className="text-3xl font-bold">Ooops</span>
+                            <span className="text-3xl font-bold">Désolé</span>
                             <span className="text-gray-500">
                                 {`Cette ${
                                     selectedCategory ? "catégorie" : "boutique"

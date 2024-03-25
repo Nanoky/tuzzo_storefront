@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "./add-chart.css";
 import { Button } from "@nextui-org/react";
-import { CartIcon } from "@/app/_shared/components/commun/icon";
+import { ShoppingCartIcon } from "@/app/_shared/components/commun/icons/shopping-cart";
 
 export default function AddCart({ product }: { product: Product }) {
     const [count, setCount] = useState(1);
@@ -68,9 +68,7 @@ export default function AddCart({ product }: { product: Product }) {
                     radius="full"
                     onClick={handleAdd}
                     startContent={
-                        <span className="fill-inherit">
-                            <CartIcon />
-                        </span>
+                        <ShoppingCartIcon />
                     }
                     type="button">
                     {product.quantity > 0

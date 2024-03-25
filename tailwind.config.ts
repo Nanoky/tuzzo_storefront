@@ -18,6 +18,7 @@ const config = {
                 primary: "#000000",
                 secondary: "#EFE7D2",
                 tertiary: "#FFFFFF",
+                quaternary: "#004040",
             },
         },
         colors: {},

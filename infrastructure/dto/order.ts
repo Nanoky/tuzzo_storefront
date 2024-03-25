@@ -6,7 +6,7 @@ export interface OrderCustomerDTO extends DTO {
     phone_number: string;
     delivery_address: string;
     notes: string;
-    isDeleted: boolean;
+    isdeleted: boolean;
 }
 
 export interface OrderItemDTO extends DTO {

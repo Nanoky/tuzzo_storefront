@@ -7,11 +7,12 @@ import PaymentOption from "./payment-option";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCart } from "@/app/_shared/hooks/cart";
 import { saveOrder } from "@/app/_shared/services/order";
-import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createSuccessRoute } from "@/app/_shared/services/router";
 import { Store } from "@/business/models/store";
+import { notifyError } from "@/app/_shared/services/notifier";
+import { CUSTOMER_DEFAULT_PHONE_INPUT_VALUE } from "@/app/_shared/shared/data";
 
 type Options<TKey> = Map<TKey, boolean>;
 export type FormValues = {
@@ -25,7 +26,7 @@ export type FormValues = {
 
 const defaultFormValues: FormValues = {
     name: "",
-    phone: "+225",
+    phone: CUSTOMER_DEFAULT_PHONE_INPUT_VALUE,
     address: "",
     optionDeliveryExpress: true /* new Map<DeliveryOptions, boolean>([
         [DeliveryOptions.EXPRESS, true],
@@ -51,9 +52,12 @@ export default function OrderForm({
         reset,
         getFieldState,
         formState: { errors },
+        getValues,
+        setValue,
         trigger,
     } = useForm<FormValues>({
         defaultValues: defaultFormValues,
+        mode: "onTouched"
     });
 
     const { total, items, emptyCart } = useCart();
@@ -91,7 +95,7 @@ export default function OrderForm({
             .catch((error) => {
                 console.error(error);
                 console.trace(error);
-                enqueueSnackbar(error.message, { variant: "error" });
+                notifyError(error.message);
                 setIsLoading(false);
             });
     };
@@ -102,6 +106,9 @@ export default function OrderForm({
                     <CustomerInfos
                         control={control}
                         trigger={trigger}
+                        store={store}
+                        getValues={getValues}
+                        setValue={setValue}
                         errors={errors}></CustomerInfos>
                     <DeliveryOption control={control}></DeliveryOption>
                     <PaymentOption control={control}></PaymentOption>

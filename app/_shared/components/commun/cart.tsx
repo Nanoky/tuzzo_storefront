@@ -26,8 +26,8 @@ import {
 } from "@nextui-org/react";
 import { createCheckoutRoute } from "../../services/router";
 import { MiniCartProductCard } from "./mini-product-card";
-import { CancelIcon, CartIcon } from "./icon";
-
+import { formatPrice } from "../../shared/formatter";
+import { ShoppingCartIcon } from "./icons/shopping-cart";
 
 export function CartButton({
     slug,
@@ -65,15 +65,15 @@ export function CartButton({
                 shape="circle"
                 color="danger"
                 size="lg">
-                <Skeleton isLoaded={!!items} className="rounded-xl">
+                <Skeleton isLoaded={!!items} className="rounded-2xl">
                     <Button
                         isIconOnly
                         aria-label="Cart"
                         variant="solid"
-                        className="bg-white"
+                        className="bg-white rounded-2xl"
                         onClick={handleClick}>
-                            <CartIcon />
-                        </Button>
+                        <ShoppingCartIcon isBlack />
+                    </Button>
                 </Skeleton>
             </Badge>
 
@@ -162,7 +162,7 @@ export function CartPanel({
             <Divider></Divider>
             <div className="flex flex-row justify-between py-2">
                 <span className="text-sm">Sous-total</span>
-                <span className="font-bold text-xl">{total} F</span>
+                <span className="font-bold text-xl">{formatPrice(total)} F</span>
             </div>
             {items.length > 0 && (
                 <div className="flex justify-center items-center py-2">

@@ -22,7 +22,9 @@ import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
 import { CartItem } from "@/business/models/cart";
-import { TrashIcon } from "./icon";
+import { formatPrice } from "../../shared/formatter";
+import { TrashIcon } from "./icons/trash-icon";
+import { ShoppingCartIcon } from "./icons/shopping-cart";
 
 export function MiniCartProductCard({
     item,
@@ -37,7 +39,7 @@ export function MiniCartProductCard({
             title={item.product.name}
             subtitle={`Quantité: ${item.quantity}`}
             image={item.product.images[0]}
-            cost={`${item.totalPrice} ${getCurrencyLabel(
+            cost={`${formatPrice(item.totalPrice)} ${getCurrencyLabel(
                 item.product.currency
             )}`}
             onClick={() => {}}
@@ -96,14 +98,14 @@ export function MiniProductCard({
             title={item?.name ?? ""}
             subtitle={item?.categories?.[0]?.name}
             image={item?.images[0] ?? ""}
-            cost={`${item?.price} ${getCurrencyLabel(item?.currency ?? "")}`}
+            cost={`${item?.price ? formatPrice(item.price) : ""} ${getCurrencyLabel(item?.currency ?? "")}`}
             onClick={handleGoToProduct}
             onClickButton={handleAddToCart}
             buttonIcon={
                 isInCart ? (
                     <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
                 ) : (
-                    <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                    <ShoppingCartIcon />
                 )
             }></MiniProductCardBase>
     );
@@ -147,7 +149,7 @@ function MiniProductCardBase({
                     {isLoaded && (
                         <Image
                             src={image}
-                            className="object-contain w-24 h-full rounded-e-none"
+                            className="object-cover w-24 h-full rounded-e-none"
                             onClick={handleClickProduct}
                             alt={title}
                             width={"100%"}></Image>
@@ -185,7 +187,7 @@ function MiniProductCardBase({
                                     isIconOnly
                                     onClick={handleClickButton}
                                     color="primary"
-                                    className={`rounded-xl text-white`}>
+                                    className={`rounded-2xl text-white`}>
                                     {buttonIcon}
                                 </Button>
                             </NextSkeleton>

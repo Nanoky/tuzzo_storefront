@@ -13,6 +13,8 @@ import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { getCurrencyLabel } from "../../shared/currency";
 import { createProductRoute } from "../../services/router";
+import { formatPrice } from "../../shared/formatter";
+import { ShoppingCartIcon } from "./icons/shopping-cart";
 
 export default function ProductCard({
     product,
@@ -62,7 +64,7 @@ export default function ProductCard({
                     {item && (
                         <Image
                             src={item.images[0]}
-                            className="object-fill w-full h-72 card-radius"
+                            className="object-cover w-full h-72 card-radius"
                             onClick={handleGoToProduct}
                             alt={item.name}
                             width={"100%"}></Image>
@@ -79,7 +81,7 @@ export default function ProductCard({
                         </div>
                         <div className="font-bold">
                             {item ? (
-                                `${item.price} ${getCurrencyLabel(
+                                `${formatPrice(item.price)} ${getCurrencyLabel(
                                     item.currency
                                 )}`
                             ) : (
@@ -98,13 +100,12 @@ export default function ProductCard({
                                     else handleGoToProduct();
                                 }}
                                 variant="solid"
-                                className={`text-white bg-primary`}>
+                                className={`text-white bg-primary rounded-2xl`}>
                                 {isInCart ? (
                                     <FontAwesomeIcon
                                         icon={faCheck}></FontAwesomeIcon>
                                 ) : (
-                                    <FontAwesomeIcon
-                                        icon={faShoppingCart}></FontAwesomeIcon>
+                                    <ShoppingCartIcon />
                                 )}
                             </Button>
                         )}
