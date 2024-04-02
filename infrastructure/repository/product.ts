@@ -175,22 +175,23 @@ export class ProductRepository implements IProductRepository {
 
         if (params.id) {
             const list = await this.service
-                .search({
+                .get({
                     collection: `${CollectionNames.STORES}`,
                     pathSegments: [
                         params.storeId,
                         `${CollectionNames.PRODUCTS}`,
-                        params.id,
                     ],
-                    filters: [
-                        { fieldPath: "isdeleted", opStr: "==", value: false },
-                        { fieldPath: "ispublished", opStr: "==", value: true },
-                    ],
+                    id: params.id,
                     converter: this.dtoConverter,
                 })
                 .then((data) => {
+                    console.log("data", data);
                     if (data) {
-                        return [data];
+                        if (!data.isDeleted && data.isPublished) return [data];
+                        else
+                            throw new Error(
+                                "Le produit recherché n'est pas disponible dans la boutique"
+                            );
                     } else {
                         return [];
                     }
