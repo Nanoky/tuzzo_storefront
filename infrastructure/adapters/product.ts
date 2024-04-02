@@ -58,6 +58,7 @@ export class ProductDTOAdapter
             total_unit_sold: data.total_unit_sold,
             slug: data.slug,
             isDeleted: data.isdeleted,
+            isPublished: data.ispublished
         };
     }
 }
